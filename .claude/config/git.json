@@ -1,0 +1,40 @@
+{
+  "conventional": true,
+  "smart": true,
+  "preCommitChecks": ["test", "lint", "type-check"],
+  "defaultScope": "auto",
+  "maxSubjectLength": 50,
+  "allowEmojis": false,
+  "commitTypes": {
+    "feat": "New feature or capability",
+    "fix": "Bug fix or error correction",
+    "docs": "Documentation changes only",
+    "style": "Code formatting, no logic change",
+    "refactor": "Code restructuring without behavior change",
+    "perf": "Performance improvements",
+    "test": "Adding or updating tests",
+    "build": "Build system or dependencies",
+    "ci": "CI/CD configuration",
+    "chore": "Maintenance tasks"
+  },
+  "scopes": {
+    "domain": "Entities, value objects, domain services",
+    "application": "Use cases, application services",
+    "infrastructure": "Repositories, external services",
+    "presentation": "Controllers, routes, UI",
+    "shared": "Cross-cutting concerns",
+    "config": "Configuration files"
+  },
+  "agentModels": {
+    "git-analyst": "gemini-2.5-flash",
+    "commit-message-generator": "gemini-2.5-flash"
+  },
+  "excludePatterns": [
+    "node_modules/**",
+    "dist/**",
+    "coverage/**",
+    ".git/**",
+    "bun.lockb",
+    "bun.lock"
+  ]
+}

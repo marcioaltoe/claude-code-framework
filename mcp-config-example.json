@@ -1,0 +1,61 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    },
+    "Docker_MCP_Toolkit": {
+      "command": "docker",
+      "args": ["mcp", "gateway", "run"],
+      "type": "stdio"
+    },
+    "magic": {
+      "command": "npx",
+      "args": ["-y", "@21st-dev/magic@latest"],
+      "env": {
+        "API_KEY": "your-magic-api-key-here"
+      }
+    },
+    "perplexity-mcp": {
+      "type": "stdio",
+      "command": "perplexity-mcp",
+      "env": {
+        "PERPLEXITY_API_KEY": "your-perplexity-api-key-here"
+      }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest", "--isolated", "--storage-state={/path/to/your/playwright/storage.json}"]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "zen": {
+      "command": "sh",
+      "args": [
+        "-c",
+        "exec $(which uvx || echo uvx) --from git+https://github.com/BeehiveInnovations/zen-mcp-server.git zen-mcp-server"
+      ],
+      "env": {
+        "PATH": "/usr/local/bin:/usr/bin:/bin:/opt/homebrew/bin:~/.local/bin",
+        "OPENAI_API_KEY": "your-openai-api-key-here",
+        "GEMINI_API_KEY": "your-gemini-api-key-here",
+        "OPENROUTER_API_KEY": "your-openrouter-api-key-here"
+      }
+    },
+    "serena": {
+      "command": "/Users/your-username/.local/bin/uvx",
+      "args": ["--from", "git+https://github.com/oraios/serena", "serena", "start-mcp-server"]
+    },
+    "filesystem-with-morph": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["@morph-llm/morph-fast-apply"],
+      "env": {
+        "MORPH_API_KEY": "your-morph-api-key-here",
+        "ALL_TOOLS": "false"
+      }
+    }
+  }
+}
