@@ -153,8 +153,8 @@ To configure these MCP servers, add the `mcpServers` section to your `~/.claude.
 
 This framework is built upon learnings and best practices shared by:
 
-- **[Rodrigo Branas](https://branas.io/)** - Full-stack development expertise and Clean Architecture principles
-- **[Pedro Nauck](https://compozy.com/)** - AI-driven development workflows and modern tooling
+- **[Rodrigo Branas](https://branas.io/)** - Developer, Software Architect, Professor, Author and Speaker
+- **[Pedro Nauck](https://compozy.com/)** - Founder & CEO at Compozy.com | Building the Next-Gen AI Orchestration Platform for Enterprise | Simplifying Multi-Agent Systems with YAML | Open Source Pioneer
 
 Special thanks to their AI for Development course which provided the foundation for these patterns and practices.
 
