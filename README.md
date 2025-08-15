@@ -58,10 +58,10 @@ This framework includes purpose-built agents for different development workflows
 ### Feature Development
 
 - `/feature` - Feature development workflows
-  - `/feature/discovery` - Feature discovery process
-  - `/feature/prd` - Product Requirements Document creation
-  - `/feature/techspec` - Technical specification generation
-  - `/feature/tasks` - Task breakdown and planning
+  - `/feature:discovery` - Feature discovery process
+  - `/feature:prd` - Product Requirements Document creation
+  - `/feature:techspec` - Technical specification generation
+  - `/feature:tasks` - Task breakdown and planning
 
 ### Code Quality & Fixing
 
@@ -76,18 +76,18 @@ This framework includes purpose-built agents for different development workflows
 ### Agent Management
 
 - `/agent` - Agent management commands
-  - `/agent/create` - Create new specialized agents
-  - `/agent/update` - Update existing agents
-  - `/agent/list` - List available agents
-  - `/agent/analyze` - Analyze agent performance
+  - `/agent:create` - Create new specialized agents
+  - `/agent:update` - Update existing agents
+  - `/agent:list` - List available agents
+  - `/agent:analyze` - Analyze agent performance
 
 ### Git Operations
 
 - `/git` - Enhanced git workflows
-  - `/git/commit` - Smart conventional commits
-  - `/git/branch` - Branch management
-  - `/git/push` - Enhanced push operations
-  - `/git/sync` - Repository synchronization
+  - `/git:commit` - Smart conventional commits
+  - `/git:branch` - Branch management
+  - `/git:push` - Enhanced push operations
+  - `/git:sync` - Repository synchronization
 
 ### Analysis & Implementation
 
@@ -136,17 +136,17 @@ This framework leverages multiple MCP servers for enhanced capabilities:
 
 ### Available MCP Servers
 
-| Server                    | Purpose                                 | Documentation                                                                 |
-| ------------------------- | --------------------------------------- | ----------------------------------------------------------------------------- |
-| **context7**              | Library documentation and code examples | [Context7 MCP](https://github.com/codeium/context7-mcp)                       |
-| **Docker_MCP_Toolkit**    | Docker container management             | [Docker MCP](https://github.com/codeium/docker-mcp)                           |
-| **magic**                 | UI component generation and logo search | [Magic MCP](https://github.com/codeium/magic-mcp)                             |
-| **perplexity-mcp**        | Web search and reasoning                | [Perplexity MCP](https://github.com/codeium/perplexity-mcp)                   |
-| **playwright**            | Browser automation and testing          | [Playwright MCP](https://github.com/codeium/playwright-mcp)                   |
-| **sequential-thinking**   | Step-by-step problem solving            | [Sequential Thinking MCP](https://github.com/codeium/sequential-thinking-mcp) |
-| **zen**                   | Comprehensive AI workflows              | [Zen MCP](https://github.com/codeium/zen-mcp)                                 |
-| **serena**                | Semantic code analysis                  | [Serena MCP](https://github.com/codeium/serena-mcp)                           |
-| **filesystem-with-morph** | Advanced file operations                | [Filesystem Morph MCP](https://github.com/codeium/filesystem-with-morph-mcp)  |
+| Server                    | Purpose                                 | Documentation                                                                                                     |
+| ------------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| **context7**              | Library documentation and code examples | [Context7 MCP](https://context7.com/)                                                                             |
+| **Docker_MCP_Toolkit**    | Docker container management             | [Docker MCP](https://www.docker.com/products/mcp-catalog-and-toolkit/)                                            |
+| **magic**                 | UI component generation and logo search | [Magic MCP](https://21st.dev/magic)                                                                               |
+| **perplexity-mcp**        | Web search and reasoning                | [Perplexity MCP](https://www.perplexity.ai/help-center/en/articles/11502712-local-and-remote-mcps-for-perplexity) |
+| **playwright**            | Browser automation and testing          | [Playwright MCP](https://github.com/microsoft/playwright-mcp)                                                     |
+| **sequential-thinking**   | Step-by-step problem solving            | [Sequential Thinking MCP](https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking)       |
+| **zen**                   | Comprehensive AI workflows              | [Zen MCP](https://github.com/BeehiveInnovations/zen-mcp-server)                                                   |
+| **serena**                | Semantic code analysis                  | [Serena MCP](https://github.com/oraios/serena)                                                                    |
+| **filesystem-with-morph** | Advanced file operations                | [Filesystem Morph MCP](https://docs.morphllm.com/guides/claude-code)                                              |
 
 ### MCP Server Capabilities
 
@@ -198,8 +198,8 @@ To configure these MCP servers, add the `mcpServers` section to your `~/.claude.
 
 5. **Start using specialized agents and commands**
    ```bash
-   claude /agent/list
-   claude /feature/discovery "new user authentication"
+   claude /agent:list
+   claude /feature:discovery "new user authentication"
    ```
 
 ## 🎓 Credits & Inspiration
