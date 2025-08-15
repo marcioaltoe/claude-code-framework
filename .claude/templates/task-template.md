@@ -1,6 +1,17 @@
-## markdown
-
-## status: pending # Options: pending, in-progress, completed, excluded
+---
+task-id: [task-number]
+feature-slug: [feature-name]
+status: pending # Options: pending, in-progress, completed, excluded
+priority: [high|medium|low]
+complexity: [low|medium|high]
+estimated-hours: [number]
+dependencies: []
+assignee: [team-member]
+created: [YYYY-MM-DD]
+updated: [YYYY-MM-DD]
+prd-reference: docs/features/[feature-slug]/02-requirements/prd.md
+techspec-reference: docs/features/[feature-slug]/03-technical/techspec.md
+---
 
 <task_context>
 <domain>engine/infra/[subdomain]</domain>

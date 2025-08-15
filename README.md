@@ -18,23 +18,36 @@ A comprehensive configuration framework for Claude Code CLI, featuring specializ
 This framework includes purpose-built agents for different development workflows:
 
 ### Architecture & Planning
+
 - **domain-architect**: Domain-driven design expert using MCP Zen
 - **technical-architect**: Clean Architecture expert for system design
 - **business-strategist**: Business strategy and market analysis
 - **ux-architect**: UX design expert for creative solutions
 
 ### Development & Quality
+
 - **implementation-specialist**: TypeScript, DDD, and Clean Architecture implementation
 - **code-reviewer**: Strict code review following established processes
 - **task-analyzer**: Pre-implementation analysis to minimize token usage
 - **quality-delivery**: QA and delivery expert with comprehensive strategies
 
+### Code Quality & Fixing
+
+- **type-fixer**: Automated TypeScript error remediation with iterative diagnostics parsing
+- **lint-fixer**: Biome fixer with rule-aware edits and MCP integrations
+- **vitest-fixer**: Vitest failure triage and automated test fixing
+- **import-fixer**: Import/path resolution specialist for TS aliasing and module issues
+- **config-doctor**: Configuration coherence validator for tsconfig, Biome, and Vitest
+- **snapshot-reviewer**: Snapshot diff reviewer with human-readable analysis
+
 ### Git & Collaboration
+
 - **git-analyst**: Git commit analysis specialist
 - **commit-message-generator**: Conventional commit message generation
 - **pr-description-generator**: Comprehensive PR description creation
 
 ### Orchestration
+
 - **orchestrator**: Master orchestrator for PRD creation
 - **mcp-orchestrator**: Intelligent MCP server routing
 - **agent-creator**: Meta-agent for creating and updating subagents
@@ -43,13 +56,25 @@ This framework includes purpose-built agents for different development workflows
 ## 📋 Custom Commands
 
 ### Feature Development
+
 - `/feature` - Feature development workflows
   - `/feature/discovery` - Feature discovery process
   - `/feature/prd` - Product Requirements Document creation
   - `/feature/techspec` - Technical specification generation
   - `/feature/tasks` - Task breakdown and planning
 
+### Code Quality & Fixing
+
+- `/fix` - Unified fixer dispatcher for types, lint, and tests
+  - `/fix --all` - Run all fixers (types, lint, tests)
+  - `/fix --types` - TypeScript error fixing with diagnostic parsing
+  - `/fix --lint` - Biome linting with rule-aware remediation
+  - `/fix --tests` - Vitest failure analysis and automated fixes
+  - `/fix --staged` - Fix only staged files
+  - `/fix --safe` / `--aggressive` - Control fix intensity level
+
 ### Agent Management
+
 - `/agent` - Agent management commands
   - `/agent/create` - Create new specialized agents
   - `/agent/update` - Update existing agents
@@ -57,6 +82,7 @@ This framework includes purpose-built agents for different development workflows
   - `/agent/analyze` - Analyze agent performance
 
 ### Git Operations
+
 - `/git` - Enhanced git workflows
   - `/git/commit` - Smart conventional commits
   - `/git/branch` - Branch management
@@ -64,23 +90,45 @@ This framework includes purpose-built agents for different development workflows
   - `/git/sync` - Repository synchronization
 
 ### Analysis & Implementation
+
 - `/analyze` - Code analysis workflows
 - `/implement` - Implementation guidance
 
 ## 📚 Rules & Standards
 
 ### Core Principles
+
 - **Pragmatism over Purism**: Functionality first, perfect architecture second
 - **Clean Architecture & DDD**: Applied where they add clear value
 - **TypeScript-first**: Strict typing with meaningful types
 - **Test-Driven Development**: Tests first, implementation second
 
+### Fundamental Design Principles
+
+- **DRY (Don't Repeat Yourself)**: Single source of truth for knowledge
+- **YAGNI (You Aren't Gonna Need It)**: Implement only when actually needed
+- **KISS (Keep It Simple, Stupid)**: Simplicity as key design goal
+- **TDA (Tell, Don't Ask)**: Tell objects what to do, don't ask for their data
+- **SOLID Principles**: Single responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion
+- **Object Calisthenics**: 9 rules for better object-oriented code quality
+
 ### Technology Standards
-- **Runtime**: Bun (never npm/yarn)
-- **Testing**: Vitest (never built-in test runners)
+
+- **Runtime**: Bun (never npm/yarn) - `bun run test`, never `bun test`
+- **Testing**: Vitest via `bun run test` with TDD approach
 - **Schema Validation**: TypeBox for backends, Zod for React frontends
-- **Database**: Drizzle ORM with SQL best practices
+- **Database**: Drizzle ORM with PostgreSQL, snake_case tables, camelCase TypeScript
 - **IDs**: ULID instead of UUID
+- **API**: Hono for HTTP routing (not Express or Bun.serve)
+- **Logging**: Structured JSON logging with Winston
+
+### Code Quality Standards
+
+- **TypeScript Patterns**: Never use `any`, proper interfaces, type guards
+- **Function Design**: Options objects for complex parameters, Result pattern for expected errors
+- **Naming Conventions**: Descriptive, consistent, searchable names
+- **Folder Structure**: Feature-driven organization with Clean Architecture layers
+- **Essential Rules**: Comprehensive development guidelines for consistent code quality
 
 ## 🔌 MCP (Model Context Protocol) Servers
 
@@ -88,17 +136,17 @@ This framework leverages multiple MCP servers for enhanced capabilities:
 
 ### Available MCP Servers
 
-| Server | Purpose | Documentation |
-|--------|---------|---------------|
-| **context7** | Library documentation and code examples | [Context7 MCP](https://github.com/codeium/context7-mcp) |
-| **Docker_MCP_Toolkit** | Docker container management | [Docker MCP](https://github.com/codeium/docker-mcp) |
-| **magic** | UI component generation and logo search | [Magic MCP](https://github.com/codeium/magic-mcp) |
-| **perplexity-mcp** | Web search and reasoning | [Perplexity MCP](https://github.com/codeium/perplexity-mcp) |
-| **playwright** | Browser automation and testing | [Playwright MCP](https://github.com/codeium/playwright-mcp) |
-| **sequential-thinking** | Step-by-step problem solving | [Sequential Thinking MCP](https://github.com/codeium/sequential-thinking-mcp) |
-| **zen** | Comprehensive AI workflows | [Zen MCP](https://github.com/codeium/zen-mcp) |
-| **serena** | Semantic code analysis | [Serena MCP](https://github.com/codeium/serena-mcp) |
-| **filesystem-with-morph** | Advanced file operations | [Filesystem Morph MCP](https://github.com/codeium/filesystem-with-morph-mcp) |
+| Server                    | Purpose                                 | Documentation                                                                 |
+| ------------------------- | --------------------------------------- | ----------------------------------------------------------------------------- |
+| **context7**              | Library documentation and code examples | [Context7 MCP](https://github.com/codeium/context7-mcp)                       |
+| **Docker_MCP_Toolkit**    | Docker container management             | [Docker MCP](https://github.com/codeium/docker-mcp)                           |
+| **magic**                 | UI component generation and logo search | [Magic MCP](https://github.com/codeium/magic-mcp)                             |
+| **perplexity-mcp**        | Web search and reasoning                | [Perplexity MCP](https://github.com/codeium/perplexity-mcp)                   |
+| **playwright**            | Browser automation and testing          | [Playwright MCP](https://github.com/codeium/playwright-mcp)                   |
+| **sequential-thinking**   | Step-by-step problem solving            | [Sequential Thinking MCP](https://github.com/codeium/sequential-thinking-mcp) |
+| **zen**                   | Comprehensive AI workflows              | [Zen MCP](https://github.com/codeium/zen-mcp)                                 |
+| **serena**                | Semantic code analysis                  | [Serena MCP](https://github.com/codeium/serena-mcp)                           |
+| **filesystem-with-morph** | Advanced file operations                | [Filesystem Morph MCP](https://github.com/codeium/filesystem-with-morph-mcp)  |
 
 ### MCP Server Capabilities
 
@@ -115,28 +163,33 @@ This framework leverages multiple MCP servers for enhanced capabilities:
 To configure these MCP servers, add the `mcpServers` section to your `~/.claude.json` file. See [mcp-config-example.json](mcp-config-example.json) for a complete configuration template with all servers.
 
 **Required API Keys:**
+
 - Magic: Get your API key from [21st.dev](https://21st.dev)
 - Perplexity: Get your API key from [Perplexity API](https://docs.perplexity.ai/docs/getting-started)
 - Zen: Requires OpenAI, Gemini, and/or OpenRouter API keys
 - Morph: Get your API key from [Morph](https://morph.so)
 
 **No API Keys Required:**
+
 - Context7, Docker_MCP_Toolkit, Playwright, Sequential-thinking, Serena
 
 ## 🚀 Getting Started
 
 1. **Install Claude Code CLI**
+
    ```bash
    npm install -g @anthropic/claude-code
    ```
 
 2. **Clone this framework**
+
    ```bash
    git clone <your-repo-url>
    cd claude-code-framework
    ```
 
 3. **Copy configuration to your global Claude directory**
+
    ```bash
    cp -r .claude/* ~/.claude/
    ```
@@ -182,4 +235,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-*Framework Version: 1.0.0 | Last Updated: August 2025*
+_Framework Version: 2.0.0 | Last Updated: August 2025_

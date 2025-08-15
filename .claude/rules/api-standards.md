@@ -35,24 +35,10 @@
 - Add lightweight retry for transient failures when necessary
 - Log requests and responses at appropriate levels (see logging rules)
 
-## Example (fetch with timeout)
+## Implementation Notes
 
-```typescript
-const controller = new AbortController();
-const timeoutId = setTimeout(() => controller.abort(), 5000);
-try {
-  const res = await fetch('https://api.external.com/data', {
-    method: 'GET',
-    headers: { Authorization: `Bearer ${token}` },
-    signal: controller.signal,
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const data = await res.json();
-  // ... use data
-} finally {
-  clearTimeout(timeoutId);
-}
-```
+- See `typescript-patterns.md` for detailed fetch timeout examples
+- Use structured error handling with proper HTTP status codes
 
 # Best Practices
 

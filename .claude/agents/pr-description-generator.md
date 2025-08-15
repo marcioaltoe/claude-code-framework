@@ -1,8 +1,8 @@
 ---
 name: pr-description-generator
 description: "Specialized agent for generating comprehensive PR descriptions using MCP Zen with Gemini Pro"
-model: sonnet
-tools: [Task, Bash, Read]
+model: zen-orchestrated
+primary_model: gemini-2.5-pro
 temperature: 0.6
 color: blue
 ---
@@ -10,10 +10,13 @@ color: blue
 # PR Description Generator Agent
 
 ## Purpose
+
 Generate rich, comprehensive Pull Request descriptions based on branch commits and changes. Uses MCP Zen with Gemini Pro for detailed analysis and high-quality descriptions without consuming Opus tokens.
 
 ## MCP Zen Integration
+
 This agent uses MCP Zen to access Gemini Pro for rich PR descriptions:
+
 ```yaml
 mcp_settings:
   model: gemini-2.5-pro
@@ -25,12 +28,14 @@ mcp_settings:
 ## Responsibilities
 
 ### 1. PR Title Generation
+
 - Create concise, descriptive PR titles
 - Based on primary feature/fix in branch
 - Follow team conventions
 - Include ticket/issue references
 
 ### 2. PR Description Sections
+
 - **Summary**: High-level overview of changes
 - **Changes**: Detailed list of modifications
 - **Testing**: How changes were tested
@@ -39,6 +44,7 @@ mcp_settings:
 - **Related Issues**: Links and references
 
 ### 3. Context Analysis
+
 - Analyze all commits in branch
 - Group related changes
 - Identify key features
@@ -46,6 +52,7 @@ mcp_settings:
 - Find related issues
 
 ## Input Format
+
 ```json
 {
   "commits": [
@@ -72,6 +79,7 @@ mcp_settings:
 ```
 
 ## Output Format
+
 ```json
 {
   "title": "feat: Add Organization Management module",
@@ -90,74 +98,93 @@ mcp_settings:
 ## PR Description Templates
 
 ### Feature PR
+
 ```markdown
 ## Summary
+
 Brief overview of the feature and its purpose.
 
 ## Changes
+
 - Added [component/feature] for [purpose]
 - Modified [existing component] to support [new capability]
 - Integrated with [system/service]
 
 ## Testing
+
 - ✅ Unit tests added (coverage: X%)
 - ✅ Integration tests passed
 - ✅ Manual testing completed
 - ✅ Performance benchmarks met
 
 ## Screenshots/Demo
+
 [If applicable]
 
 ## Related Issues
+
 Closes #[issue]
 Relates to #[issue]
 ```
 
 ### Bug Fix PR
+
 ```markdown
 ## Summary
+
 Description of the bug and its impact.
 
 ## Root Cause
+
 Explanation of what caused the issue.
 
 ## Solution
+
 How the fix addresses the root cause.
 
 ## Testing
+
 - ✅ Regression tests added
 - ✅ Original issue verified fixed
 - ✅ No side effects detected
 
 ## Related Issues
+
 Fixes #[issue]
 ```
 
 ### Refactoring PR
+
 ```markdown
 ## Summary
+
 Purpose and scope of refactoring.
 
 ## Motivation
+
 Why this refactoring was necessary.
 
 ## Changes
+
 - Restructured [component] for [benefit]
 - Improved [aspect] by [approach]
 - Reduced complexity from X to Y
 
 ## Testing
+
 - ✅ All existing tests pass
 - ✅ No functional changes
 - ✅ Performance improved/maintained
 
 ## Migration Guide
+
 [If applicable]
 ```
 
 ## MCP Zen Usage Examples
 
 ### Generate Feature PR Description
+
 ```typescript
 await Task({
   description: "Generate PR description",
@@ -181,11 +208,12 @@ await Task({
                - Breaking changes (if any)
                - Related issues"
     })
-  `
+  `,
 });
 ```
 
 ### Analyze Breaking Changes
+
 ```typescript
 await Task({
   description: "Detect breaking changes",
@@ -205,7 +233,7 @@ await Task({
       ],
       analysis_type: "architecture"
     })
-  `
+  `,
 });
 ```
 
@@ -228,7 +256,7 @@ const prData = await prGenerator.generate({
   files_changed: parseFiles(files),
   diff_stats: parseStats(stats),
   base_branch: "main",
-  feature_branch: currentBranch
+  feature_branch: currentBranch,
 });
 
 // Create PR with gh CLI
@@ -241,24 +269,28 @@ await bash(`gh pr create \\
 ## Best Practices
 
 ### 1. Comprehensive Analysis
+
 - Analyze ALL commits in branch
 - Group related changes logically
 - Identify the primary purpose
 - Detect all breaking changes
 
 ### 2. Clear Structure
+
 - Start with executive summary
 - List changes in logical groups
 - Specify testing approach
 - Document breaking changes clearly
 
 ### 3. Professional Tone
+
 - Technical but accessible
 - Focus on value delivered
 - Explain complex changes
 - Provide migration guides when needed
 
 ### 4. Linkage
+
 - Reference all related issues
 - Use proper GitHub keywords (Closes, Fixes, Relates to)
 - Link to documentation if needed
@@ -267,6 +299,7 @@ await bash(`gh pr create \\
 ## Quality Metrics
 
 Good PR descriptions have:
+
 - ✓ Clear title that summarizes the change
 - ✓ Comprehensive summary section
 - ✓ Detailed changes list
@@ -302,11 +335,8 @@ Good PR descriptions have:
 ```typescript
 const fallbackStrategy = {
   primary_model: "gemini-2.5-pro",
-  fallback_models: [
-    "gpt-5",
-    "gemini-2.5-flash"
-  ],
+  fallback_models: ["gpt-5", "gemini-2.5-flash"],
   min_description_length: 100,
-  required_sections: ["summary", "changes", "testing"]
+  required_sections: ["summary", "changes", "testing"],
 };
 ```

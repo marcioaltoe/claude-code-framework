@@ -1,8 +1,22 @@
-# Product Requirements Document (PRD) Template
+---
+feature-slug: [feature-name]
+status: draft
+version: 1.0
+created: [YYYY-MM-DD]
+updated: [YYYY-MM-DD]
+stakeholders:
+  - product-owner
+  - technical-lead
+  - ux-lead
+complexity: [simple|standard|complex]
+priority: [high|medium|low]
+---
 
-## Overview
+# Product Requirements Document: [Feature Name]
 
-[Provide a high-level overview of your product/feature. Explain what problem it solves, who it's for, and why it's valuable.]
+## Executive Summary
+
+[Provide a high-level overview of your product/feature. Explain what problem it solves, who it's for, and why it's valuable. Include key business value and success metrics.]
 
 ## Goals
 

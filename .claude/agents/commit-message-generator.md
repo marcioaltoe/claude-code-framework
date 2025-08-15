@@ -2,7 +2,6 @@
 name: commit-message-generator
 description: "Specialized agent for generating conventional commit messages using MCP Zen with Gemini Flash"
 model: sonnet
-tools: [Task]
 temperature: 0.2
 color: blue
 ---

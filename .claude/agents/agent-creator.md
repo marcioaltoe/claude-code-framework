@@ -1,7 +1,6 @@
 ---
 name: agent-creator
 description: Meta-agent for creating and updating other Claude Code subagents following best practices. Use this proactively when users need to create new subagents, modify existing ones, or establish subagent workflows. This agent ensures all created subagents follow Claude Code best practices and optimal configurations. Expert in multi-agent orchestration and advanced subagent patterns.
-tools: Read, Write, Edit, Bash, Grep, Glob, LS
 model: opus
 color: purple
 ---

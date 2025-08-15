@@ -12,20 +12,24 @@ version: 1.0.0
 ## Available MCP Servers
 
 ### 1. MCP Zen (AI Models)
+
 **Best for**: Complex reasoning, analysis, consensus building, code review
 **Models**: Gemini 2.5 (Pro/Flash), GPT-5, o3, o3-mini
-**Use when**: 
+**Use when**:
+
 - Deep architectural analysis needed
 - Multi-model consensus required
 - Complex debugging or reasoning
 - Code review and validation
 
 ### 2. MCP Perplexity (Web Search)
+
 **Best for**: Real-time information, market research, documentation lookup
-**Capabilities**: 
+**Capabilities**:
+
 - `perplexity_ask`: Web search with citations
 - `perplexity_reason`: Complex reasoning with web data
-**Use when**:
+  **Use when**:
 - Current market data needed
 - Latest documentation required
 - Competitive analysis
@@ -33,30 +37,40 @@ version: 1.0.0
 - Best practices discovery
 
 ### 3. MCP Sequential Thinking
+
 **Best for**: Step-by-step problem solving, complex logic
 **Use when**:
+
 - Breaking down complex problems
 - Planning multi-step solutions
 - Logical reasoning chains
 
 ### 4. MCP Context7 (Library Docs)
+
 **Best for**: Official library documentation
 **Use when**:
+
 - Framework-specific patterns needed
 - Library API documentation
+- Drizzle ORM patterns and migrations
+- TypeScript configuration
 - Version-specific information
 
 ### 5. MCP Figma (UI Components - Primary)
+
 **Best for**: Design system components, UI patterns from existing designs
 **Use when**:
+
 - Extracting components from existing Figma designs
 - Design system implementation
 - UI pattern consistency with design files
 - Component library generation from designs
 
 ### 6. MCP Magic (UI Components - Fallback)
+
 **Best for**: UI/UX component generation when Figma unavailable
 **Use when**:
+
 - Figma designs not available
 - Creating new components from scratch
 - Quick prototyping without design files
@@ -66,14 +80,13 @@ version: 1.0.0
 
 ```typescript
 interface MCPRoute {
-  server: 'zen' | 'perplexity' | 'sequential' | 'context7' | 'figma' | 'magic';
+  server: "zen" | "perplexity" | "sequential" | "context7" | "figma" | "magic";
   tool: string;
   reason: string;
   fallback?: MCPRoute;
 }
 
 class MCPOrchestrator {
-  
   /**
    * Route to appropriate MCP server based on task
    */
@@ -81,94 +94,94 @@ class MCPOrchestrator {
     // Web search routing
     if (this.needsWebSearch(task)) {
       return {
-        server: 'perplexity',
-        tool: task.requiresReasoning ? 'perplexity_reason' : 'perplexity_ask',
-        reason: 'Real-time web information required'
+        server: "perplexity",
+        tool: task.requiresReasoning ? "perplexity_reason" : "perplexity_ask",
+        reason: "Real-time web information required",
       };
     }
-    
+
     // Library documentation
     if (this.needsLibraryDocs(task)) {
       return {
-        server: 'context7',
-        tool: 'get-library-docs',
-        reason: 'Official library documentation needed'
+        server: "context7",
+        tool: "get-library-docs",
+        reason: "Official library documentation needed",
       };
     }
-    
+
     // UI component generation - Figma first, Magic as fallback
     if (this.needsUIComponent(task)) {
       return {
-        server: 'figma',
-        tool: 'extract_component',
-        reason: 'UI component from Figma design',
+        server: "figma",
+        tool: "extract_component",
+        reason: "UI component from Figma design",
         fallback: {
-          server: 'magic',
-          tool: '21st_magic_component_builder',
-          reason: 'Fallback to Magic for UI generation'
-        }
+          server: "magic",
+          tool: "21st_magic_component_builder",
+          reason: "Fallback to Magic for UI generation",
+        },
       };
     }
-    
+
     // Complex reasoning (default to Zen)
     if (this.needsComplexReasoning(task)) {
       return {
-        server: 'zen',
+        server: "zen",
         tool: this.selectZenTool(task),
-        reason: 'Complex AI reasoning required'
+        reason: "Complex AI reasoning required",
       };
     }
-    
+
     // Sequential thinking for step-by-step
     if (this.needsSequentialThinking(task)) {
       return {
-        server: 'sequential',
-        tool: 'sequentialthinking',
-        reason: 'Step-by-step breakdown needed'
+        server: "sequential",
+        tool: "sequentialthinking",
+        reason: "Step-by-step breakdown needed",
       };
     }
-    
+
     // Default to Zen for general AI tasks
     return {
-      server: 'zen',
-      tool: 'chat',
-      reason: 'General AI processing'
+      server: "zen",
+      tool: "chat",
+      reason: "General AI processing",
     };
   }
-  
+
   /**
    * Detect if web search is needed
    */
   private needsWebSearch(task: TaskContext): boolean {
     const webIndicators = [
-      'market research',
-      'competitive analysis',
-      'latest trends',
-      'current best practices',
-      'industry standards',
-      'recent developments',
-      'web search',
-      'online research',
-      'market data',
-      'competitor information'
+      "market research",
+      "competitive analysis",
+      "latest trends",
+      "current best practices",
+      "industry standards",
+      "recent developments",
+      "web search",
+      "online research",
+      "market data",
+      "competitor information",
     ];
-    
-    return webIndicators.some(indicator => 
+
+    return webIndicators.some((indicator) =>
       task.description.toLowerCase().includes(indicator)
     );
   }
-  
+
   /**
    * Select appropriate Zen tool
    */
   private selectZenTool(task: TaskContext): string {
-    if (task.type === 'debug') return 'debug';
-    if (task.type === 'analyze') return 'analyze';
-    if (task.type === 'consensus') return 'consensus';
-    if (task.type === 'review') return 'codereview';
-    if (task.type === 'plan') return 'planner';
-    if (task.type === 'deep_think') return 'thinkdeep';
-    return 'chat';
+    if (task.type === "debug") return "debug";
+    if (task.type === "analyze") return "analyze";
+    if (task.type === "consensus") return "consensus";
+    if (task.type === "review") return "codereview";
+    if (task.type === "plan") return "planner";
+    if (task.type === "deep_think") return "thinkdeep";
+    return "chat";
   }
 }
 ```
@@ -180,32 +193,34 @@ class MCPOrchestrator {
 ```typescript
 async function enhancedDiscovery(context) {
   const orchestrator = new MCPOrchestrator();
-  
+
   // Market research via Perplexity
   if (context.needs_market_research) {
     const route = orchestrator.route({
-      description: 'market research for competitor analysis',
-      type: 'research'
+      description: "market research for competitor analysis",
+      type: "research",
     });
-    
+
     const marketData = await mcp[route.server][route.tool]({
-      messages: [{
-        role: 'user',
-        content: `Research market for: ${context.idea}`
-      }]
+      messages: [
+        {
+          role: "user",
+          content: `Research market for: ${context.idea}`,
+        },
+      ],
     });
   }
-  
+
   // Technical analysis via Zen
   const technicalRoute = orchestrator.route({
-    description: 'deep technical analysis',
-    type: 'analyze'
+    description: "deep technical analysis",
+    type: "analyze",
   });
-  
+
   const analysis = await mcp.zen.analyze({
     // ... technical analysis params
   });
-  
+
   return combineResults(marketData, analysis);
 }
 ```
@@ -215,27 +230,29 @@ async function enhancedDiscovery(context) {
 ```typescript
 async function businessAnalysis(context) {
   const orchestrator = new MCPOrchestrator();
-  
+
   // Always use Perplexity for market data
   const marketResearch = await mcp.perplexity.perplexity_ask({
-    messages: [{
-      role: 'user',
-      content: `Market analysis for ${context.business_idea}:
+    messages: [
+      {
+        role: "user",
+        content: `Market analysis for ${context.business_idea}:
                 - Market size and growth
                 - Key competitors
                 - Industry trends
-                - Regulatory landscape`
-    }]
+                - Regulatory landscape`,
+      },
+    ],
   });
-  
+
   // Use Zen for strategic analysis
   const strategy = await mcp.zen.chat({
     prompt: `Analyze business strategy based on:
              Market data: ${marketResearch.content}`,
-    model: 'gpt-5',
-    thinking_mode: 'high'
+    model: "gpt-5",
+    thinking_mode: "high",
   });
-  
+
   return { marketResearch, strategy };
 }
 ```
@@ -245,21 +262,23 @@ async function businessAnalysis(context) {
 ```typescript
 async function uxResearch(context) {
   const orchestrator = new MCPOrchestrator();
-  
+
   // Research current UX trends via Perplexity
   const uxTrends = await mcp.perplexity.perplexity_ask({
-    messages: [{
-      role: 'user', 
-      content: `Latest UX trends and best practices for ${context.app_type}`
-    }]
+    messages: [
+      {
+        role: "user",
+        content: `Latest UX trends and best practices for ${context.app_type}`,
+      },
+    ],
   });
-  
+
   // Get framework patterns via Context7
   const frameworkPatterns = await mcp.context7.get_library_docs({
     context7CompatibleLibraryID: context.ui_framework,
-    topic: 'accessibility patterns'
+    topic: "accessibility patterns",
   });
-  
+
   // Generate UI components - Figma first, then Magic
   let uiComponents;
   try {
@@ -267,16 +286,16 @@ async function uxResearch(context) {
     uiComponents = await mcp.figma.extract_component({
       file_key: context.figma_file_key,
       component_name: context.component_needs,
-      format: 'react'
+      format: "react",
     });
   } catch (error) {
     // Fallback to Magic for generation
     uiComponents = await mcp.magic.component_builder({
       searchQuery: context.component_needs,
-      standaloneRequestQuery: context.requirements
+      standaloneRequestQuery: context.requirements,
     });
   }
-  
+
   return { uxTrends, frameworkPatterns, uiComponents };
 }
 ```
@@ -288,27 +307,27 @@ routing_decision_tree:
   documentation_routing:
     library_official_docs: -> Context7      # Documentação oficial de libs
     general_web_research: -> Perplexity     # Pesquisa web geral
-    
+
   level_1_check:
     needs_library_documentation:
       true: -> Context7                     # Prioridade para docs oficiais
       false: -> level_2_check
-  
+
   level_2_check:
     needs_web_research:
       true: -> Perplexity                   # Pesquisa, tendências, mercado
       false: -> level_3_check
-  
+
   level_3_check:
     needs_ui_component:
       true: -> Figma (fallback: Magic)      # UI com design consistency
       false: -> level_4_check
-  
+
   level_4_check:
     needs_sequential_thinking:
       true: -> Sequential                   # Análise passo a passo
       false: -> level_5_check
-  
+
   level_5_check:
     task_complexity:
       simple: -> Zen.chat
@@ -326,7 +345,7 @@ clear_separation:
       - Runtime docs (Bun, Node.js)
       - Clean Architecture patterns
       - SOLID principles examples
-    
+
   Perplexity:
     use_for:
       - Market research and trends
@@ -335,7 +354,7 @@ clear_separation:
       - Technology comparisons
       - Current industry standards
       - General programming questions
-  
+
   Zen_websearch:
     deprecated: true  # Usar Perplexity ou Context7 em vez disso
 ```
@@ -345,12 +364,12 @@ clear_separation:
 ```yaml
 cost_optimization:
   perplexity:
-    use_for: 
+    use_for:
       - All web searches (replaces Zen web search)
       - Market research
       - Documentation lookups
     cost_benefit: "More accurate web data at lower cost"
-  
+
   zen:
     use_for:
       - Complex reasoning
@@ -359,20 +378,20 @@ cost_optimization:
     avoid_for:
       - Simple web searches
       - Basic documentation lookups
-  
+
   context7:
     use_for:
       - Official library docs only
     avoid_for:
       - General programming questions
-  
+
   figma:
     use_for:
       - Primary UI component extraction
       - Design system consistency
     avoid_for:
       - Components without existing designs
-  
+
   magic:
     use_for:
       - Fallback UI generation
@@ -389,15 +408,15 @@ cost_optimization:
 Each agent should import and use the orchestrator:
 
 ```typescript
-import { MCPOrchestrator } from './mcp-orchestrator';
+import { MCPOrchestrator } from "./mcp-orchestrator";
 
 class AgentWithOrchestration {
   private orchestrator = new MCPOrchestrator();
-  
+
   async execute(task) {
     const route = this.orchestrator.route(task);
     console.log(`Routing to ${route.server}: ${route.reason}`);
-    
+
     // Execute on selected server
     return await this.callMCPServer(route);
   }
@@ -417,12 +436,12 @@ class AgentWithOrchestration {
 
 ```typescript
 const fallbackChain = {
-  perplexity: ['zen.chat with websearch'],
-  context7: ['perplexity', 'zen.chat'],
-  figma: ['magic', 'manual component creation'],
-  magic: ['manual component creation'],
-  sequential: ['zen.planner'],
-  zen: ['reduce complexity', 'break into parts']
+  perplexity: ["zen.chat with websearch"],
+  context7: ["perplexity", "zen.chat"],
+  figma: ["magic", "manual component creation"],
+  magic: ["manual component creation"],
+  sequential: ["zen.planner"],
+  zen: ["reduce complexity", "break into parts"],
 };
 ```
 
@@ -434,7 +453,7 @@ const fallbackChain = {
 // Automatically routes to Perplexity
 const result = await orchestrator.route({
   description: "Research market size for AI coding assistants",
-  type: "research"
+  type: "research",
 });
 // Result: { server: 'perplexity', tool: 'perplexity_ask' }
 ```
@@ -445,7 +464,7 @@ const result = await orchestrator.route({
 // Automatically routes to Zen
 const result = await orchestrator.route({
   description: "Design microservices architecture",
-  type: "deep_think"
+  type: "deep_think",
 });
 // Result: { server: 'zen', tool: 'thinkdeep' }
 ```
@@ -456,10 +475,10 @@ const result = await orchestrator.route({
 // Automatically routes to Figma with Magic fallback
 const result = await orchestrator.route({
   description: "Create dashboard component",
-  type: "ui_component"
+  type: "ui_component",
 });
-// Result: { 
-//   server: 'figma', 
+// Result: {
+//   server: 'figma',
 //   tool: 'extract_component',
 //   fallback: { server: 'magic', tool: '21st_magic_component_builder' }
 // }
@@ -469,10 +488,10 @@ const result = await orchestrator.route({
 
 ```yaml
 expected_improvements:
-  web_search_accuracy: +40%  # Using Perplexity vs Zen websearch
-  cost_reduction: -30%        # Optimized routing
-  response_time: -25%         # Direct routing vs trial-error
-  quality_score: +15%         # Specialized servers
+  web_search_accuracy: +40% # Using Perplexity vs Zen websearch
+  cost_reduction: -30% # Optimized routing
+  response_time: -25% # Direct routing vs trial-error
+  quality_score: +15% # Specialized servers
 ```
 
 ## Monitoring and Optimization
@@ -486,16 +505,16 @@ class MCPMonitor {
       success: result.success,
       latency: result.latency,
       cost: result.cost,
-      quality: result.quality_score
+      quality: result.quality_score,
     });
   }
-  
+
   optimizeRouting() {
     // Analyze metrics and adjust routing rules
     const usage = metrics.analyze();
     if (usage.perplexity.success_rate > usage.zen.websearch) {
       // Increase Perplexity priority for web tasks
-      this.adjustPriority('perplexity', +1);
+      this.adjustPriority("perplexity", +1);
     }
   }
 }

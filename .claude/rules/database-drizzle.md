@@ -3,27 +3,29 @@
 ## Core Configuration
 
 ### Drizzle Config
+
 ```typescript
 // drizzle.config.ts
 export default {
-  schema: './src/infrastructure/database/schemas/*.ts',
-  out: './src/infrastructure/database/migrations',
-  dialect: 'postgresql',
+  schema: "./src/infrastructure/database/schemas/*.ts",
+  out: "./src/infrastructure/database/migrations",
+  dialect: "postgresql",
   dbCredentials: {
     // Use environment variables
   },
   migrations: {
-    table: 'drizzle_migrations',
-    schema: 'public',
+    table: "drizzle_migrations",
+    schema: "public",
   },
   verbose: true,
   strict: true,
-} satisfies Config
+} satisfies Config;
 ```
 
 ## Primary Key Standards
 
 ### ULID as Default ID
+
 - **ALWAYS** use ULID for primary keys
 - **NEVER** use auto-increment or UUID
 - Import from `ulid` package
@@ -47,6 +49,7 @@ export class OrganizationId {
 ## Schema Definition Standards
 
 ### File Organization
+
 ```
 src/
   infrastructure/
@@ -61,111 +64,127 @@ src/
 ```
 
 ### Table Naming Conventions
+
 ```typescript
 // Follow sql-database.mdc rules:
 // - Tables: plural, snake_case
 // - Columns: snake_case
 // - Foreign keys: singular_table_name_id
 
-export const organizations = pgTable('organizations', {
-  id: varchar('id', { length: 26 }).primaryKey(),
-  name: varchar('name', { length: 255 }).notNull(),
-  slug: varchar('slug', { length: 255 }).notNull().unique(),
+export const organizations = pgTable("organizations", {
+  id: varchar("id", { length: 26 }).primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
   // Foreign keys
-  owner_id: varchar('owner_id', { length: 26 })
-    .references(() => users.id),
-  // Timestamps
-  created_at: timestamp('created_at').defaultNow().notNull(),
-  updated_at: timestamp('updated_at').defaultNow().notNull(),
-  deleted_at: timestamp('deleted_at'), // Soft delete
+  owner_id: varchar("owner_id", { length: 26 }).references(() => users.id),
+  // Timestamps (use timestamptz via withTimezone option)
+  created_at: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updated_at: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  deleted_at: timestamp("deleted_at", { withTimezone: true }), // Soft delete
 });
 ```
 
 ### Column Types Mapping
 
-| Domain Type | Drizzle Type | Notes |
-|------------|--------------|-------|
-| ID (ULID) | `varchar(26)` | Always 26 chars |
-| String | `text()` or `varchar(n)` | Use TEXT unless size limit needed |
-| Boolean | `boolean()` | |
-| Integer | `integer()` | |
-| Decimal | `numeric(precision, scale)` | For money/percentages |
-| Date/Time | `timestamp()` | Always use timestamp, not timestamptz |
-| JSON | `jsonb()` | Prefer jsonb over json |
-| Enum | `pgEnum()` | Define enums separately |
+| Domain Type | Drizzle Type                        | Notes                             |
+| ----------- | ----------------------------------- | --------------------------------- |
+| ID (ULID)   | `varchar(26)`                       | Always 26 chars                   |
+| String      | `text()` or `varchar(n)`            | Use TEXT unless size limit needed |
+| Boolean     | `boolean()`                         |                                   |
+| Integer     | `integer()`                         |                                   |
+| Decimal     | `numeric(precision, scale)`         | For money/percentages             |
+| Date/Time   | `timestamp({ withTimezone: true })` | Use timezone-aware timestamps     |
+| JSON        | `jsonb()`                           | Prefer jsonb over json            |
+| Enum        | `pgEnum()`                          | Define enums separately           |
 
 ### Required Columns
+
 Every table MUST include:
+
 ```typescript
-created_at: timestamp('created_at').defaultNow().notNull(),
-updated_at: timestamp('updated_at').defaultNow().notNull(),
+created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 ```
 
 Tables with soft delete MUST include:
+
 ```typescript
-deleted_at: timestamp('deleted_at'),
+deleted_at: timestamp('deleted_at', { withTimezone: true }),
 ```
 
 ### Indexes
+
 ```typescript
-export const organizations = pgTable('organizations', {
-  // columns...
-}, (table) => ({
-  // Always index foreign keys
-  ownerIdx: index('idx_organizations_owner_id').on(table.owner_id),
-  // Index frequently queried columns
-  slugIdx: index('idx_organizations_slug').on(table.slug),
-  // Index soft delete column if present
-  deletedAtIdx: index('idx_organizations_deleted_at').on(table.deleted_at),
-  // Composite indexes for common queries
-  orgOwnerIdx: index('idx_organizations_owner_deleted')
-    .on(table.owner_id, table.deleted_at),
-}));
+export const organizations = pgTable(
+  "organizations",
+  {
+    // columns...
+  },
+  (table) => ({
+    // Always index foreign keys
+    ownerIdx: index("idx_organizations_owner_id").on(table.owner_id),
+    // Index frequently queried columns
+    slugIdx: index("idx_organizations_slug").on(table.slug),
+    // Index soft delete column if present
+    deletedAtIdx: index("idx_organizations_deleted_at").on(table.deleted_at),
+    // Composite indexes for common queries
+    orgOwnerIdx: index("idx_organizations_owner_deleted").on(
+      table.owner_id,
+      table.deleted_at
+    ),
+  })
+);
 ```
 
 ### Relations
-```typescript
-import { relations } from 'drizzle-orm';
 
-export const organizationsRelations = relations(organizations, ({ one, many }) => ({
-  owner: one(users, {
-    fields: [organizations.owner_id],
-    references: [users.id],
-  }),
-  dataSources: many(dataSources),
-  pipelines: many(pipelines),
-}));
+```typescript
+import { relations } from "drizzle-orm";
+
+export const organizationsRelations = relations(
+  organizations,
+  ({ one, many }) => ({
+    owner: one(users, {
+      fields: [organizations.owner_id],
+      references: [users.id],
+    }),
+    dataSources: many(dataSources),
+    pipelines: many(pipelines),
+  })
+);
 ```
 
 ## Repository Implementation
 
 ### Base Repository Pattern
+
 ```typescript
 // infrastructure/database/repositories/base.repository.ts
-import { PostgresClient } from '../postgres/client';
-import { and, eq, isNull } from 'drizzle-orm';
+import { PostgresClient } from "../postgres/client";
+import { and, eq, isNull } from "drizzle-orm";
 
 export abstract class BaseRepository<TSchema> {
-  protected db: PostgresClient['db'];
+  protected db: PostgresClient["db"];
   protected table: any;
-  
+
   constructor() {
     this.db = PostgresClient.getInstance().db;
   }
-  
+
   async findById(id: string): Promise<TSchema | null> {
     const [result] = await this.db
       .select()
       .from(this.table)
-      .where(and(
-        eq(this.table.id, id),
-        isNull(this.table.deleted_at)
-      ))
+      .where(and(eq(this.table.id, id), isNull(this.table.deleted_at)))
       .limit(1);
-    
+
     return result || null;
   }
-  
+
   async save(entity: TSchema): Promise<void> {
     await this.db
       .insert(this.table)
@@ -178,11 +197,11 @@ export abstract class BaseRepository<TSchema> {
         },
       });
   }
-  
+
   async delete(id: string): Promise<void> {
     await this.db
       .update(this.table)
-      .set({ 
+      .set({
         deleted_at: new Date(),
         updated_at: new Date(),
       })
@@ -192,28 +211,30 @@ export abstract class BaseRepository<TSchema> {
 ```
 
 ### Specific Repository
+
 ```typescript
 // infrastructure/database/repositories/organization.repository.ts
-import { organizations } from '../schemas';
-import { BaseRepository } from './base.repository';
-import { eq, and, isNull } from 'drizzle-orm';
+import { organizations } from "../schemas";
+import { BaseRepository } from "./base.repository";
+import { eq, and, isNull } from "drizzle-orm";
 
-export class OrganizationRepository extends BaseRepository<typeof organizations> {
+export class OrganizationRepository extends BaseRepository<
+  typeof organizations
+> {
   protected table = organizations;
-  
+
   async findBySlug(slug: string): Promise<Organization | null> {
     const [result] = await this.db
       .select()
       .from(organizations)
-      .where(and(
-        eq(organizations.slug, slug),
-        isNull(organizations.deleted_at)
-      ))
+      .where(
+        and(eq(organizations.slug, slug), isNull(organizations.deleted_at))
+      )
       .limit(1);
-    
+
     return result ? this.toDomain(result) : null;
   }
-  
+
   private toDomain(row: any): Organization {
     // Map database row to domain entity
     return Organization.restore({
@@ -225,7 +246,7 @@ export class OrganizationRepository extends BaseRepository<typeof organizations>
       updatedAt: row.updated_at,
     });
   }
-  
+
   private toPersistence(entity: Organization): any {
     // Map domain entity to database row
     return {
@@ -243,6 +264,7 @@ export class OrganizationRepository extends BaseRepository<typeof organizations>
 ## Query Builder Patterns
 
 ### Select Queries
+
 ```typescript
 // NEVER use SELECT *
 const users = await db
@@ -252,12 +274,13 @@ const users = await db
     email: users.email,
   })
   .from(users)
-  .where(eq(users.status, 'active'))
+  .where(eq(users.status, "active"))
   .orderBy(desc(users.created_at))
   .limit(10);
 ```
 
 ### Joins
+
 ```typescript
 // Use explicit joins
 const result = await db
@@ -271,22 +294,24 @@ const result = await db
 ```
 
 ### Transactions
+
 ```typescript
 await db.transaction(async (tx) => {
   // Create organization
   await tx.insert(organizations).values(orgData);
-  
+
   // Create default data source
   await tx.insert(dataSources).values(dataSourceData);
-  
+
   // Create audit log
   await tx.insert(auditLogs).values(auditData);
 });
 ```
 
 ### Raw SQL (When Necessary)
+
 ```typescript
-import { sql } from 'drizzle-orm';
+import { sql } from "drizzle-orm";
 
 // For complex queries or performance-critical operations
 const result = await db.execute(sql`
@@ -307,6 +332,7 @@ const result = await db.execute(sql`
 ## Migrations
 
 ### Commands
+
 ```bash
 # Generate migration from schema changes
 bun run db:generate
@@ -322,6 +348,7 @@ bun run db:studio
 ```
 
 ### Migration Rules
+
 - **NEVER** manually edit migration files in `/migrations/meta`
 - **ALWAYS** review generated SQL before applying
 - **ALWAYS** test migrations on development first
@@ -329,14 +356,16 @@ bun run db:studio
 - Include both up and down migrations when complex
 
 ### Migration Naming
+
 Generated files follow pattern: `0001_adjective_noun.sql`
 
 ## Performance Optimization
 
 ### Connection Pooling
+
 ```typescript
 const client = postgres(DATABASE_URL, {
-  max: 20,        // Maximum connections
+  max: 20, // Maximum connections
   idle_timeout: 20,
   connect_timeout: 10,
   prepare: false, // Disable prepared statements if needed
@@ -344,6 +373,7 @@ const client = postgres(DATABASE_URL, {
 ```
 
 ### Query Optimization
+
 - Always include indexes on foreign keys
 - Use composite indexes for common query patterns
 - Prefer `jsonb` over `json` for better indexing
@@ -351,27 +381,28 @@ const client = postgres(DATABASE_URL, {
 - Batch inserts when possible
 
 ### Caching Strategy
+
 ```typescript
 // Use Redis for query result caching
 import { redis } from '@/infrastructure/cache';
 
 async findByIdCached(id: string): Promise<Organization | null> {
   const cacheKey = `org:${id}`;
-  
+
   // Check cache
   const cached = await redis.get(cacheKey);
   if (cached) {
     return JSON.parse(cached);
   }
-  
+
   // Query database
   const result = await this.findById(id);
-  
+
   // Cache result
   if (result) {
     await redis.setex(cacheKey, 300, JSON.stringify(result)); // 5 min TTL
   }
-  
+
   return result;
 }
 ```
@@ -379,53 +410,57 @@ async findByIdCached(id: string): Promise<Organization | null> {
 ## Testing with Drizzle
 
 ### Test Database Setup
+
 ```typescript
 // tests/helpers/database.ts
-import { drizzle } from 'drizzle-orm/postgres-js';
-import { migrate } from 'drizzle-orm/postgres-js/migrator';
+import { drizzle } from "drizzle-orm/postgres-js";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
 
 export async function setupTestDatabase() {
   const testDb = drizzle(postgres(TEST_DATABASE_URL));
-  
+
   // Run migrations
-  await migrate(testDb, { migrationsFolder: './src/infrastructure/database/migrations' });
-  
+  await migrate(testDb, {
+    migrationsFolder: "./src/infrastructure/database/migrations",
+  });
+
   // Clean all tables
   await testDb.execute(sql`TRUNCATE TABLE organizations CASCADE`);
-  
+
   return testDb;
 }
 ```
 
 ### Repository Testing
+
 ```typescript
-describe('OrganizationRepository', () => {
+describe("OrganizationRepository", () => {
   let repository: OrganizationRepository;
   let db: any;
-  
+
   beforeEach(async () => {
     db = await setupTestDatabase();
     repository = new OrganizationRepository();
   });
-  
+
   afterEach(async () => {
     await db.execute(sql`TRUNCATE TABLE organizations CASCADE`);
   });
-  
-  it('should save and retrieve organization', async () => {
+
+  it("should save and retrieve organization", async () => {
     // Arrange
     const org = Organization.create({
-      name: 'Test Org',
-      slug: 'test-org',
+      name: "Test Org",
+      slug: "test-org",
     });
-    
+
     // Act
     await repository.save(org);
     const retrieved = await repository.findById(org.id.value);
-    
+
     // Assert
     expect(retrieved).toBeDefined();
-    expect(retrieved?.name.value).toBe('Test Org');
+    expect(retrieved?.name.value).toBe("Test Org");
   });
 });
 ```
@@ -433,6 +468,7 @@ describe('OrganizationRepository', () => {
 ## Common Patterns
 
 ### Soft Delete Implementation
+
 ```typescript
 // Always filter soft-deleted records
 const activeOrgs = await db
@@ -441,12 +477,11 @@ const activeOrgs = await db
   .where(isNull(organizations.deleted_at));
 
 // Include deleted records when needed
-const allOrgs = await db
-  .select()
-  .from(organizations); // No deleted_at filter
+const allOrgs = await db.select().from(organizations); // No deleted_at filter
 ```
 
 ### Pagination
+
 ```typescript
 interface PaginationParams {
   page: number;
@@ -455,7 +490,7 @@ interface PaginationParams {
 
 async findPaginated({ page, pageSize }: PaginationParams) {
   const offset = (page - 1) * pageSize;
-  
+
   const [items, [{ count }]] = await Promise.all([
     db.select()
       .from(organizations)
@@ -466,7 +501,7 @@ async findPaginated({ page, pageSize }: PaginationParams) {
       .from(organizations)
       .where(isNull(organizations.deleted_at)),
   ]);
-  
+
   return {
     items,
     total: count,
@@ -478,11 +513,12 @@ async findPaginated({ page, pageSize }: PaginationParams) {
 ```
 
 ### Audit Logging
+
 ```typescript
 // Automatic audit log on updates
 async update(id: string, data: Partial<Organization>) {
   const original = await this.findById(id);
-  
+
   await db.transaction(async (tx) => {
     // Update entity
     await tx.update(organizations)
@@ -491,7 +527,7 @@ async update(id: string, data: Partial<Organization>) {
         updated_at: new Date(),
       })
       .where(eq(organizations.id, id));
-    
+
     // Create audit log
     await tx.insert(auditLogs).values({
       id: ulid(),
@@ -510,6 +546,7 @@ async update(id: string, data: Partial<Organization>) {
 ## Security Best Practices
 
 ### SQL Injection Prevention
+
 ```typescript
 // ALWAYS use parameterized queries
 // ✅ GOOD - Parameterized
@@ -526,6 +563,7 @@ await db.execute(sql`
 ```
 
 ### Data Validation
+
 ```typescript
 // Validate before persisting
 const nameResult = OrganizationName.create(input.name);
@@ -547,15 +585,16 @@ const validated = schema.parse(input);
 ### Common Issues
 
 1. **ULID Generation**: Always use `ulid()` from the `ulid` package
-2. **Timezone Issues**: Use `timestamp()` not `timestamptz()`
+2. **Timezone Issues**: Use timezone-aware timestamps (`withTimezone: true`)
 3. **Migration Conflicts**: Never edit meta files, regenerate instead
 4. **Connection Leaks**: Always use singleton pattern for database client
 5. **Transaction Deadlocks**: Keep transactions short and ordered
 
 ### Debug Mode
+
 ```typescript
 // Enable query logging
-const db = drizzle(client, { 
+const db = drizzle(client, {
   logger: true,
   schema,
 });

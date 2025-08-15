@@ -1,8 +1,19 @@
-# Technical Specification Template
+---
+feature-slug: [feature-name]
+status: draft
+version: 1.0
+created: [YYYY-MM-DD]
+updated: [YYYY-MM-DD]
+prd-reference: docs/features/[feature-slug]/02-requirements/prd.md
+complexity: [simple|standard|complex]
+architecture-pattern: [clean-architecture|layered|microservices]
+---
+
+# Technical Specification: [Feature Name]
 
 ## Executive Summary
 
-[Provide a brief technical overview of the solution approach. Summarize the key architectural decisions and implementation strategy in 1-2 paragraphs.]
+[Provide a brief technical overview of the solution approach. Summarize the key architectural decisions and implementation strategy in 1-2 paragraphs. Reference the PRD and align with business requirements.]
 
 ## System Architecture
 
