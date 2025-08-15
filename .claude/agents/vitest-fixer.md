@@ -53,7 +53,7 @@ parameters:
 ### 1) Focused Run
 
 ```bash
-bun test --run || bun run test --run || npx vitest run --reporter=json | cat
+bun run test --run || npx vitest run --reporter=json | cat
 ```
 
 ### 2) Parse and Classify
