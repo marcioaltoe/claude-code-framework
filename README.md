@@ -57,37 +57,30 @@ This framework includes purpose-built agents for different development workflows
 
 ### Feature Development
 
-- `/feature` - Feature development workflows
-  - `/feature:discovery` - Feature discovery process
-  - `/feature:prd` - Product Requirements Document creation
-  - `/feature:techspec` - Technical specification generation
-  - `/feature:tasks` - Task breakdown and planning
+- `/feature:discovery` - Feature discovery process
+- `/feature:prd` - Product Requirements Document creation
+- `/feature:techspec` - Technical specification generation
+- `/feature:tasks` - Task breakdown and planning
 
 ### Code Quality & Fixing
 
-- `/fix` - Unified fixer dispatcher for types, lint, and tests
-  - `/fix --all` - Run all fixers (types, lint, tests)
-  - `/fix --types` - TypeScript error fixing with diagnostic parsing
-  - `/fix --lint` - Biome linting with rule-aware remediation
-  - `/fix --tests` - Vitest failure analysis and automated fixes
-  - `/fix --staged` - Fix only staged files
-  - `/fix --safe` / `--aggressive` - Control fix intensity level
+- `/fix:types` - TypeScript error fixing with diagnostic parsing
+- `/fix:lint` - Biome linting with rule-aware remediation
+- `/fix:tests` - Vitest failure analysis and automated fixes
 
 ### Agent Management
 
-- `/agent` - Agent management commands
-  - `/agent:create` - Create new specialized agents
-  - `/agent:update` - Update existing agents
-  - `/agent:list` - List available agents
-  - `/agent:analyze` - Analyze agent performance
+- `/agent:create` - Create new specialized agents
+- `/agent:update` - Update existing agents
+- `/agent:list` - List available agents
+- `/agent:analyze` - Analyze agent performance
 
 ### Git Operations
 
-- `/git` - Enhanced git workflows
-  - `/git:commit` - Smart conventional commits
-  - `/git:branch` - Branch management
-  - `/git:push` - Enhanced push operations
-  - `/git:sync` - Repository synchronization
+- `/git:commit` - Smart conventional commits
+- `/git:branch` - Branch management
+- `/git:push` - Enhanced push operations
+- `/git:sync` - Repository synchronization
 
 ### Analysis & Implementation
 
