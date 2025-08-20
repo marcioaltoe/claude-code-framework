@@ -78,12 +78,8 @@ export const organizations = pgTable("organizations", {
   // Foreign keys
   owner_id: varchar("owner_id", { length: 26 }).references(() => users.id),
   // Timestamps (use timestamptz via withTimezone option)
-  created_at: timestamp("created_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updated_at: timestamp("updated_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
+  created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
   deleted_at: timestamp("deleted_at", { withTimezone: true }), // Soft delete
 });
 ```
@@ -132,11 +128,8 @@ export const organizations = pgTable(
     // Index soft delete column if present
     deletedAtIdx: index("idx_organizations_deleted_at").on(table.deleted_at),
     // Composite indexes for common queries
-    orgOwnerIdx: index("idx_organizations_owner_deleted").on(
-      table.owner_id,
-      table.deleted_at
-    ),
-  })
+    orgOwnerIdx: index("idx_organizations_owner_deleted").on(table.owner_id, table.deleted_at),
+  }),
 );
 ```
 
@@ -145,17 +138,14 @@ export const organizations = pgTable(
 ```typescript
 import { relations } from "drizzle-orm";
 
-export const organizationsRelations = relations(
-  organizations,
-  ({ one, many }) => ({
-    owner: one(users, {
-      fields: [organizations.owner_id],
-      references: [users.id],
-    }),
-    dataSources: many(dataSources),
-    pipelines: many(pipelines),
-  })
-);
+export const organizationsRelations = relations(organizations, ({ one, many }) => ({
+  owner: one(users, {
+    fields: [organizations.owner_id],
+    references: [users.id],
+  }),
+  dataSources: many(dataSources),
+  pipelines: many(pipelines),
+}));
 ```
 
 ## Repository Implementation
@@ -163,8 +153,8 @@ export const organizationsRelations = relations(
 ### Base Repository Pattern
 
 ```typescript
-// infrastructure/database/repositories/base.repository.ts
-import { PostgresClient } from "../postgres/client";
+// src/infrastructure/repository/base-repository.ts
+import { PostgresClient } from "@/infrastructure/persistence/drizzle";
 import { and, eq, isNull } from "drizzle-orm";
 
 export abstract class BaseRepository<TSchema> {
@@ -213,23 +203,19 @@ export abstract class BaseRepository<TSchema> {
 ### Specific Repository
 
 ```typescript
-// infrastructure/database/repositories/organization.repository.ts
-import { organizations } from "../schemas";
-import { BaseRepository } from "./base.repository";
+// src/infrastructure/repository/postgres-organization-repository.ts
+import { organizations } from "@/infrastructure/persistence/drizzle/schema";
+import { BaseRepository } from "@/infrastructure/repository";
 import { eq, and, isNull } from "drizzle-orm";
 
-export class OrganizationRepository extends BaseRepository<
-  typeof organizations
-> {
+export class OrganizationRepository extends BaseRepository<typeof organizations> {
   protected table = organizations;
 
   async findBySlug(slug: string): Promise<Organization | null> {
     const [result] = await this.db
       .select()
       .from(organizations)
-      .where(
-        and(eq(organizations.slug, slug), isNull(organizations.deleted_at))
-      )
+      .where(and(eq(organizations.slug, slug), isNull(organizations.deleted_at)))
       .limit(1);
 
     return result ? this.toDomain(result) : null;
@@ -471,10 +457,7 @@ describe("OrganizationRepository", () => {
 
 ```typescript
 // Always filter soft-deleted records
-const activeOrgs = await db
-  .select()
-  .from(organizations)
-  .where(isNull(organizations.deleted_at));
+const activeOrgs = await db.select().from(organizations).where(isNull(organizations.deleted_at));
 
 // Include deleted records when needed
 const allOrgs = await db.select().from(organizations); // No deleted_at filter

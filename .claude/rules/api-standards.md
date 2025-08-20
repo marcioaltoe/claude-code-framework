@@ -7,8 +7,48 @@
 
 ## Request/Response
 
-- Prefer JSON payloads; validate and coerce inputs
+- Prefer JSON payloads; validate and coerce inputs using **Zod** schemas
 - Return typed response bodies
+- Use `@hono/zod-validator` for request validation
+
+## Validation with Zod
+
+- **ALWAYS** use Zod for API request/response validation
+- Use `z.coerce` for query parameters that need type conversion (boolean, number)
+- Use `@hono/zod-validator` with `zValidator()` function
+
+### Query Parameter Validation Example
+
+```typescript
+import { zValidator } from "@hono/zod-validator";
+import { z } from "zod";
+
+const QuerySchema = z.object({
+  includeDeleted: z.coerce.boolean().optional(),
+  limit: z.coerce.number().min(1).max(100).optional(),
+  offset: z.coerce.number().min(0).optional(),
+});
+
+app.get("/api/items", zValidator("query", QuerySchema), async (c) => {
+  const query = c.req.valid("query");
+  // query.limit is now a number, not a string
+});
+```
+
+### JSON Body Validation Example
+
+```typescript
+const CreateItemSchema = z.object({
+  name: z.string().min(3).max(255),
+  description: z.string().max(1000).optional(),
+  isActive: z.boolean().optional(),
+});
+
+app.post("/api/items", zValidator("json", CreateItemSchema), async (c) => {
+  const body = c.req.valid("json");
+  // All validation and type coercion is handled automatically
+});
+```
 
 ## Pagination
 

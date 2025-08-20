@@ -56,5 +56,6 @@
 ## Automation
 
 - **Use `/fix` commands** for TypeScript/Linter/test errors
+- **Run `bun run craft`** after creating/moving files to update barrel files (index.ts)
 - **Context7** for official docs
 - **Perplexity** for research

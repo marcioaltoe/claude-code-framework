@@ -220,7 +220,7 @@ class OrderService {
   constructor(
     private readonly orderRepository: OrderRepository,
     private readonly paymentService: PaymentService,
-    private readonly logger: Logger
+    private readonly logger: Logger,
   ) {}
 }
 ```

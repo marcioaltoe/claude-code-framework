@@ -127,7 +127,7 @@ class User {
   constructor(
     private readonly id: UserId,
     private readonly email: Email,
-    private readonly name: string
+    private readonly name: string,
   ) {}
 }
 
@@ -136,7 +136,7 @@ class User {
   constructor(
     private readonly id: string, // What kind of string?
     private readonly email: string, // Is it validated?
-    private readonly name: string
+    private readonly name: string,
   ) {}
 }
 ```
@@ -185,7 +185,7 @@ class OrderItems {
 class Order {
   constructor(
     private readonly id: OrderId,
-    private readonly items: OrderItems
+    private readonly items: OrderItems,
   ) {}
 }
 
@@ -193,7 +193,7 @@ class Order {
 class Order {
   constructor(
     private readonly id: string,
-    public items: OrderItem[] // Exposed array
+    public items: OrderItem[], // Exposed array
   ) {}
 
   addItem(item: OrderItem): void {
@@ -243,9 +243,7 @@ class UserAccountManager {
   private readonly userRepository: UserRepository;
   private readonly emailNotificationService: EmailNotificationService;
 
-  async createUserAccount(
-    userData: CreateUserAccountData
-  ): Promise<UserAccount> {
+  async createUserAccount(userData: CreateUserAccountData): Promise<UserAccount> {
     const userAccount = new UserAccount(userData);
     await this.userRepository.save(userAccount);
     await this.emailNotificationService.sendWelcomeMessage(userAccount.email);
@@ -277,7 +275,7 @@ class User {
   constructor(
     private readonly id: UserId,
     private readonly email: Email,
-    private readonly profile: UserProfile
+    private readonly profile: UserProfile,
   ) {}
 
   changeEmail(newEmail: Email): void {
@@ -289,7 +287,7 @@ class UserProfile {
   constructor(
     private readonly firstName: string,
     private readonly lastName: string,
-    private readonly birthDate: Date
+    private readonly birthDate: Date,
   ) {}
 
   getFullName(): string {
@@ -306,7 +304,7 @@ class UserPreferences {
   constructor(
     private readonly theme: Theme,
     private readonly language: Language,
-    private readonly notifications: NotificationSettings
+    private readonly notifications: NotificationSettings,
   ) {}
 }
 
@@ -344,21 +342,21 @@ class User {
 class Order {
   constructor(
     private readonly header: OrderHeader,
-    private readonly items: OrderItems
+    private readonly items: OrderItems,
   ) {}
 }
 
 class OrderHeader {
   constructor(
     private readonly id: OrderId,
-    private readonly customer: Customer
+    private readonly customer: Customer,
   ) {}
 }
 
 class OrderItems {
   constructor(
     private readonly items: OrderItem[],
-    private readonly pricing: PricingCalculator
+    private readonly pricing: PricingCalculator,
   ) {}
 }
 
@@ -374,7 +372,7 @@ class Order {
     private readonly paymentMethod: PaymentMethod,
     private readonly discount: number,
     private readonly tax: number,
-    private readonly total: number
+    private readonly total: number,
   ) {}
 }
 ```

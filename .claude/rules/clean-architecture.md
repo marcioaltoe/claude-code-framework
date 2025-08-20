@@ -17,16 +17,24 @@ Dependencies always point inward: **Infrastructure → Application → Domain**
 
 ```bash
 src/
-├── domain/            # Core enterprise logic
-├── application/       # Use cases per feature (with selective CQRS)
+├── domain/            # Core enterprise logic (singular folders)
+├── application/       # Use cases organized by feature/module
 ├── infrastructure/    # Adapters to external systems (DB, cache, messaging)
 ├── presentation/      # HTTP routes, controllers, middlewares, presenters
 └── main.ts            # Application entry point
 ```
 
+**Important Conventions:**
+
+- Use **singular** names for domain concept folders (entity, aggregate, value-object)
+- Use **plural** only for collections of mixed types (building-blocks, types)
+- Organize application layer by **feature/module**, not by pattern
+- Keep repository **interfaces** in domain layer, **implementations** in infrastructure
+
 ## Project Structure Reference
 
-**Complete project structure**: See `./rules/folder-structure.md` for the full directory layout including src/, test/, docs/, docker/, scripts/, and configuration files.
+**Complete project structure**: See `./rules/folder-structure.md` for the full directory layout
+including src/, test/, docs/, docker/, scripts/, and configuration files.
 
 ## Dependency Flow Examples
 
@@ -39,7 +47,7 @@ export class Task {
   constructor(
     public readonly id: ID,
     public readonly title: string,
-    public readonly status: TaskStatus
+    public readonly status: TaskStatus,
   ) {}
 
   markAsCompleted(): void {
@@ -58,9 +66,9 @@ export interface TaskRepository {
 }
 
 // Application Layer - Use cases
-// src/application/features/task/use-cases/CompleteTask.ts
-import { Task } from "../../../domain/entities/Task";
-import { TaskRepository } from "../../../domain/interfaces/repositories/TaskRepository";
+// src/application/features/task/use-case/complete-task.use-case.ts
+import { Task } from "@/domain/entity";
+import { TaskRepository } from "@/domain/repository";
 
 export class CompleteTaskUseCase {
   constructor(private readonly taskRepository: TaskRepository) {}
@@ -77,11 +85,11 @@ export class CompleteTaskUseCase {
 }
 
 // Infrastructure Layer - Adapters
-// src/infrastructure/repositories/PostgreSQLTaskRepository.ts
-import { TaskRepository } from "../../domain/interfaces/repositories/TaskRepository";
-import { Task } from "../../domain/entities/Task";
+// src/infrastructure/repository/postgres-task-repository.ts
+import { TaskRepository } from "@/domain/repository";
+import { Task } from "@/domain/entity";
 
-export class PostgreSQLTaskRepository implements TaskRepository {
+export class PostgresTaskRepository implements TaskRepository {
   constructor(private readonly db: DatabaseConnection) {}
 
   async save(task: Task): Promise<void> {
@@ -94,8 +102,8 @@ export class PostgreSQLTaskRepository implements TaskRepository {
 }
 
 // Presentation Layer - Controllers
-// src/infrastructure/controllers/TaskController.ts
-import { CompleteTaskUseCase } from "../../application/features/task/use-cases/CompleteTask";
+// src/infrastructure/controller/task-controller.ts
+import { CompleteTaskUseCase } from "@/application/features/task/use-case";
 
 export class TaskController {
   constructor(private readonly completeTaskUseCase: CompleteTaskUseCase) {}
@@ -116,7 +124,8 @@ Use **unified use cases** by default, apply **CQRS** only when complexity demand
 
 ### Default Approach: Simple Features (Unified Use Cases)
 
-Use a unified `use-cases/` folder per feature, containing both read and write logic. This reduces boilerplate and cognitive overhead for straightforward features.
+Use a unified `use-cases/` folder per feature, containing both read and write logic. This reduces
+boilerplate and cognitive overhead for straightforward features.
 
 ```typescript
 // Simple feature structure
@@ -283,7 +292,7 @@ export class User {
   constructor(
     private readonly id: UserId,
     private email: Email,
-    private name: string
+    private name: string,
   ) {}
 
   changeEmail(newEmail: Email): void {
@@ -324,10 +333,7 @@ export class Email {
 // ✅ Domain Service - Pure domain logic that doesn't belong to any entity
 export class PricingService {
   calculateOrderTotal(items: OrderItem[], customer: Customer): Money {
-    const subtotal = items.reduce(
-      (sum, item) => sum.add(item.getPrice()),
-      Money.zero()
-    );
+    const subtotal = items.reduce((sum, item) => sum.add(item.getPrice()), Money.zero());
     const discount = this.calculateDiscount(subtotal, customer);
     const tax = this.calculateTax(subtotal.subtract(discount));
 
@@ -356,7 +362,7 @@ export class OrderCreatedEvent {
     public readonly orderId: OrderId,
     public readonly customerId: CustomerId,
     public readonly total: Money,
-    public readonly occurredAt: Date = new Date()
+    public readonly occurredAt: Date = new Date(),
   ) {}
 }
 
@@ -438,13 +444,37 @@ export class Order {
 
 ## File Naming Conventions
 
-Use **kebab-case** for all file names:
+Use **kebab-case** for all file names with appropriate suffixes:
 
-- `user-service.ts`
-- `create-user.use-case.ts` (simple feature)
-- `create-order.command.ts` (complex feature with CQRS)
-- `get-order-details.query.ts` (complex feature with CQRS)
-- `payment-repository.ts`
+**Domain Layer:**
+
+- `user-identity.aggregate.ts` - Aggregate roots
+- `company.entity.ts` - Entities
+- `email.value-object.ts` - Value objects
+- `user-created.event.ts` - Domain events
+- `user-not-found.error.ts` - Domain errors
+- `user-can-login.specification.ts` - Specifications
+- `user-repository.ts` - Repository interfaces (no suffix for interfaces)
+
+**Application Layer:**
+
+- `login-user.use-case.ts` - Use cases
+- `auth-request.dto.ts` - Data transfer objects
+- `auth-mapper.ts` - Mappers
+- `auth-validator.ts` - Validators
+
+**Infrastructure Layer:**
+
+- `postgres-user-repository.ts` - Repository implementations
+- `redis-cache.service.ts` - Services
+- `jwt-token.service.ts` - External service adapters
+
+**Base/Abstract Classes:**
+
+- `aggregate-root.base.ts`
+- `entity.base.ts`
+- `value-object.base.ts`
+- `use-case.base.ts`
 
 ## Decision Guidelines
 
@@ -495,7 +525,7 @@ export class User {
     private readonly id: UserId,
     private email: Email,
     private readonly name: string,
-    private isActive: boolean = false
+    private isActive: boolean = false,
   ) {}
 
   activate(): void {
@@ -532,7 +562,7 @@ class OrderService {
     private paymentService: PaymentService,
     private inventoryService: InventoryService,
     private shippingService: ShippingService,
-    private auditService: AuditService
+    private auditService: AuditService,
   ) {}
 
   async processOrder(order: Order): Promise<void> {
@@ -546,7 +576,7 @@ class ProcessOrderUseCase {
     private readonly orderRepository: OrderRepository,
     private readonly paymentService: PaymentService,
     private readonly inventoryService: InventoryService,
-    private readonly eventBus: EventBus
+    private readonly eventBus: EventBus,
   ) {}
 
   async execute(orderId: OrderId): Promise<void> {
@@ -580,7 +610,7 @@ class UserService {
 class CreateUserUseCase {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly emailService: EmailService
+    private readonly emailService: EmailService,
   ) {}
 
   async execute(userData: CreateUserData): Promise<void> {

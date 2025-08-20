@@ -2,9 +2,13 @@
 
 ## Overview
 
-DRY ("Don't Repeat Yourself"), YAGNI ("You Aren't Gonna Need It"), KISS ("Keep It Simple, Stupid"), and TDA ("Tell, Don't Ask") form the foundation of software engineering best practices. These **architectural design principles** are universally adopted to create systems that are simpler, more efficient, scalable, and maintainable.
+DRY ("Don't Repeat Yourself"), YAGNI ("You Aren't Gonna Need It"), KISS ("Keep It Simple, Stupid"),
+and TDA ("Tell, Don't Ask") form the foundation of software engineering best practices. These
+**architectural design principles** are universally adopted to create systems that are simpler, more
+efficient, scalable, and maintainable.
 
-Together, they establish core guidelines for quality software construction, helping developers make better decisions about code structure, feature implementation, and system architecture.
+Together, they establish core guidelines for quality software construction, helping developers make
+better decisions about code structure, feature implementation, and system architecture.
 
 ## DRY - Don't Repeat Yourself
 
@@ -172,7 +176,7 @@ class UserService {
   constructor(
     private validator: UserValidator,
     private repository: UserRepository,
-    private eventBus: EventBus
+    private eventBus: EventBus,
   ) {}
 
   async createUser(userData: CreateUserData): Promise<User> {
@@ -192,7 +196,7 @@ class UserService {
     private eventBus: EventBus,
     private auditLogger: AuditLogger,
     private cacheService: CacheService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {}
 
   // Complex implementation for simple use case
@@ -212,10 +216,7 @@ class OrderCalculator {
 // Later, when you need tax calculation:
 class OrderCalculator {
   calculateTotal(items: OrderItem[], taxRate: number = 0): number {
-    const subtotal = items.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
+    const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
     return subtotal * (1 + taxRate);
   }
 }
@@ -323,7 +324,7 @@ class OrderProcessor {
   constructor(
     private validator: OrderValidator,
     private calculator: PriceCalculator,
-    private notifier: OrderNotifier
+    private notifier: OrderNotifier,
   ) {}
 
   async process(order: Order): Promise<void> {

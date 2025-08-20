@@ -40,19 +40,19 @@
 Follow the **Arrange-Act-Assert** or **Given-When-Then** structure:
 
 ```typescript
-describe('UserService', () => {
-  it('should create a new user', () => {
+describe("UserService", () => {
+  it("should create a new user", () => {
     // Arrange / Given
-    const userData = { name: 'John', email: 'john@example.com' }
+    const userData = { name: "John", email: "john@example.com" };
 
     // Act / When
-    const result = userService.create(userData)
+    const result = userService.create(userData);
 
     // Assert / Then
-    expect(result).toBeDefined()
-    expect(result.id).toBeTruthy()
-  })
-})
+    expect(result).toBeDefined();
+    expect(result.id).toBeTruthy();
+  });
+});
 ```
 
 ### Date/Time Handling

@@ -2,14 +2,45 @@
 
 ## File Naming Conventions
 
-### Consistent kebab-case naming
+### Consistent kebab-case naming with appropriate suffixes
 
-- `create-user.use-case.ts` (simple feature)
-- `create-order.command.ts` (complex feature with CQRS)
-- `get-order-analytics.query.ts` (complex feature with CQRS)
-- `user.repository.ts`
-- `order.entity.ts`
-- `email.service.ts`
+**Domain Layer:**
+
+- `user-identity.aggregate.ts` - Aggregate roots
+- `company.entity.ts` - Entities
+- `email.value-object.ts` - Value objects
+- `user-created.event.ts` - Domain events
+- `user-not-found.error.ts` - Domain errors
+- `user-can-login.specification.ts` - Specifications
+- `user-repository.ts` - Repository interfaces (no suffix for interfaces)
+
+**Application Layer:**
+
+- `login-user.use-case.ts` - Use cases
+- `auth-request.dto.ts` - Data transfer objects
+- `auth-mapper.ts` - Mappers
+- `auth-validator.ts` - Validators
+
+**Infrastructure Layer:**
+
+- `postgres-user-repository.ts` - Repository implementations (prefixed with technology)
+- `redis-cache.service.ts` - Services
+- `jwt-token.service.ts` - External service adapters
+
+**Base/Abstract Classes:**
+
+- `aggregate-root.base.ts`
+- `entity.base.ts`
+- `value-object.base.ts`
+- `use-case.base.ts`
+
+### Directory Naming
+
+- **Domain folders**: Use **singular** for single concepts (e.g., `entity/`, `aggregate/`,
+  `value-object/`)
+- **Mixed collections**: Use **plural** (e.g., `building-blocks/`, `types/`)
+- **Feature modules**: Use **singular** kebab-case (e.g., `auth/`, `organization/`, `payment/`)
+- **Infrastructure folders**: Use descriptive names (e.g., `persistence/`, `cache/`, `security/`)
 
 ### TypeScript File Extensions
 
@@ -40,7 +71,7 @@ export interface WorkflowExecutionResult {
 export class WorkflowService {
   async executeWorkflowWithRetry(
     workflowId: ID,
-    maxRetries: number
+    maxRetries: number,
   ): Promise<WorkflowExecutionResult> {
     // Implementation
   }
@@ -90,7 +121,7 @@ export class OrderCreatedEvent {
 export class PaymentProcessedEvent {
   constructor(
     public readonly orderId: OrderId,
-    public readonly paymentResult: PaymentResult
+    public readonly paymentResult: PaymentResult,
   ) {}
 }
 ```
@@ -99,12 +130,14 @@ export class PaymentProcessedEvent {
 
 ```typescript
 // ✅ Good: Clear interface/implementation distinction
+// No 'I' prefix for interfaces - use business language
 export interface UserRepository {
   save(user: User): Promise<void>;
   findById(id: UserId): Promise<User | null>;
 }
 
-export class PostgreSQLUserRepository implements UserRepository {
+// Implementation uses technology prefix or suffix
+export class PostgresUserRepository implements UserRepository {
   // Implementation
 }
 
@@ -354,3 +387,6 @@ class UserService {
 6. **Context Matters**: Names should make sense within their scope and domain
 7. **Avoid Mental Mapping**: Don't make readers translate abbreviated names
 8. **Use Domain Language**: Prefer business domain terms over technical jargon when appropriate
+9. **Use Appropriate Suffixes**: Apply consistent file suffixes to identify purpose (.entity.ts,
+   .use-case.ts, etc.)
+10. **Singular vs Plural**: Use singular for domain concepts, plural only for mixed collections

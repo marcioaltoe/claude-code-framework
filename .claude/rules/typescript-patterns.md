@@ -7,7 +7,8 @@
 - **Never use `any`** - Use `unknown` with type guards instead
 - **Install `@types/*`** packages for all dependencies
 - **Create interfaces** for all data structures
-- **Use type guards** for runtime validation
+- **Use Zod schemas** for runtime validation and type inference
+- **Use type guards** for simple runtime validation
 
 ```typescript
 // ✅ Good: Proper typing
@@ -34,6 +35,387 @@ function processUser(data: any): void {
 }
 ```
 
+## Schema Validation with Zod
+
+### Schema Definition and Type Inference
+
+**ALWAYS use Zod for schema validation** - provides runtime validation with TypeScript type
+inference:
+
+```typescript
+// ✅ Good: Zod schema with automatic type inference
+import { z } from "zod";
+
+// Define schema
+const UserSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email format"),
+  age: z.coerce.number().min(18, "Must be at least 18"),
+  isActive: z.coerce.boolean().default(true),
+  roles: z.array(z.enum(["admin", "user", "moderator"])).default(["user"]),
+  metadata: z.record(z.string()).optional(),
+});
+
+// Automatic type inference - no manual interface needed!
+type User = z.infer<typeof UserSchema>;
+
+// Validation with detailed error messages
+function validateUser(data: unknown): User {
+  return UserSchema.parse(data); // Throws on validation error
+}
+
+// Safe validation with error handling
+function safeValidateUser(
+  data: unknown,
+): { success: true; data: User } | { success: false; error: string } {
+  const result = UserSchema.safeParse(data);
+
+  if (result.success) {
+    return { success: true, data: result.data };
+  }
+
+  const errorMessage = result.error.errors
+    .map((err) => `${err.path.join(".")}: ${err.message}`)
+    .join(", ");
+
+  return { success: false, error: errorMessage };
+}
+```
+
+### Environment Variables with Coercion
+
+Use Zod's coercion for environment variable validation:
+
+```typescript
+// ✅ Good: Environment schema with automatic coercion
+const EnvSchema = z.object({
+  PORT: z.coerce.number().min(1).max(65535).default(3000),
+  DATABASE_URL: z.string().url(),
+  DEBUG: z.coerce.boolean().default(false),
+  MAX_CONNECTIONS: z.coerce.number().min(1).default(10),
+  ALLOWED_ORIGINS: z.string().default("http://localhost:3000"),
+  LOG_LEVEL: z.enum(["error", "warn", "info", "debug"]).default("info"),
+});
+
+type Env = z.infer<typeof EnvSchema>;
+
+// Validation with defaults and coercion
+const env = EnvSchema.parse(process.env);
+// PORT automatically converted from string to number
+// DEBUG automatically converted from "true"/"false" to boolean
+```
+
+### API Request/Response Validation
+
+```typescript
+// ✅ Good: API validation with Zod
+const CreateUserRequestSchema = z.object({
+  name: z.string().min(1).max(100),
+  email: z.string().email(),
+  password: z.string().min(8),
+  age: z.coerce.number().min(18).optional(),
+});
+
+const UserResponseSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  email: z.string().email(),
+  createdAt: z.string().datetime(),
+  isActive: z.boolean(),
+});
+
+type CreateUserRequest = z.infer<typeof CreateUserRequestSchema>;
+type UserResponse = z.infer<typeof UserResponseSchema>;
+
+// In your API handler
+app.post("/api/users", async (c) => {
+  // Validate request body
+  const body = CreateUserRequestSchema.parse(await c.req.json());
+
+  // Business logic
+  const user = await createUser(body);
+
+  // Validate response (ensures API contract compliance)
+  const response = UserResponseSchema.parse({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    createdAt: user.createdAt.toISOString(),
+    isActive: user.isActive,
+  });
+
+  return c.json(response);
+});
+```
+
+### Complex Validation with Refinements
+
+```typescript
+// ✅ Good: Complex validation rules with Zod refinements
+const UserRegistrationSchema = z
+  .object({
+    email: z.string().email(),
+    password: z.string().min(8),
+    confirmPassword: z.string(),
+    terms: z.boolean(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  })
+  .refine((data) => data.terms === true, {
+    message: "Must accept terms and conditions",
+    path: ["terms"],
+  });
+
+// Production-specific validation
+const ProductionConfigSchema = BaseConfigSchema.refine(
+  (data) => {
+    if (data.NODE_ENV === "production") {
+      return !data.JWT_SECRET.includes("dev_");
+    }
+    return true;
+  },
+  {
+    message: "JWT_SECRET must not use development defaults in production",
+    path: ["JWT_SECRET"],
+  },
+);
+```
+
+### Domain Value Objects with Zod
+
+```typescript
+// ✅ Good: Domain value objects with Zod validation
+const EmailSchema = z
+  .string()
+  .email()
+  .transform((email) => email.toLowerCase());
+
+class Email {
+  private constructor(private readonly value: string) {}
+
+  static create(email: string): Email {
+    const validated = EmailSchema.parse(email);
+    return new Email(validated);
+  }
+
+  getValue(): string {
+    return this.value;
+  }
+
+  equals(other: Email): boolean {
+    return this.value === other.value;
+  }
+}
+
+// Usage
+const userEmail = Email.create("USER@EXAMPLE.COM"); // Automatically lowercased
+```
+
+### Hono Route Validation with @hono/zod-validator
+
+**ALWAYS use @hono/zod-validator for API route validation** - provides automatic request validation
+with type safety:
+
+```typescript
+// ✅ Good: Route validation with @hono/zod-validator
+import { Hono } from "hono";
+import { zValidator } from "@hono/zod-validator";
+import { z } from "zod";
+
+const app = new Hono();
+
+// JSON Body Validation
+const CreateUserSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email format"),
+  age: z.coerce.number().min(18, "Must be at least 18"),
+});
+
+app.post("/api/users", zValidator("json", CreateUserSchema), (c) => {
+  // Automatically validated and typed!
+  const { name, email, age } = c.req.valid("json");
+
+  // Create user logic
+  return c.json({ id: "123", name, email, age }, 201);
+});
+
+// Query Parameters Validation
+const GetUsersQuerySchema = z.object({
+  page: z.coerce.number().min(1).default(1),
+  limit: z.coerce.number().min(1).max(100).default(10),
+  search: z.string().optional(),
+  active: z.coerce.boolean().default(true),
+});
+
+app.get("/api/users", zValidator("query", GetUsersQuerySchema), (c) => {
+  const { page, limit, search, active } = c.req.valid("query");
+
+  // Query users with validated parameters
+  return c.json({ users: [], page, limit });
+});
+
+// Route Parameters + Body Validation
+const UpdateUserParamsSchema = z.object({
+  id: z.string().uuid("Invalid user ID"),
+});
+
+const UpdateUserBodySchema = z
+  .object({
+    name: z.string().min(1).optional(),
+    email: z.string().email().optional(),
+  })
+  .refine((data) => Object.keys(data).length > 0, {
+    message: "At least one field must be provided",
+  });
+
+app.patch(
+  "/api/users/:id",
+  zValidator("param", UpdateUserParamsSchema),
+  zValidator("json", UpdateUserBodySchema),
+  (c) => {
+    const { id } = c.req.valid("param");
+    const updateData = c.req.valid("json");
+
+    // Update user logic
+    return c.json({ id, ...updateData });
+  },
+);
+
+// Form Data Validation
+const UploadFileSchema = z.object({
+  title: z.string().min(1),
+  description: z.string().optional(),
+  file: z.instanceof(File),
+});
+
+app.post("/api/upload", zValidator("form", UploadFileSchema), async (c) => {
+  const { title, description, file } = c.req.valid("form");
+
+  // Handle file upload
+  return c.json({ message: "File uploaded", title, size: file.size });
+});
+
+// Headers Validation (for API keys, auth tokens, etc.)
+const AuthHeaderSchema = z.object({
+  "x-api-key": z.string().min(1, "API key is required"),
+  "content-type": z.literal("application/json").optional(),
+});
+
+app.post("/api/protected", zValidator("header", AuthHeaderSchema), (c) => {
+  const headers = c.req.valid("header");
+
+  // Access validated headers
+  return c.json({ message: "Authenticated", apiKey: headers["x-api-key"] });
+});
+```
+
+### Advanced Validation Patterns
+
+```typescript
+// Multiple validators with error handling
+const CreatePostSchema = z.object({
+  title: z.string().min(1).max(200),
+  content: z.string().min(10),
+  tags: z.array(z.string()).max(5).default([]),
+  publishAt: z.string().datetime().optional(),
+});
+
+const PostParamsSchema = z.object({
+  userId: z.string().uuid(),
+});
+
+app.post(
+  "/api/users/:userId/posts",
+  zValidator("param", PostParamsSchema),
+  zValidator("json", CreatePostSchema),
+  async (c) => {
+    const { userId } = c.req.valid("param");
+    const postData = c.req.valid("json");
+
+    try {
+      const post = await createPost(userId, postData);
+      return c.json(post, 201);
+    } catch (error) {
+      return c.json({ error: "Failed to create post" }, 500);
+    }
+  },
+);
+
+// Custom error responses for validation failures
+app.onError((err, c) => {
+  if (err instanceof ValidationError) {
+    return c.json(
+      {
+        error: "Validation failed",
+        details: err.message,
+        status: 400,
+      },
+      400,
+    );
+  }
+
+  return c.json({ error: "Internal server error" }, 500);
+});
+```
+
+### Why @hono/zod-validator Over Manual Validation
+
+**✅ Benefits:**
+
+- **Automatic validation**: No manual parsing and checking
+- **Type safety**: Validated data is automatically typed
+- **Error handling**: Built-in error responses with detailed messages
+- **Multiple targets**: Validate json, form, query, param, header in one middleware
+- **Composable**: Easily combine multiple validators per route
+- **Performance**: Runs validation before your handler, failing fast on invalid input
+
+**❌ Avoid manual validation:**
+
+```typescript
+// ❌ Bad: Manual validation (error-prone, verbose)
+app.post("/api/users", async (c) => {
+  const body = await c.req.json();
+
+  if (!body.name || typeof body.name !== "string") {
+    return c.json({ error: "Name is required and must be string" }, 400);
+  }
+
+  if (!body.email || !isValidEmail(body.email)) {
+    return c.json({ error: "Valid email is required" }, 400);
+  }
+
+  if (body.age && (typeof body.age !== "number" || body.age < 18)) {
+    return c.json({ error: "Age must be number and at least 18" }, 400);
+  }
+
+  // No type safety for body properties
+  const user = { name: body.name, email: body.email, age: body.age };
+  return c.json(user);
+});
+```
+
+### Why Zod Over Other Libraries
+
+- **Type Safety**: Automatic TypeScript type inference from schemas
+- **Coercion**: Automatic type conversion (string "123" → number 123)
+- **Rich Validation**: Built-in validators for common patterns (email, UUID, etc.)
+- **Detailed Errors**: Precise error messages with path information
+- **Schema Composition**: Easy to combine and extend schemas
+- **Runtime Safety**: Validates data at runtime, not just compile time
+- **No Code Generation**: Pure TypeScript, no build steps required
+- **Hono Integration**: First-class support with @hono/zod-validator middleware
+
+**❌ Avoid these validation libraries:**
+
+- `joi` - No TypeScript inference, requires separate type definitions
+- `yup` - Limited TypeScript support, verbose API
+- `ajv` - JSON Schema based, no automatic type inference
+- `@hono/typebox-validator` - Less ecosystem support, limited coercion
+- Manual validation - Error-prone, no type safety
+
 ## Function Design Patterns
 
 ### Options Object Pattern
@@ -50,16 +432,8 @@ interface ExecuteWorkflowOptions {
   onProgress?: (progress: number) => void;
 }
 
-async function executeWorkflow(
-  options: ExecuteWorkflowOptions
-): Promise<WorkflowResult> {
-  const {
-    workflowId,
-    maxRetries = 3,
-    timeout = 30000,
-    context = {},
-    onProgress,
-  } = options;
+async function executeWorkflow(options: ExecuteWorkflowOptions): Promise<WorkflowResult> {
+  const { workflowId, maxRetries = 3, timeout = 30000, context = {}, onProgress } = options;
 
   // Implementation
 }
@@ -77,7 +451,7 @@ async function executeWorkflow(
   maxRetries: number,
   timeout: number,
   context: Record<string, unknown>,
-  onProgress: (progress: number) => void
+  onProgress: (progress: number) => void,
 ): Promise<WorkflowResult> {
   // Hard to use and maintain
 }
@@ -89,13 +463,9 @@ Use Result pattern for expected errors instead of exceptions:
 
 ```typescript
 // ✅ Good: Result pattern for expected errors
-type Result<T, E = Error> =
-  | { success: true; data: T }
-  | { success: false; error: E };
+type Result<T, E = Error> = { success: true; data: T } | { success: false; error: E };
 
-async function validateUser(
-  userData: CreateUserData
-): Promise<Result<User, ValidationError[]>> {
+async function validateUser(userData: CreateUserData): Promise<Result<User, ValidationError[]>> {
   const errors: ValidationError[] = [];
 
   if (!userData.email) {
@@ -134,7 +504,7 @@ export class UserService {
     private readonly userRepository: UserRepository,
     private readonly emailService: EmailService,
     private readonly logger: Logger,
-    private readonly config: UserServiceConfig
+    private readonly config: UserServiceConfig,
   ) {
     // Validate required dependencies
     if (!userRepository) {
@@ -190,18 +560,13 @@ export class OrderService {
       };
     } catch (error) {
       await this.rollbackOrder(order);
-      throw new OrderProcessingError(
-        `Failed to process order ${order.id}`,
-        error
-      );
+      throw new OrderProcessingError(`Failed to process order ${order.id}`, error);
     }
   }
 
   // ✅ Good: Parallel operations for independent tasks
   async processOrdersInParallel(orders: Order[]): Promise<OrderResult[]> {
-    const results = await Promise.allSettled(
-      orders.map((order) => this.processOrder(order))
-    );
+    const results = await Promise.allSettled(orders.map((order) => this.processOrder(order)));
 
     return results.map((result, index) => {
       if (result.status === "fulfilled") {
@@ -226,7 +591,7 @@ export class ApiService {
   async fetchWithTimeout<T>(
     url: string,
     options: RequestOptions = {},
-    timeoutMs: number = 5000
+    timeoutMs: number = 5000,
   ): Promise<T> {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
@@ -259,9 +624,7 @@ export class ApiService {
 ```typescript
 // ✅ Good: Proper resource cleanup
 export class DatabaseService {
-  async executeTransaction<T>(
-    operation: (transaction: Transaction) => Promise<T>
-  ): Promise<T> {
+  async executeTransaction<T>(operation: (transaction: Transaction) => Promise<T>): Promise<T> {
     const transaction = await this.database.beginTransaction();
 
     try {
@@ -276,9 +639,7 @@ export class DatabaseService {
     }
   }
 
-  async withConnection<T>(
-    operation: (connection: Connection) => Promise<T>
-  ): Promise<T> {
+  async withConnection<T>(operation: (connection: Connection) => Promise<T>): Promise<T> {
     const connection = await this.pool.getConnection();
 
     try {
@@ -391,7 +752,7 @@ interface EmailService {
 class UserService {
   constructor(
     private readonly logger: Logger,
-    private readonly emailService: EmailService
+    private readonly emailService: EmailService,
   ) {}
 
   async notifyUser(user: User, message: string): Promise<void> {

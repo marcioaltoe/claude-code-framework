@@ -4,55 +4,64 @@
 
 ```
 ├── src/
-│   ├── domain/                    # Core enterprise logic
-│   │   ├── entities/              # Business objects with identity
-│   │   ├── value-objects/         # Immutable, identity-less objects
-│   │   ├── events/                # Domain events
-│   │   ├── errors/                # Custom domain-level exceptions
-│   │   ├── factories/             # Builders for complex aggregates
-│   │   ├── services/              # Pure domain logic operations
-│   │   └── interfaces/            # Abstract contracts (ports)
-│   │       ├── repositories/      # Repository abstractions
-│   │       └── services/          # External service contracts
+│   ├── domain/                    # Core enterprise logic (singular folders)
+│   │   ├── aggregate/             # Aggregate roots
+│   │   ├── entity/                # Business objects with identity
+│   │   ├── value-object/          # Immutable, identity-less objects
+│   │   ├── event/                 # Domain events
+│   │   ├── error/                 # Custom domain-level exceptions
+│   │   ├── factory/               # Builders for complex aggregates
+│   │   ├── service/               # Pure domain logic operations
+│   │   ├── specification/         # Business rule specifications
+│   │   ├── repository/            # Repository interfaces
+│   │   └── building-blocks/       # DDD base classes and patterns
 │   │
 │   ├── application/               # Application business rules (use cases)
+│   │   ├── core/                  # Base classes for application layer
+│   │   │   ├── use-case.base.ts   # Base use case class
+│   │   │   ├── repository.ts      # Repository interfaces
+│   │   │   └── mapper.base.ts     # Base mapper class
 │   │   └── features/              # Feature-driven modules
-│   │       ├── user/              # Simple feature example
-│   │       │   ├── use-cases/     # Combined read/write use cases
-│   │       │   ├── dtos/          # Input/output interface models
-│   │       │   ├── validators/    # Input validation logic
-│   │       │   └── mappers/       # DTO ⇄ Domain translation
+│   │       ├── auth/              # Authentication feature
+│   │       │   ├── use-case/      # Combined read/write use cases
+│   │       │   ├── dto/            # Input/output interface models
+│   │       │   ├── validator/     # Input validation logic
+│   │       │   └── mapper/        # DTO ⇄ Domain translation
 │   │       │
-│   │       ├── notification/      # Another simple feature
-│   │       │   ├── use-cases/
-│   │       │   ├── dtos/
-│   │       │   ├── validators/
-│   │       │   └── mappers/
+│   │       ├── user/              # User management feature
+│   │       │   ├── use-case/
+│   │       │   ├── dto/
+│   │       │   ├── validator/
+│   │       │   └── mapper/
 │   │       │
-│   │       └── order/             # Complex feature with CQRS
-│   │           ├── commands/      # Mutation use case handlers
-│   │           ├── queries/       # Read-only logic
-│   │           ├── dtos/
-│   │           ├── validators/
-│   │           └── mappers/
+│   │       └── organization/      # Complex feature with CQRS
+│   │           ├── command/       # Mutation use case handlers
+│   │           ├── query/         # Read-only logic
+│   │           ├── dto/
+│   │           ├── validator/
+│   │           └── mapper/
 │   │
 │   ├── infrastructure/            # External integrations (adapters/drivers)
-│   │   ├── controllers/           # HTTP API route controllers
-│   │   ├── services/              # Implementations of external service interfaces
-│   │   ├── repositories/          # Implementation of domain repositories
-│   │   ├── orm/                   # ORM configuration (e.g., Drizzle)
-│   │   ├── database/              # DB connection and pooling
+│   │   ├── controller/            # HTTP API route controllers
+│   │   ├── service/               # Implementations of external service interfaces
+│   │   ├── repository/            # Implementation of domain repositories
+│   │   ├── persistence/           # ORM and database configuration
+│   │   │   ├── drizzle/           # Drizzle ORM setup
+│   │   │   ├── migration/         # Database migrations
+│   │   │   └── seed/              # Database seeders
+│   │   ├── cache/                 # Redis and caching layer
 │   │   ├── queue/                 # Message broker setup (BullMQ/Kafka)
-│   │   ├── handlers/              # Queue/job workers or subscribers
+│   │   ├── handler/               # Queue/job workers or subscribers
+│   │   ├── security/              # Security utilities and sanitizers
 │   │   ├── di/                    # Dependency Injection setup
 │   │   ├── http/                  # Server setup and global middlewares
 │   │   └── gateway/               # External APIs clients (ERP/third-party)
 │   │
 │   ├── presentation/              # Request/response layer
 │   │   ├── http/                  # HTTP request handling (e.g., Hono)
-│   │   ├── middlewares/           # Custom middleware
-│   │   ├── validators/            # Request validation (e.g., Zod)
-│   │   └── presenters/            # Response formatting
+│   │   ├── middleware/            # Custom middleware
+│   │   ├── validator/             # Request validation (e.g., TypeBox)
+│   │   └── presenter/             # Response formatting
 │   │
 │   └── main.ts                    # Application entry point (DI + server bootstrap)
 │
@@ -159,35 +168,44 @@
 - **Interfaces**: Ports for repositories and external services
 
 ```typescript
-// Example domain structure
+// Example domain structure with singular folders and proper suffixes
 src/domain/
-├── entities/
-│   ├── User.ts
-│   ├── Order.ts
-│   └── Product.ts
-├── value-objects/
-│   ├── Email.ts
-│   ├── Money.ts
-│   └── Address.ts
-├── events/
-│   ├── UserCreatedEvent.ts
-│   └── OrderCompletedEvent.ts
-├── errors/
-│   ├── UserNotFoundError.ts
-│   └── InsufficientInventoryError.ts
-├── factories/
-│   ├── UserFactory.ts
-│   └── OrderFactory.ts
-├── services/
-│   ├── PricingService.ts
-│   └── InventoryService.ts
-└── interfaces/
-    ├── repositories/
-    │   ├── UserRepository.ts
-    │   └── OrderRepository.ts
-    └── services/
-        ├── EmailService.ts
-        └── PaymentService.ts
+├── aggregate/
+│   ├── user-identity.aggregate.ts
+│   └── organization-membership.aggregate.ts
+├── entity/
+│   ├── company.entity.ts
+│   └── api-key.entity.ts
+├── value-object/
+│   ├── email.value-object.ts
+│   ├── password.value-object.ts
+│   ├── cnpj.value-object.ts
+│   └── address.value-object.ts
+├── event/
+│   ├── user-created.event.ts
+│   └── organization-created.event.ts
+├── error/
+│   ├── user-not-found.error.ts
+│   └── invalid-credentials.error.ts
+├── factory/
+│   ├── user-factory.ts
+│   └── organization-factory.ts
+├── service/
+│   ├── password-hasher.service.ts
+│   └── token-generator.service.ts
+├── specification/
+│   ├── user-can-login.specification.ts
+│   └── organization-has-capacity.specification.ts
+├── repository/
+│   ├── user-repository.ts
+│   └── organization-repository.ts
+└── building-blocks/
+    ├── entity.base.ts
+    ├── aggregate-root.base.ts
+    ├── value-object.base.ts
+    ├── domain-event.base.ts
+    ├── specification.base.ts
+    └── result.ts
 ```
 
 ### Application Layer (`src/application/features/`)
@@ -200,19 +218,19 @@ Use `use-cases/` folder for combined read/write operations
 
 ```typescript
 src/application/features/user/
-├── use-cases/
-│   ├── CreateUser.ts
-│   ├── GetUserDetails.ts
-│   ├── UpdateUser.ts
-│   └── DeleteUser.ts
-├── dtos/
-│   ├── CreateUserDto.ts
-│   ├── UserResponseDto.ts
-│   └── UpdateUserDto.ts
-├── validators/
-│   └── UserValidator.ts
-└── mappers/
-    └── UserMapper.ts
+├── use-case/
+│   ├── create-user.use-case.ts
+│   ├── get-user-details.use-case.ts
+│   ├── update-user.use-case.ts
+│   └── delete-user.use-case.ts
+├── dto/
+│   ├── create-user.dto.ts
+│   ├── user-response.dto.ts
+│   └── update-user.dto.ts
+├── validator/
+│   └── user-validator.ts
+└── mapper/
+    └── user-mapper.ts
 ```
 
 #### Complex Features
@@ -220,25 +238,25 @@ src/application/features/user/
 Use `commands/` (writes) and `queries/` (reads) with CQRS
 
 ```typescript
-src/application/features/order/
-├── commands/
-│   ├── CreateOrder.ts
-│   ├── UpdateOrderStatus.ts
-│   ├── CancelOrder.ts
-│   └── ApplyDiscount.ts
-├── queries/
-│   ├── GetOrderDetails.ts
-│   ├── GetOrderHistory.ts
-│   ├── GetPendingOrders.ts
-│   └── GetOrderAnalytics.ts
-├── dtos/
-│   ├── CreateOrderDto.ts
-│   ├── OrderResponseDto.ts
-│   └── OrderAnalyticsDto.ts
-├── validators/
-│   └── OrderValidator.ts
-└── mappers/
-    └── OrderMapper.ts
+src/application/features/organization/
+├── command/
+│   ├── create-organization.command.ts
+│   ├── add-member.command.ts
+│   ├── remove-member.command.ts
+│   └── update-settings.command.ts
+├── query/
+│   ├── get-organization-details.query.ts
+│   ├── get-member-list.query.ts
+│   ├── get-organization-stats.query.ts
+│   └── get-activity-log.query.ts
+├── dto/
+│   ├── create-organization.dto.ts
+│   ├── organization-response.dto.ts
+│   └── organization-stats.dto.ts
+├── validator/
+│   └── organization-validator.ts
+└── mapper/
+    └── organization-mapper.ts
 ```
 
 ### Infrastructure Layer (`src/infrastructure/`)
@@ -247,27 +265,35 @@ src/application/features/order/
 
 ```typescript
 src/infrastructure/
-├── controllers/
-│   ├── UserController.ts
-│   └── OrderController.ts
-├── services/
-│   ├── EmailServiceImpl.ts
-│   └── PaymentServiceImpl.ts
-├── repositories/
-│   ├── PostgreSQLUserRepository.ts
-│   └── PostgreSQLOrderRepository.ts
-├── orm/
-│   ├── schema.ts
-│   └── migrations/
-├── database/
-│   ├── connection.ts
-│   └── pool.ts
+├── controller/
+│   ├── auth-controller.ts
+│   ├── user-controller.ts
+│   └── organization-controller.ts
+├── service/
+│   ├── jwt-token.service.ts
+│   ├── argon2-password.service.ts
+│   └── redis-session.service.ts
+├── repository/
+│   ├── postgres-user-repository.ts
+│   └── postgres-organization-repository.ts
+├── persistence/
+│   ├── drizzle/
+│   │   ├── schema.ts
+│   │   └── client.ts
+│   ├── migration/
+│   └── seed/
+├── cache/
+│   ├── redis-client.ts
+│   └── cache-manager.ts
 ├── queue/
-│   ├── setup.ts
-│   └── producers/
-├── handlers/
-│   ├── EmailHandler.ts
-│   └── OrderEventHandler.ts
+│   ├── bullmq-setup.ts
+│   └── producer/
+├── handler/
+│   ├── email-handler.ts
+│   └── event-handler.ts
+├── security/
+│   ├── input-sanitizer.ts
+│   └── data-masker.ts
 ├── di/
 │   ├── container.ts
 │   └── bindings.ts
@@ -275,8 +301,8 @@ src/infrastructure/
 │   ├── server.ts
 │   └── routes.ts
 └── gateway/
-    ├── PaymentGateway.ts
-    └── ShippingGateway.ts
+    ├── email-gateway.ts
+    └── sms-gateway.ts
 ```
 
 ### Presentation Layer (`src/presentation/`)
@@ -286,18 +312,22 @@ src/infrastructure/
 ```typescript
 src/presentation/
 ├── http/
-│   ├── routes/
-│   └── middleware/
-├── middlewares/
-│   ├── AuthMiddleware.ts
-│   ├── ValidationMiddleware.ts
-│   └── ErrorHandlerMiddleware.ts
-├── validators/
-│   ├── RequestValidator.ts
-│   └── SchemaValidator.ts
-└── presenters/
-    ├── UserPresenter.ts
-    └── OrderPresenter.ts
+│   ├── route/
+│   │   ├── auth-routes.ts
+│   │   ├── user-routes.ts
+│   │   └── organization-routes.ts
+│   └── server.ts
+├── middleware/
+│   ├── auth-middleware.ts
+│   ├── validation-middleware.ts
+│   ├── rate-limit-middleware.ts
+│   └── error-handler-middleware.ts
+├── validator/
+│   ├── auth-request-validator.ts
+│   └── organization-request-validator.ts
+└── presenter/
+    ├── user-presenter.ts
+    └── organization-presenter.ts
 ```
 
 ## Package Organization Principles
@@ -338,19 +368,24 @@ src/
 Use `index.ts` files for clean imports:
 
 ```typescript
-// src/domain/entities/index.ts
-export { User } from "./User";
-export { Order } from "./Order";
-export { Product } from "./Product";
+// src/domain/aggregate/index.ts
+export { UserIdentity } from "./user-identity.aggregate";
+export { OrganizationMembership } from "./organization-membership.aggregate";
+
+// src/domain/value-object/index.ts
+export { Email } from "./email.value-object";
+export { Password } from "./password.value-object";
+export { CNPJ } from "./cnpj.value-object";
 
 // src/application/features/user/index.ts
-export { CreateUserUseCase } from "./use-cases/CreateUser";
-export { GetUserDetailsUseCase } from "./use-cases/GetUserDetails";
-export { CreateUserDto } from "./dtos/CreateUserDto";
-export { UserResponseDto } from "./dtos/UserResponseDto";
+export { CreateUserUseCase } from "./use-case/create-user.use-case";
+export { GetUserDetailsUseCase } from "./use-case/get-user-details.use-case";
+export { CreateUserDto } from "./dto/create-user.dto";
+export { UserResponseDto } from "./dto/user-response.dto";
 
 // Usage
-import { User, Order } from "@/domain/entities";
+import { UserIdentity } from "@/domain/aggregate";
+import { Email, Password } from "@/domain/value-object";
 import { CreateUserUseCase, CreateUserDto } from "@/application/features/user";
 ```
 
@@ -361,23 +396,26 @@ Dependencies always point inward: **Infrastructure → Application → Domain**
 ```typescript
 // ✅ Good: Dependencies flow inward
 // Domain Layer - No external dependencies
-export class User {
+// src/domain/aggregate/user-identity.aggregate.ts
+export class UserIdentity extends AggregateRoot<UserIdentityProps> {
   // Pure domain logic
 }
 
 // Application Layer - Depends only on Domain
-import { User } from "../../domain/entities/User";
-import { UserRepository } from "../../domain/interfaces/repositories/UserRepository";
+// src/application/features/auth/use-case/login-user.use-case.ts
+import { UserIdentity } from "@/domain/aggregate";
+import { UserRepository } from "@/domain/repository";
 
-export class CreateUserUseCase {
+export class LoginUserUseCase {
   constructor(private readonly userRepository: UserRepository) {}
 }
 
 // Infrastructure Layer - Depends on Domain and Application
-import { UserRepository } from "../../domain/interfaces/repositories/UserRepository";
-import { User } from "../../domain/entities/User";
+// src/infrastructure/repository/postgres-user-repository.ts
+import { UserRepository } from "@/domain/repository";
+import { UserIdentity } from "@/domain/aggregate";
 
-export class PostgreSQLUserRepository implements UserRepository {
+export class PostgresUserRepository implements UserRepository {
   // Implementation
 }
 ```
@@ -420,21 +458,25 @@ Mirror the source structure in tests:
 test/
 ├── unit/
 │   ├── domain/
-│   │   ├── entities/
-│   │   └── services/
+│   │   ├── aggregate/
+│   │   ├── entity/
+│   │   ├── value-object/
+│   │   └── service/
 │   ├── application/
 │   │   └── features/
+│   │       ├── auth/
 │   │       ├── user/
-│   │       └── order/
+│   │       └── organization/
 │   └── infrastructure/
-│       ├── repositories/
-│       └── services/
+│       ├── repository/
+│       └── service/
 ├── integration/
 │   ├── api/
 │   └── database/
 └── e2e/
-    ├── user-flows/
-    └── order-flows/
+    ├── auth-flow/
+    ├── user-flow/
+    └── organization-flow/
 ```
 
 ## Best Practices Summary
