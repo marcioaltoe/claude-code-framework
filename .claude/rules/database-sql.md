@@ -1,135 +1,43 @@
-# SQL Database Standards
-
-## Database Connection
-
-- Use **pg-promise** for connecting to the database
+# SQL Standards
 
 ## Naming Conventions
 
-### Tables and Columns
+- **Tables**: Plural, snake_case (`users`, `customer_orders`)
+- **Columns**: snake_case
+- **Primary key**: `{singular_table}_id` (e.g., `user_id`)
+- **Foreign key**: Same as primary key reference
 
-- Use English names in **plural** form
-- Apply **snake_case** formatting
-- Examples: `users`, `customer_orders`, `payment_methods`
+## Query Standards
 
-### Primary and Foreign Keys
+```sql
+-- UPPERCASE keywords, explicit columns
+SELECT user_id, email, created_at
+FROM users
+JOIN orders USING (user_id)
+WHERE status = 'active'
+ORDER BY created_at DESC
 
-- Use singular table name followed by `_id`
-- Examples:
-  - `users` table → `user_id`
-  - `customers` table → `customer_id`
-  - `orders` table → `order_id`
-  - `payments` table → `payment_id`
-
-## SQL Query Standards
-
-### Keywords
-
-- Always use **UPPERCASE** for SQL keywords
-- Examples: `SELECT`, `FROM`, `JOIN`, `WHERE`, `GROUP BY`, `ORDER BY`
-
-### Joins
-
-- Always use explicit `JOIN` syntax instead of joining tables in the `WHERE` clause
-- Prefer `USING` over `ON` when possible
-- Example:
-
-  ```sql
-  -- Good
-  SELECT * FROM users
-  JOIN orders USING (user_id)
-
-  -- Avoid
-  SELECT * FROM users, orders
-  WHERE users.user_id = orders.user_id
-  ```
-
-### Select Statements
-
-- **Never use** `SELECT *` in production code
-- Always explicitly specify column names
-- Example:
-  ```sql
-  SELECT user_id, username, email, created_at
-  FROM users
-  ```
+-- Never use SELECT * in production
+-- Always use prepared statements ($1, $2)
+-- Never interpolate strings into queries
+```
 
 ## Data Types
 
-### String Types
+- **Strings**: Use `TEXT` (avoid `VARCHAR`)
+- **Numbers**: `INT` or `NUMERIC`
+- **Dates**: `TIMESTAMPTZ` (timezone-aware)
 
-- Always use `TEXT` for string fields
-- Avoid `VARCHAR` unless there's a specific requirement
-
-### Numeric Types
-
-- Use `INT` for whole numbers
-- Use `NUMERIC` for decimal/floating-point values
-
-### Date/Time
-
-- Use timezone-aware date/time fields (e.g., `TIMESTAMPTZ`)
-
-## Performance Optimization
-
-### Indexing
-
-- Create indexes on columns used for searching/filtering
-- Consider composite indexes for frequently used column combinations
-
-### Query Optimization
-
-- Resolve grouping and ordering in the query itself using `GROUP BY` and `ORDER BY`
-- Always specify order direction: `ASC` or `DESC`
-- Use `IN` and `BETWEEN` instead of complex `AND`/`OR` combinations when appropriate
-
-## Query Formatting
-
-Break lines after major clauses for readability:
+## Required Columns
 
 ```sql
-SELECT user_id, username, email
-FROM users
-WHERE status = 'active'
-GROUP BY user_id
-ORDER BY created_at DESC
+created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 ```
 
-## Security
+## Best Practices
 
-### Prepared Statements
-
-- **Always use prepared statements**
-- Never interpolate strings directly into queries
-- Example:
-
-  ```sql
-  -- Good
-  SELECT * FROM users WHERE user_id = $1
-
-  -- Never do this
-  SELECT * FROM users WHERE user_id = '${userId}'
-  ```
-
-## Table Design
-
-### Required Columns
-
-Every table must include:
-
-- `created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()`
-- `updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()`
-
-### Constraints
-
-- Use `NOT NULL` constraints wherever appropriate
-- Align constraints with application-level validations
-
-## Database Changes
-
-### Migrations
-
-- Create a migration for every database modification
-- Always include both:
-  - **Up migration**: Apply changes
-  - **Down migration**: Rollback changes if necessary
+- Index columns used for searching/filtering
+- Use `NOT NULL` constraints appropriately
+- Create migrations for all schema changes
+- Use prepared statements for security

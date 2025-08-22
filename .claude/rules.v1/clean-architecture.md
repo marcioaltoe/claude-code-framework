@@ -2,26 +2,34 @@
 
 ## Core Principles
 
-### The Dependency Rule
+### Dependency Rule
 
-**Dependencies always point inward: Infrastructure → Application → Domain**
+Dependencies always point inward: **Infrastructure → Application → Domain**
 
-1. **Domain Independence**: Domain layer has zero external dependencies
-2. **Framework Isolation**: Business logic is independent of frameworks
-3. **Testability**: Each layer can be tested in isolation
-4. **Clean Code**: Readable, maintainable, self-documenting
-5. **SOLID Principles**: Guide all architectural decisions
+1. **Dependency Direction**: Dependencies point inward (Infrastructure → Application → Domain)
+2. **Domain Independence**: Domain layer has no external dependencies
+3. **Framework Isolation**: Business logic is independent of frameworks
+4. **Testability**: Each layer can be tested independently
+5. **Separation of Concerns**: Each directory has a single, well-defined purpose
+6. **Selective Complexity**: Use CQRS only where complexity demands it
 
-### Architecture Layers
+### Architecture Layers Overview
 
 ```bash
 src/
-├── domain/            # Pure business logic (no external dependencies)
-├── application/       # Use cases and orchestration
-├── infrastructure/    # External world implementations
-├── presentation/      # User interface adapters
+├── domain/            # Core enterprise logic (singular folders)
+├── application/       # Use cases organized by feature/module
+├── infrastructure/    # Adapters to external systems (DB, cache, messaging)
+├── presentation/      # HTTP routes, controllers, middlewares, presenters
 └── main.ts            # Application entry point
 ```
+
+**Important Conventions:**
+
+- Use **singular** names for domain concept folders (entity, aggregate, value-object)
+- Use **plural** only for collections of mixed types (building-blocks, types)
+- Organize application layer by **feature/module**, not by pattern
+- Keep repository **interfaces** in domain layer, **implementations** in infrastructure
 
 ## Project Structure Reference
 
@@ -108,11 +116,11 @@ export class TaskController {
 }
 ```
 
-## Pragmatic Pattern Usage
+## Selective CQRS Implementation
 
-### Core Principle: Start Simple, Evolve with Complexity
+### Core Principle: Complexity-Driven Architecture
 
-Use **simple use cases** by default. Apply advanced patterns (CQRS, Event Sourcing, Domain Events) only when complexity justifies them.
+Use **unified use cases** by default, apply **CQRS** only when complexity demands it.
 
 ### Default Approach: Simple Features (Unified Use Cases)
 
@@ -160,13 +168,18 @@ src/application/features/payment/
 └── mappers/
 ```
 
-### When to Use CQRS
+### Complex Features: CQRS Implementation
 
-**Only use CQRS when you have:**
-- Significantly different read/write models
-- High performance requirements with different scaling needs
-- Complex reporting that doesn't fit the write model
-- Clear business justification for the added complexity
+Split into `commands/` (writes/modifications) and `queries/` (read-only) folders when:
+
+**When to Use CQRS:**
+
+- **High complexity** with distinct read/write models
+- **Performance requirements** demand separate optimization paths
+- **Multiple read models** or projections are needed
+- **Event sourcing** or complex domain events are involved
+- **Clear domain separation** between reads and writes exists
+- **Scalability requirements** suggest independent scaling of reads/writes
 
 ```typescript
 // Complex feature with CQRS structure
@@ -238,7 +251,38 @@ src/application/features/invoice/
 └── validators/
 ```
 
-## Domain Layer Patterns
+### Migration Path: Simple to Complex
+
+Features can evolve naturally:
+
+1. **Start Simple**: Begin with `use-cases/` folder
+2. **Monitor Complexity**: Track performance and maintainability needs
+3. **When threshold is reached**, refactor to `commands/` and `queries/`
+4. **Update tests and documentation** accordingly
+
+```typescript
+// Before: Simple use case
+export class OrderService {
+  async createOrder(dto: CreateOrderDto): Promise<OrderDto> {
+    // Simple implementation
+  }
+
+  async getOrderDetails(id: ID): Promise<OrderDto> {
+    // Simple read
+  }
+}
+
+// After: Evolved to CQRS due to complexity
+export class CreateOrderCommand {
+  // Complex write operations with events, validations, etc.
+}
+
+export class GetOrderDetailsQuery {
+  // Optimized read with projections
+}
+```
+
+## Domain-Driven Design Integration
 
 ### Entities vs Value Objects
 
@@ -451,10 +495,164 @@ Use **kebab-case** for all file names with appropriate suffixes:
 ✅ Need for independent scaling of reads and writes  
 ✅ Complex aggregations or analytics separate from transactional model
 
-## Key Principles
+## Anti-Patterns to Avoid
 
-1. **Start Simple**: Use basic use cases, evolve only when needed
-2. **Rich Domain Model**: Business logic belongs in domain entities
-3. **Dependency Inversion**: Depend on abstractions, not concrete implementations
-4. **Single Responsibility**: Each class should have one reason to change
-5. **YAGNI**: Don't add complexity until it's actually needed
+### Anemic Domain Model
+
+```typescript
+// ❌ Bad: Anemic domain model (just data containers)
+export class User {
+  public id: string;
+  public email: string;
+  public name: string;
+  public isActive: boolean;
+}
+
+export class UserService {
+  validateEmail(user: User): boolean {
+    // Business logic outside the domain model
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.email);
+  }
+
+  activateUser(user: User): void {
+    user.isActive = true;
+  }
+}
+
+// ✅ Good: Rich domain model
+export class User {
+  constructor(
+    private readonly id: UserId,
+    private email: Email,
+    private readonly name: string,
+    private isActive: boolean = false,
+  ) {}
+
+  activate(): void {
+    if (this.isActive) {
+      throw new UserAlreadyActiveError(this.id);
+    }
+    this.isActive = true;
+  }
+
+  changeEmail(newEmail: Email): void {
+    if (this.email.equals(newEmail)) {
+      return; // No change needed
+    }
+    this.email = newEmail;
+  }
+
+  isActiveUser(): boolean {
+    return this.isActive;
+  }
+}
+```
+
+### God Objects
+
+```typescript
+// ❌ Bad: God object with too many responsibilities
+class OrderService {
+  // Too many dependencies and responsibilities
+  constructor(
+    private db: Database,
+    private cache: Cache,
+    private logger: Logger,
+    private emailService: EmailService,
+    private paymentService: PaymentService,
+    private inventoryService: InventoryService,
+    private shippingService: ShippingService,
+    private auditService: AuditService,
+  ) {}
+
+  async processOrder(order: Order): Promise<void> {
+    // Handles payment, inventory, shipping, email, logging, auditing...
+  }
+}
+
+// ✅ Good: Single responsibility with orchestration
+class ProcessOrderUseCase {
+  constructor(
+    private readonly orderRepository: OrderRepository,
+    private readonly paymentService: PaymentService,
+    private readonly inventoryService: InventoryService,
+    private readonly eventBus: EventBus,
+  ) {}
+
+  async execute(orderId: OrderId): Promise<void> {
+    const order = await this.orderRepository.findById(orderId);
+
+    await this.paymentService.processPayment(order.getPayment());
+    await this.inventoryService.reserveItems(order.getItems());
+
+    order.markAsProcessed();
+    await this.orderRepository.save(order);
+
+    await this.eventBus.publish(new OrderProcessedEvent(order));
+  }
+}
+```
+
+### Tight Coupling
+
+```typescript
+// ❌ Bad: Direct dependency on concrete types
+class UserService {
+  private db = new PostgreSQLDatabase(); // Should be injected interface
+  private emailer = new SMTPEmailService(); // Should be injected interface
+
+  async createUser(userData: CreateUserData): Promise<void> {
+    // Implementation tightly coupled to specific implementations
+  }
+}
+
+// ✅ Good: Depend on abstractions
+class CreateUserUseCase {
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly emailService: EmailService,
+  ) {}
+
+  async execute(userData: CreateUserData): Promise<void> {
+    // Implementation depends on abstractions
+  }
+}
+```
+
+## Quality Metrics
+
+### Architecture Health Indicators
+
+- **Dependency Direction**: Always inward toward domain
+- **Interface Usage**: High ratio of interfaces to concrete types in domain
+- **Package Cohesion**: Related functionality grouped together
+- **Separation of Concerns**: Clear boundaries between layers
+- **Domain Logic Location**: Business rules in domain entities/services, not use cases
+
+### Code Quality Metrics
+
+- **Cyclomatic Complexity**: Keep methods simple
+- **Coupling**: Minimize dependencies between features
+- **Cohesion**: High cohesion within features
+- **Test Coverage**: High coverage on domain logic
+
+## Benefits of This Approach
+
+1. **Reduced Complexity**: Simple features remain simple without unnecessary abstraction
+2. **Scalability**: Complex features can leverage CQRS benefits when needed
+3. **Maintainability**: Clear guidelines reduce decision fatigue
+4. **Flexibility**: Teams can evolve from simple to complex as requirements grow
+5. **Performance**: Optimize only where necessary, avoiding premature optimization
+
+## Best Practices Summary
+
+1. **Start Simple**: Use unified use cases, evolve to CQRS when needed
+2. **Rich Domain Model**: Put business logic in domain entities
+3. **Clear Boundaries**: Respect layer responsibilities
+4. **Dependency Inversion**: Depend on abstractions, not concretions
+5. **Domain Events**: Use events for loose coupling between bounded contexts
+6. **Value Objects**: Use for concepts without identity
+7. **Single Responsibility**: Each class/module should have one reason to change
+8. **Test the Domain**: Focus testing efforts on domain logic
+9. **Feature-Driven Organization**: Organize by business features, not technical layers
+10. **Selective Complexity**: Apply CQRS only when complexity demands it

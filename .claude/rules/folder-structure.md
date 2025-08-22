@@ -1,491 +1,284 @@
 # Folder Structure & Organization
 
-## Complete Project Structure
+## Core Philosophy
+
+**Clean Architecture + Clean Code + SOLID Principles**
+- Focus on maintainability and testability over complex patterns
+- Dependency Rule: Dependencies point inward (Infrastructure → Application → Domain)
+- SOLID principles guide all design decisions
+- Pragmatic approach: Use advanced patterns (CQRS, Event Sourcing) only when complexity demands
+
+## Quick Reference Structure
 
 ```
-├── src/
-│   ├── domain/                    # Core enterprise logic (singular folders)
-│   │   ├── aggregate/             # Aggregate roots
-│   │   ├── entity/                # Business objects with identity
-│   │   ├── value-object/          # Immutable, identity-less objects
-│   │   ├── event/                 # Domain events
-│   │   ├── error/                 # Custom domain-level exceptions
-│   │   ├── factory/               # Builders for complex aggregates
-│   │   ├── service/               # Pure domain logic operations
-│   │   ├── specification/         # Business rule specifications
-│   │   ├── repository/            # Repository interfaces
-│   │   └── building-blocks/       # DDD base classes and patterns
-│   │
-│   ├── application/               # Application business rules (use cases)
-│   │   ├── core/                  # Base classes for application layer
-│   │   │   ├── use-case.base.ts   # Base use case class
-│   │   │   ├── repository.ts      # Repository interfaces
-│   │   │   └── mapper.base.ts     # Base mapper class
-│   │   └── features/              # Feature-driven modules
-│   │       ├── auth/              # Authentication feature
-│   │       │   ├── use-case/      # Combined read/write use cases
-│   │       │   ├── dto/            # Input/output interface models
-│   │       │   ├── validator/     # Input validation logic
-│   │       │   └── mapper/        # DTO ⇄ Domain translation
-│   │       │
-│   │       ├── user/              # User management feature
-│   │       │   ├── use-case/
-│   │       │   ├── dto/
-│   │       │   ├── validator/
-│   │       │   └── mapper/
-│   │       │
-│   │       └── organization/      # Complex feature with CQRS
-│   │           ├── command/       # Mutation use case handlers
-│   │           ├── query/         # Read-only logic
-│   │           ├── dto/
-│   │           ├── validator/
-│   │           └── mapper/
-│   │
-│   ├── infrastructure/            # External integrations (adapters/drivers)
-│   │   ├── controller/            # HTTP API route controllers
-│   │   ├── service/               # Implementations of external service interfaces
-│   │   ├── repository/            # Implementation of domain repositories
-│   │   ├── persistence/           # ORM and database configuration
-│   │   │   ├── drizzle/           # Drizzle ORM setup
-│   │   │   ├── migration/         # Database migrations
-│   │   │   └── seed/              # Database seeders
-│   │   ├── cache/                 # Redis and caching layer
-│   │   ├── queue/                 # Message broker setup (BullMQ/Kafka)
-│   │   ├── handler/               # Queue/job workers or subscribers
-│   │   ├── security/              # Security utilities and sanitizers
-│   │   ├── di/                    # Dependency Injection setup
-│   │   ├── http/                  # Server setup and global middlewares
-│   │   └── gateway/               # External APIs clients (ERP/third-party)
-│   │
-│   ├── presentation/              # Request/response layer
-│   │   ├── http/                  # HTTP request handling (e.g., Hono)
-│   │   ├── middleware/            # Custom middleware
-│   │   ├── validator/             # Request validation (e.g., TypeBox)
-│   │   └── presenter/             # Response formatting
-│   │
-│   └── main.ts                    # Application entry point (DI + server bootstrap)
-│
-├── test/                          # Automated tests
-│   ├── unit/                      # Business logic and use cases
-│   ├── integration/               # DB, service APIs, etc.
-│   ├── e2e/                       # End-to-end route testing
-│   ├── fixtures/                  # Mocks and test data
-│   └── setup.ts
-│
-├── docs/
-│   ├── features/                  # Product requirement docs
-│   │   ├── templates/
-│   │   │   ├── discovery-template.md
-│   │   │   ├── task-template.md
-│   │   │   ├── techspec-template.md
-│   │   │   ├── tasks-summary-template.md
-│   │   │   └── prd-template.md
-│   │   └── [feature-slug]/        # Feature documentation workflow
-│   │       ├── 01-discovery
-│   │       │   └── discovery.md
-│   │       ├── 02-prd
-│   │       │   └── prd.md
-│   │       ├── 03-technical
-│   │       │   └── techspec.md
-│   │       └── 04-implementation
-│   │           ├── task-summary.md
-│   │           └── tasks/
-│   │               ├── 01_task.md
-│   │               ├── 02_task.md
-│   │               ├── 03_task.md
-│   │               ├── ...
-│   │               └── xx_task.md
-│   │
-│   ├── api/                       # Generated or manual API docs
-│   │   ├── endpoints/
-│   │   └── schemas/
-│   └── architecture/              # Design and architecture decisions
-│       ├── decisions/
-│       └── diagrams/
-│
-├── scripts/                       # CI/CD, DB seeding, maintenance tooling
-│   ├── build.sh
-│   ├── deploy.sh
-│   ├── seed-db.ts
-│   └── migrate.ts
-│
-├── docker/                        # Dockerized environments and compose files
-│   ├── config/                    # Config files for docker containers
-│   ├── Dockerfile
-│   └── docker-compose.yml
-│
-├── .github/
-│   └── workflows/                 # GitHub Actions CI/CD
-│       ├── ci.yml
-│       ├── deploy.yml
-│       └── tests.yml
-│
-├── config/                        # Application configuration
-│   ├── database.ts
-│   ├── server.ts
-│   ├── queue.ts
-│   ├── email.ts
-│   ├── environments/
-│   │   ├── development.ts
-│   │   ├── production.ts
-│   │   └── test.ts
-│   ├── base.ts
-│   └── index.ts                   # Barrel export
-│
-├── public/                        # Static assets
-│   ├── images/
-│   ├── styles/
-│   └── scripts/
-│
-├── assets/                        # Application assets
-│   ├── fonts/
-│   ├── icons/
-│   └── templates/
-│       ├── email/
-│       └── pdf/
-│
-├── .env.example                   # Environment variables template
-├── .gitignore
-├── biome.json                     # Biome configuration (linting/formatting)
-├── vitest.config.ts               # Vitest test configuration
-├── tsconfig.json                  # TypeScript configuration
-├── package.json                   # Dependencies and scripts
-└── README.md                      # Project documentation
-```
-
-## Layer Responsibilities
-
-### Domain Layer (`src/domain/`)
-
-**Core enterprise business rules**
-
-- **Entities**: Business objects with identity
-- **Value Objects**: Immutable objects without identity
-- **Domain Services**: Pure domain logic operations
-- **Domain Events**: Important business events
-- **Domain Errors**: Domain-specific exceptions
-- **Factories**: Create complex domain objects and aggregates
-- **Interfaces**: Ports for repositories and external services
-
-```typescript
-// Example domain structure with singular folders and proper suffixes
-src/domain/
-├── aggregate/
-│   ├── user-identity.aggregate.ts
-│   └── organization-membership.aggregate.ts
-├── entity/
-│   ├── company.entity.ts
-│   └── api-key.entity.ts
-├── value-object/
-│   ├── email.value-object.ts
-│   ├── password.value-object.ts
-│   ├── cnpj.value-object.ts
-│   └── address.value-object.ts
-├── event/
-│   ├── user-created.event.ts
-│   └── organization-created.event.ts
-├── error/
-│   ├── user-not-found.error.ts
-│   └── invalid-credentials.error.ts
-├── factory/
-│   ├── user-factory.ts
-│   └── organization-factory.ts
-├── service/
-│   ├── password-hasher.service.ts
-│   └── token-generator.service.ts
-├── specification/
-│   ├── user-can-login.specification.ts
-│   └── organization-has-capacity.specification.ts
-├── repository/
-│   ├── user-repository.ts
-│   └── organization-repository.ts
-└── building-blocks/
-    ├── entity.base.ts
-    ├── aggregate-root.base.ts
-    ├── value-object.base.ts
-    ├── domain-event.base.ts
-    ├── specification.base.ts
-    └── result.ts
-```
-
-### Application Layer (`src/application/features/`)
-
-**Application business rules organized by feature**
-
-#### Simple Features
-
-Use `use-cases/` folder for combined read/write operations
-
-```typescript
-src/application/features/user/
-├── use-case/
-│   ├── create-user.use-case.ts
-│   ├── get-user-details.use-case.ts
-│   ├── update-user.use-case.ts
-│   └── delete-user.use-case.ts
-├── dto/
-│   ├── create-user.dto.ts
-│   ├── user-response.dto.ts
-│   └── update-user.dto.ts
-├── validator/
-│   └── user-validator.ts
-└── mapper/
-    └── user-mapper.ts
-```
-
-#### Complex Features
-
-Use `commands/` (writes) and `queries/` (reads) with CQRS
-
-```typescript
-src/application/features/organization/
-├── command/
-│   ├── create-organization.command.ts
-│   ├── add-member.command.ts
-│   ├── remove-member.command.ts
-│   └── update-settings.command.ts
-├── query/
-│   ├── get-organization-details.query.ts
-│   ├── get-member-list.query.ts
-│   ├── get-organization-stats.query.ts
-│   └── get-activity-log.query.ts
-├── dto/
-│   ├── create-organization.dto.ts
-│   ├── organization-response.dto.ts
-│   └── organization-stats.dto.ts
-├── validator/
-│   └── organization-validator.ts
-└── mapper/
-    └── organization-mapper.ts
-```
-
-### Infrastructure Layer (`src/infrastructure/`)
-
-**External integrations (adapters/drivers)**
-
-```typescript
-src/infrastructure/
-├── controller/
-│   ├── auth-controller.ts
-│   ├── user-controller.ts
-│   └── organization-controller.ts
-├── service/
-│   ├── jwt-token.service.ts
-│   ├── argon2-password.service.ts
-│   └── redis-session.service.ts
-├── repository/
-│   ├── postgres-user-repository.ts
-│   └── postgres-organization-repository.ts
-├── persistence/
-│   ├── drizzle/
-│   │   ├── schema.ts
-│   │   └── client.ts
-│   ├── migration/
-│   └── seed/
-├── cache/
-│   ├── redis-client.ts
-│   └── cache-manager.ts
-├── queue/
-│   ├── bullmq-setup.ts
-│   └── producer/
-├── handler/
-│   ├── email-handler.ts
-│   └── event-handler.ts
-├── security/
-│   ├── input-sanitizer.ts
-│   └── data-masker.ts
-├── di/
-│   ├── container.ts
-│   └── bindings.ts
-├── http/
-│   ├── server.ts
-│   └── routes.ts
-└── gateway/
-    ├── email-gateway.ts
-    └── sms-gateway.ts
-```
-
-### Presentation Layer (`src/presentation/`)
-
-**Request/response handling**
-
-```typescript
-src/presentation/
-├── http/
-│   ├── route/
-│   │   ├── auth-routes.ts
-│   │   ├── user-routes.ts
-│   │   └── organization-routes.ts
-│   └── server.ts
-├── middleware/
-│   ├── auth-middleware.ts
-│   ├── validation-middleware.ts
-│   ├── rate-limit-middleware.ts
-│   └── error-handler-middleware.ts
-├── validator/
-│   ├── auth-request-validator.ts
-│   └── organization-request-validator.ts
-└── presenter/
-    ├── user-presenter.ts
-    └── organization-presenter.ts
-```
-
-## Package Organization Principles
-
-### Feature-Driven Organization
-
-- Each feature in `src/application/features/` has clear boundaries
-- Domain entities and interfaces in `src/domain/`
-- Infrastructure adapters in `src/infrastructure/`
-- Presentation layer in `src/presentation/`
-
-### Anti-Patterns to Avoid
-
-- **AVOID** shared/, utils/, or common/ folders
-- **AVOID** organizing by technical concerns (controllers/, services/, models/)
-- **AVOID** circular dependencies between features
-
-### Colocate by Context
-
-```typescript
-// ✅ Good: Related functionality grouped together
-src/application/features/user/
-├── use-cases/
-├── dtos/
-├── validators/
-└── mappers/
-
-// ❌ Bad: Organized by technical layer
 src/
-├── controllers/
-├── services/
-├── dtos/
-└── validators/
+├── domain/                        # Core business logic (pure, no dependencies)
+│   ├── entities/                  # Business entities
+│   ├── value-objects/             # Immutable value objects
+│   ├── services/                  # Domain services (business logic)
+│   ├── ports/                     # Interfaces for external dependencies
+│   └── errors/                    # Domain-specific errors
+│
+├── application/                   # Application services & use cases
+│   ├── use-cases/                 # Business operations
+│   ├── dtos/                      # Data transfer objects
+│   ├── mappers/                   # DTO/Entity mappers
+│   └── validators/                # Input validation
+│
+├── infrastructure/                # Technical implementations
+│   ├── database/                  # Data persistence
+│   │   ├── repositories/          # Repository implementations
+│   │   ├── migrations/            # Database migrations
+│   │   └── schemas/               # Database schemas
+│   │
+│   ├── external/                  # External services
+│   │   ├── apis/                  # Third-party API clients
+│   │   ├── messaging/             # Message brokers
+│   │   └── storage/               # File storage
+│   │
+│   └── services/                  # Infrastructure services
+│
+├── presentation/                  # User interfaces
+│   └── api/                       # REST API
+│       ├── controllers/           # Request handlers
+│       ├── middlewares/           # Cross-cutting concerns
+│       ├── routes/                # Route definitions
+│       └── validators/            # Request validation
+│
+├── config/                        # Configuration
+│   ├── database.config.ts
+│   ├── app.config.ts
+│   └── environments/
+│
+└── main.ts                        # Application entry
 ```
 
-## Barrel Exports
+## File Naming Conventions
 
-Use `index.ts` files for clean imports:
+**All files and folders use kebab-case:**
 
 ```typescript
-// src/domain/aggregate/index.ts
-export { UserIdentity } from "./user-identity.aggregate";
-export { OrganizationMembership } from "./organization-membership.aggregate";
+// Domain Layer
+user.entity.ts                    // Entity
+email.value-object.ts              // Value Object
+user-created.event.ts              // Domain Event
+user-not-found.error.ts            // Domain Error
+user.repository.ts                 // Repository interface (port)
 
-// src/domain/value-object/index.ts
-export { Email } from "./email.value-object";
-export { Password } from "./password.value-object";
-export { CNPJ } from "./cnpj.value-object";
+// Application Layer
+create-user.use-case.ts            // Use Case
+create-user.dto.ts                 // DTO
+user.mapper.ts                     // Mapper
+user.validator.ts                  // Validator
 
-// src/application/features/user/index.ts
-export { CreateUserUseCase } from "./use-case/create-user.use-case";
-export { GetUserDetailsUseCase } from "./use-case/get-user-details.use-case";
-export { CreateUserDto } from "./dto/create-user.dto";
-export { UserResponseDto } from "./dto/user-response.dto";
+// Infrastructure Layer
+postgres-user.repository.ts        // Repository implementation
+redis-cache.service.ts             // Service implementation
+stripe-payment.gateway.ts          // External gateway
 
-// Usage
-import { UserIdentity } from "@/domain/aggregate";
-import { Email, Password } from "@/domain/value-object";
-import { CreateUserUseCase, CreateUserDto } from "@/application/features/user";
+// Tests
+create-user.use-case.test.ts       // Test file
+user.entity.spec.ts                // Specification test
 ```
 
-## Dependency Direction
+## Layer Examples
 
-Dependencies always point inward: **Infrastructure → Application → Domain**
+### Domain Layer
+**Pure business logic - NO external dependencies**
 
 ```typescript
-// ✅ Good: Dependencies flow inward
-// Domain Layer - No external dependencies
-// src/domain/aggregate/user-identity.aggregate.ts
-export class UserIdentity extends AggregateRoot<UserIdentityProps> {
-  // Pure domain logic
+// src/domain/entities/product.entity.ts
+export class Product {
+  constructor(
+    private readonly id: string,
+    private name: string,
+    private price: number,
+  ) {}
+
+  changePrice(newPrice: number): void {
+    if (newPrice < 0) {
+      throw new InvalidPriceError('Price cannot be negative');
+    }
+    this.price = newPrice;
+  }
 }
 
-// Application Layer - Depends only on Domain
-// src/application/features/auth/use-case/login-user.use-case.ts
-import { UserIdentity } from "@/domain/aggregate";
-import { UserRepository } from "@/domain/repository";
-
-export class LoginUserUseCase {
-  constructor(private readonly userRepository: UserRepository) {}
-}
-
-// Infrastructure Layer - Depends on Domain and Application
-// src/infrastructure/repository/postgres-user-repository.ts
-import { UserRepository } from "@/domain/repository";
-import { UserIdentity } from "@/domain/aggregate";
-
-export class PostgresUserRepository implements UserRepository {
-  // Implementation
+// src/domain/ports/product.repository.ts
+export interface ProductRepository {
+  save(product: Product): Promise<void>;
+  findById(id: string): Promise<Product | null>;
 }
 ```
 
-## When to Use CQRS Structure
-
-### Default: Simple Features (Unified Use Cases)
-
-Use `use-cases/` folder for straightforward features:
-
-- Basic CRUD operations
-- Simple business logic
-- No complex read projections needed
-- Performance is adequate with unified approach
-
-### Complex Features: CQRS Implementation
-
-Use `commands/` and `queries/` when:
-
-- High complexity with distinct read/write models
-- Performance requirements demand separate optimization
-- Multiple read projections needed
-- Event sourcing or complex domain events
-- Independent scaling requirements for reads/writes
-
-### Migration Path
-
-Features can evolve naturally:
-
-1. **Start Simple**: Begin with `use-cases/` folder
-2. **Monitor Complexity**: Track performance and maintainability
-3. **Refactor When Needed**: Split into `commands/` and `queries/`
-4. **Update Dependencies**: Adjust tests and documentation
-
-## Test Organization
-
-Mirror the source structure in tests:
+### Application Layer
+**Use cases orchestrating business logic**
 
 ```typescript
-test/
+// src/application/use-cases/update-product-price.use-case.ts
+export class UpdateProductPriceUseCase {
+  constructor(
+    private readonly productRepository: ProductRepository,
+  ) {}
+
+  async execute(productId: string, newPrice: number): Promise<void> {
+    const product = await this.productRepository.findById(productId);
+    if (!product) {
+      throw new ProductNotFoundError(productId);
+    }
+
+    product.changePrice(newPrice);
+    await this.productRepository.save(product);
+  }
+}
+```
+
+### Infrastructure Layer
+**Technical implementations**
+
+```typescript
+// src/infrastructure/database/repositories/postgres-product.repository.ts
+export class PostgresProductRepository implements ProductRepository {
+  constructor(private readonly db: Database) {}
+
+  async save(product: Product): Promise<void> {
+    await this.db.query(
+      'UPDATE products SET name = $1, price = $2 WHERE id = $3',
+      [product.name, product.price, product.id]
+    );
+  }
+
+  async findById(id: string): Promise<Product | null> {
+    const row = await this.db.query('SELECT * FROM products WHERE id = $1', [id]);
+    return row ? this.toDomain(row) : null;
+  }
+}
+```
+
+### Presentation Layer
+**User interface adapters**
+
+```typescript
+// src/presentation/api/controllers/product.controller.ts
+export class ProductController {
+  constructor(
+    private readonly updatePriceUseCase: UpdateProductPriceUseCase,
+  ) {}
+
+  async updatePrice(req: Request, res: Response): Promise<void> {
+    try {
+      await this.updatePriceUseCase.execute(
+        req.params.id,
+        req.body.price
+      );
+      res.status(200).json({ message: 'Price updated' });
+    } catch (error) {
+      if (error instanceof ProductNotFoundError) {
+        res.status(404).json({ error: error.message });
+      } else {
+        res.status(400).json({ error: 'Invalid request' });
+      }
+    }
+  }
+}
+```
+
+## Best Practices
+
+### ✅ DO
+
+1. **Keep domain layer pure** - No external dependencies
+2. **Use dependency injection** - Depend on abstractions (interfaces)
+3. **Follow SOLID principles** - Single responsibility, open/closed, etc.
+4. **Write testable code** - Design for testing from the start
+5. **Use meaningful names** - Code should be self-documenting
+6. **Keep it simple** - Don't over-engineer, YAGNI principle
+
+### ❌ DON'T
+
+1. **Don't leak infrastructure into domain** - Keep business logic pure
+2. **Don't create unnecessary abstractions** - Abstract only when needed
+3. **Don't use CQRS/Event Sourcing prematurely** - Only for complex domains
+4. **Don't violate dependency rule** - Dependencies flow inward only
+5. **Don't create anemic domain models** - Entities should have behavior
+
+## Testing Structure
+
+Mirror the source structure:
+
+```
+tests/
 ├── unit/
 │   ├── domain/
-│   │   ├── aggregate/
-│   │   ├── entity/
-│   │   ├── value-object/
-│   │   └── service/
-│   ├── application/
-│   │   └── features/
-│   │       ├── auth/
-│   │       ├── user/
-│   │       └── organization/
-│   └── infrastructure/
-│       ├── repository/
-│       └── service/
+│   │   └── [context]/
+│   │       ├── entities/
+│   │       └── value-objects/
+│   └── application/
+│       └── [context]/
+│           └── use-cases/
 ├── integration/
-│   ├── api/
-│   └── database/
+│   └── infrastructure/
+│       ├── repositories/
+│       └── external/
 └── e2e/
-    ├── auth-flow/
-    ├── user-flow/
-    └── organization-flow/
+    └── api/
+        └── [feature]/
 ```
 
-## Best Practices Summary
+## When to Use Advanced Patterns
 
-1. **Feature-Driven**: Organize by business features, not technical layers
-2. **Clean Dependencies**: Always point inward toward domain
-3. **Selective CQRS**: Start simple, evolve to CQRS when complexity demands it
-4. **Clear Boundaries**: Each layer has distinct responsibilities
-5. **Barrel Exports**: Use index.ts for clean import statements
-6. **No Shared Folders**: Colocate related functionality
-7. **Mirror in Tests**: Test structure should mirror source structure
-8. **Environment Separation**: Clear separation of configuration by environment
+### CQRS (Command Query Responsibility Segregation)
+**Only use when you have:**
+- Complex read models that differ significantly from write models
+- High performance requirements with different scaling needs
+- Need for event sourcing
+- Clear business justification for the added complexity
+
+```typescript
+// Start simple (default approach)
+src/application/use-cases/
+├── create-product.use-case.ts
+├── update-product.use-case.ts
+└── get-product.use-case.ts
+
+// Only evolve to CQRS when complexity demands it
+src/application/
+├── commands/
+│   ├── create-product.command.ts
+│   └── update-product.command.ts
+└── queries/
+    ├── get-product.query.ts
+    └── search-products.query.ts
+```
+
+### Domain Events
+**Only use when explicitly needed:**
+- Integration between bounded contexts
+- Audit logging requirements
+- Asynchronous workflows
+- External system notifications
+
+**Avoid using for:**
+- Simple CRUD operations
+- Internal method calls
+- Synchronous workflows
+
+## Migration Guide
+
+From MVC/Traditional Architecture to Clean Architecture:
+
+1. **Start with Use Cases** - Identify your main business operations
+2. **Extract Domain Logic** - Move business rules from controllers/services to domain
+3. **Define Ports** - Create interfaces for external dependencies
+4. **Implement Adapters** - Move infrastructure code to proper layer
+5. **Refactor Controllers** - Make them thin, only handling HTTP concerns
+6. **Add Tests** - Unit tests for domain/application, integration for infrastructure
+
+## Key Principles Summary
+
+1. **Clean Architecture**: Separation of concerns through layers
+2. **Clean Code**: Readable, maintainable, self-documenting code
+3. **SOLID Principles**: Guide all design decisions
+4. **KISS**: Keep It Simple, Stupid - avoid unnecessary complexity
+5. **YAGNI**: You Aren't Gonna Need It - build only what's needed
+6. **DRY**: Don't Repeat Yourself - but don't abstract prematurely
+7. **Pragmatism**: Use advanced patterns only when justified by complexity

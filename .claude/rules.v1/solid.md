@@ -1,29 +1,5 @@
 # SOLID Principles
 
-## Pragmatic Application
-
-### When to Apply SOLID
-
-- Complex business logic that will evolve
-- Multiple implementations of the same concept
-- Need for testability with mocks
-- Team projects requiring clear boundaries
-
-### When NOT to Over-Apply
-
-- Simple CRUD operations
-- Small scripts or utilities
-- Prototypes or proof of concepts
-- When it adds complexity without clear benefit
-
-## Benefits
-
-- **Maintainability** - Easier to modify and extend
-- **Testability** - Easy to mock dependencies
-- **Flexibility** - Swap implementations without changing code
-- **Reusability** - Components can be reused in different contexts
-- **Reduced Coupling** - Components depend on abstractions, not implementations
-
 ## Single Responsibility Principle (SRP)
 
 **One reason to change per class/module**
@@ -280,3 +256,11 @@ interface DatabaseOperations extends Readable, Writable, Deletable {
   // Inherits read(), write(), delete()
 }
 ```
+
+## Benefits
+
+- **Maintainability** - Easier to modify and extend
+- **Testability** - Easy to mock dependencies
+- **Flexibility** - Swap implementations without changing code
+- **Reusability** - Components can be reused in different contexts
+- **Reduced Coupling** - Components depend on abstractions, not implementations

@@ -10,11 +10,8 @@
 ## Architecture
 
 - **Clean Architecture** - Domain → Application → Infrastructure
-- **Clean Code** - Readable, maintainable, self-documenting
-- **SOLID Principles** - Guide all design decisions
-- **Simple by default** - Use `use-cases/` for most features
-- **CQRS only when justified** - High complexity, different read/write models
-- **Domain Events only when needed** - Explicit requirement or async workflows
+- **Simple features**: `use-cases/` folder
+- **Complex features**: `commands/` + `queries/` (CQRS)
 - **No shared/utils folders** - Colocate by context
 
 ## Database
@@ -32,13 +29,10 @@
 
 ## Code Quality
 
-- **Small functions** - Single responsibility (S in SOLID)
+- **Small functions** - Single responsibility
 - **Simple parameters** - Use objects for complex data
-- **Clear control flow** - Avoid deep nesting, early returns
-- **Composition over inheritance** - Flexible and testable
-- **KISS principle** - Keep It Simple, avoid over-engineering
-- **YAGNI principle** - Build only what's needed now
-- **DRY principle** - Don't repeat, but don't abstract prematurely
+- **Clear control flow** - Avoid deep nesting
+- **Composition over inheritance**
 
 ## API
 
