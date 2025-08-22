@@ -1,7 +1,3 @@
-# Development Standards & Guidelines
-
-This file provides guidance to Claude Code (claude.ai/code) when working in this repository.
-
 ## Core Philosophy
 
 1. **Clean Architecture** - Clear separation of concerns through layers
@@ -37,9 +33,8 @@ import { UserIdentity } from '../../domain/aggregate/user-identity.aggregate'
 
 ## Rules and Standards
 
-> (use only when needed)
+Core references:
 
-<!-- Core references:
 - `.claude/rules/essentials.md` - Core development standards
 - `.claude/rules/clean-architecture.md` - Clean Architecture patterns
 - `.claude/rules/solid.md` - SOLID principles
@@ -60,4 +55,4 @@ Technical references:
 
 Readct references:
 
-- `.claude/rules/react.md` -->
+- `.claude/rules/react.md`
