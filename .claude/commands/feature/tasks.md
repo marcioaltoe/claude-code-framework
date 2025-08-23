@@ -1,15 +1,7 @@
 ---
 name: feature:tasks
 description: Decompose Technical Specification into atomic, implementable tasks
-model: sonnet
-agents:
-  [
-    tech-lead-reviewer,
-    task-analyzer,
-    tdd-test-engineer,
-    software-architect,
-    domain-expert-validator,
-  ]
+agents: [tech-lead-reviewer, task-analyzer, tdd-test-engineer, software-architect, domain-expert-validator]
 color: yellow
 ---
 

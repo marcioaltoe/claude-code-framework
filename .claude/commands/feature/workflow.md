@@ -1,15 +1,7 @@
 ---
 name: feature:workflow
 description: Complete feature development workflow from idea to implementation tasks
-model: opus
-agents:
-  [
-    business-analyst,
-    product-manager-prd,
-    software-architect,
-    task-analyzer,
-    task-implementation-orchestrator,
-  ]
+agents: [business-analyst, product-manager-prd, software-architect, task-analyzer, task-implementation-orchestrator]
 color: purple
 ---
 

@@ -1,14 +1,7 @@
 ---
 name: feature:discovery
 description: Initial feature discovery to understand problem space and gather context
-model: sonnet
-agents:
-  [
-    business-analyst,
-    ux-ui-designer,
-    software-architect,
-    domain-expert-validator,
-  ]
+agents: [business-analyst, ux-ui-designer, software-architect, domain-expert-validator]
 color: cyan
 ---
 

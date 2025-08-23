@@ -1,7 +1,6 @@
 ---
 name: git:commit
 description: Commit all pending changes with conventional commit message
-model: sonnet
 agent: git-workflow
 color: orange
 ---

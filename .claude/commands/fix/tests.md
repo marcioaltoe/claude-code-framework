@@ -1,7 +1,6 @@
 ---
 name: fix:tests
 description: Simple command dispatcher for test failure fixing
-model: sonnet
 agent: tdd-test-engineer
 color: green
 ---

@@ -1,7 +1,6 @@
 ---
 name: feature:prd
 description: Generate comprehensive Product Requirements Document through multi-agent collaboration
-model: sonnet
 agents:
   [
     product-manager-prd,

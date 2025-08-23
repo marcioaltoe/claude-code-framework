@@ -1,7 +1,6 @@
 ---
 name: design:review
 description: Orchestrates design review by collecting git context and delegating to design specialist
-model: sonnet
 agents: [git-workflow, design-review]
 color: purple
 ---

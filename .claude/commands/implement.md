@@ -1,7 +1,6 @@
 ---
 name: implement
 description: Task implementation dispatcher that coordinates execution
-model: sonnet
 agent: task-implementation-orchestrator
 color: green
 ---

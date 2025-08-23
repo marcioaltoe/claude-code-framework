@@ -1,7 +1,6 @@
 ---
 name: fix:lint
 description: Simple command dispatcher for Biome error fixing
-model: sonnet
 agent: biome-lint-fixer
 color: yellow
 ---

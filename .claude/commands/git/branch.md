@@ -1,7 +1,6 @@
 ---
 name: git:branch
 description: Create feature branch with conventional naming
-model: sonnet
 agent: git-workflow
 color: cyan
 ---

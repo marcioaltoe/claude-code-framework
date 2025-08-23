@@ -1,7 +1,6 @@
 ---
 name: git:sync
 description: Synchronize local repository with remote changes
-model: sonnet
 agent: git-workflow
 color: blue
 ---

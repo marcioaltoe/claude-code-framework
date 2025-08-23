@@ -1,7 +1,6 @@
 ---
 name: git:push
 description: Push changes and create PR with comprehensive summary
-model: sonnet
 agent: git-workflow
 color: green
 ---

@@ -1,7 +1,6 @@
 ---
 name: feature:techspec
 description: Transform PRD into detailed Technical Specification through collaborative analysis
-model: sonnet
 agents:
   [
     software-architect,

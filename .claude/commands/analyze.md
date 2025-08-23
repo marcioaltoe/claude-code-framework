@@ -1,7 +1,6 @@
 ---
 name: analyze
 description: Task analysis dispatcher for pre-implementation optimization
-model: sonnet
 agent: task-analyzer
 color: cyan
 ---

@@ -1,7 +1,6 @@
 ---
 name: fix:types
 description: Simple command dispatcher for TypeScript error fixing
-model: sonnet
 agent: typescript-diagnostics-fixer
 color: blue
 ---
