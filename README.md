@@ -1,13 +1,13 @@
 # Claude Code Framework
 
-A comprehensive configuration framework for Claude Code CLI, featuring specialized agents, custom commands, rules, and templates. This framework is built upon learnings from AI for Development courses by [Rodrigo Branas](https://branas.io/) and [Pedro Nauck](https://compozy.com/).
+A comprehensive configuration framework for Claude Code CLI, featuring specialized agents, custom commands, rules, and templates. This framework is built upon learnings from AI for Development by [Rodrigo Branas](https://branas.io/) and [Pedro Nauck](https://compozy.com/).
 
 ## 🏗️ Framework Structure
 
 ```
 .claude/
-├── agents/           # Specialized AI agents for different tasks
-├── commands/         # Custom slash commands
+├── agents/          # Specialized AI agents for different tasks
+├── commands/        # Custom slash commands
 ├── config/          # Configuration files
 ├── rules/           # Development rules and standards
 └── templates/       # Document templates
@@ -19,79 +19,77 @@ This framework includes purpose-built agents for different development workflows
 
 ### Architecture & Planning
 
-- **domain-architect**: Domain-driven design expert using MCP Zen
-- **technical-architect**: Clean Architecture expert for system design
-- **business-strategist**: Business strategy and market analysis
-- **ux-architect**: UX design expert for creative solutions
+- **software-architect**: System design, Clean Architecture patterns, technical solutions
+- **database-architect**: Database design, Drizzle ORM, schema optimization, migrations
+- **react-clean-architect**: React Clean Architecture, state management, custom hooks
 
-### Development & Quality
+### Development & Implementation
 
-- **implementation-specialist**: TypeScript, DDD, and Clean Architecture implementation
-- **code-reviewer**: Strict code review following established processes
-- **task-analyzer**: Pre-implementation analysis to minimize token usage
-- **quality-delivery**: QA and delivery expert with comprehensive strategies
+- **api-standards-expert**: API design patterns, HTTP standards, Hono framework
+- **react-coder**: React 19 component development, simplicity-first philosophy
+- **typescript-expert**: TypeScript guidance, type errors, advanced type features
+- **task-implementation-orchestrator**: Task execution coordination from plans
+
+### Quality & Testing
+
+- **tdd-test-engineer**: Test-Driven Development with Vitest, mocking strategies
+- **tech-lead-reviewer**: Technical leadership, code review, architecture decisions
+- **design-review**: UI/UX compliance, visual consistency, accessibility
+- **ux-guardian**: Edge case discovery, user journey testing, critical test paths
 
 ### Code Quality & Fixing
 
-- **type-fixer**: Automated TypeScript error remediation with iterative diagnostics parsing
-- **lint-fixer**: Biome fixer with rule-aware edits and MCP integrations
-- **vitest-fixer**: Vitest failure triage and automated test fixing
-- **import-fixer**: Import/path resolution specialist for TS aliasing and module issues
-- **config-doctor**: Configuration coherence validator for tsconfig, Biome, and Vitest
-- **snapshot-reviewer**: Snapshot diff reviewer with human-readable analysis
+- **typescript-diagnostics-fixer**: Automated TypeScript error resolution
+- **biome-lint-fixer**: Automated Biome linting fixes with rule awareness
 
-### Git & Collaboration
+### Product & Business
 
-- **git-analyst**: Git commit analysis specialist
-- **commit-message-generator**: Conventional commit message generation
-- **pr-description-generator**: Comprehensive PR description creation
+- **business-analyst**: Requirements gathering, process modeling, use cases
+- **product-manager-prd**: PRD creation, feature specification, success metrics
+- **domain-expert-validator**: Domain logic validation, business rule verification
+- **ux-ui-designer**: UI/UX design, wireframes, design systems, accessibility
 
-### Orchestration
+### Workflow & Orchestration
 
-- **orchestrator**: Master orchestrator for PRD creation
-- **mcp-orchestrator**: Intelligent MCP server routing
-- **agent-creator**: Meta-agent for creating and updating subagents
-- **discovery-agent**: Active feature discovery specialist
+- **git-workflow**: Git operations, conventional commits, branch strategies
+- **task-analyzer**: Pre-implementation analysis for token optimization
 
-## 📋 Custom Commands
+## 📋 Slash Commands
 
 ### Feature Development
 
-- `/feature:discovery` - Feature discovery process
+- `/feature:discovery` - Feature discovery and planning process
 - `/feature:prd` - Product Requirements Document creation
 - `/feature:techspec` - Technical specification generation
 - `/feature:tasks` - Task breakdown and planning
+- `/feature:workflow` - Complete feature development workflow
 
 ### Code Quality & Fixing
 
-- `/fix:types` - TypeScript error fixing with diagnostic parsing
-- `/fix:lint` - Biome linting with rule-aware remediation
-- `/fix:tests` - Vitest failure analysis and automated fixes
-
-### Agent Management
-
-- `/agent:create` - Create new specialized agents
-- `/agent:update` - Update existing agents
-- `/agent:list` - List available agents
-- `/agent:analyze` - Analyze agent performance
+- `/fix:types` - TypeScript error fixing with automated diagnostics
+- `/fix:lint` - Biome linting with rule-aware automated fixes
+- `/fix:tests` - Vitest failure analysis and TDD-based fixes
 
 ### Git Operations
 
-- `/git:commit` - Smart conventional commits
-- `/git:branch` - Branch management
-- `/git:push` - Enhanced push operations
-- `/git:sync` - Repository synchronization
+- `/git:commit` - Smart conventional commits (feature branches only)
+- `/git:branch` - Create feature branch from dev
+- `/git:push` - Push changes and create PR to dev
+- `/git:sync` - Synchronize local repository with dev branch
 
 ### Analysis & Implementation
 
-- `/analyze` - Code analysis workflows
-- `/implement` - Implementation guidance
+- `/analyze` - Pre-implementation analysis for token optimization
+- `/implement` - Task execution from plans and specifications
+
+### Design & Testing
+
+- `/design:review` - UI/UX compliance and accessibility review
 
 ## 📚 Rules & Standards
 
 ### Core Principles
 
-- **Pragmatism over Purism**: Functionality first, perfect architecture second
 - **Clean Architecture & DDD**: Applied where they add clear value
 - **TypeScript-first**: Strict typing with meaningful types
 - **Test-Driven Development**: Tests first, implementation second
@@ -157,10 +155,9 @@ To configure these MCP servers, add the `mcpServers` section to your `~/.claude.
 
 **Required API Keys:**
 
-- Magic: Get your API key from [21st.dev](https://21st.dev)
 - Perplexity: Get your API key from [Perplexity API](https://docs.perplexity.ai/docs/getting-started)
 - Zen: Requires OpenAI, Gemini, and/or OpenRouter API keys
-- Morph: Get your API key from [Morph](https://morph.so)
+- Morph: Get your API key from [Morph](https://morphllm.com/)
 
 **No API Keys Required:**
 

@@ -9,13 +9,6 @@
       "args": ["mcp", "gateway", "run"],
       "type": "stdio"
     },
-    "magic": {
-      "command": "npx",
-      "args": ["-y", "@21st-dev/magic@latest"],
-      "env": {
-        "API_KEY": "your-magic-api-key-here"
-      }
-    },
     "perplexity-mcp": {
       "type": "stdio",
       "command": "perplexity-mcp",
