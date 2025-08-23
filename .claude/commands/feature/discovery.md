@@ -68,7 +68,7 @@ docs/features/[feature-slug]/
 
 ## Templates Used
 
-- `.claude/templates/discovery-template.md`
+- `~/.claude/templates/discovery-template.md`
 
 ## Success Criteria
 

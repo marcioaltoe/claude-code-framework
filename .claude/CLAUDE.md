@@ -24,6 +24,22 @@ bun lint            # Run linter
 bun type-check      # Check TypeScript types
 ```
 
+### Import Strategy - Barrel Files
+
+This project uses **barrel-craft** to automatically generate index.ts files, enabling clean imports:
+
+```typescript
+// ✅ Good - uses barrel files
+import { UserIdentity } from '@/domain/aggregate'
+import { Email, Password } from '@/domain/value-object'
+
+// ❌ Avoid - relative path imports
+import { UserIdentity } from '../../domain/aggregate/user-identity.aggregate'
+```
+
+**IMPORTANT**: After creating new files or moving existing ones, run `bun run craft` to update
+barrel files.
+
 ### Fix Commands (Claude Code)
 
 ```bash
@@ -155,7 +171,7 @@ Use @agent-[name] for specialized help. All agents now follow standardized docum
 
 ## Available Commands
 
-Commands are in `.claude/commands/`:
+Commands are in `~/.claude/commands/`:
 
 ### Fix Commands
 
@@ -186,17 +202,17 @@ Commands are in `.claude/commands/`:
 
 ## Reference Documentation
 
-Core rules are in `.claude/rules/`:
+Core rules are in `~/.claude/rules/`:
 
-- `.claude/rules/tdd.md` - Test-Driven Development
-- `.claude/naming-conventions.md` - File naming patterns
-- `.claude/clean-architecture.md` - Architecture principles
-- `.claude/folder-structure.md` - Project organization
-- `.claude/solid.md` - SOLID principles
-- `.claude/react.md` - React technology stack and patterns
+- `~/.claude/rules/tdd.md` - Test-Driven Development
+- `~/.claude/naming-conventions.md` - File naming patterns
+- `~/.claude/clean-architecture.md` - Architecture principles
+- `~/.claude/folder-structure.md` - Project organization
+- `~/.claude/solid.md` - SOLID principles
+- `~/.claude/react.md` - React technology stack and patterns
 
-Context files are in `.claude/context/`:
+Context files are in `~/.claude/context/`:
 
-- `.claude/context/design-principles.md` - S-Tier SaaS design standards
+- `~/.claude/context/design-principles.md` - S-Tier SaaS design standards
 
 Detailed knowledge is in agents - use them for specifics!

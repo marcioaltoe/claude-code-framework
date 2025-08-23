@@ -256,17 +256,17 @@ docs/features/[feature-slug]/
 
 ## Templates Used
 
-- `.claude/templates/techspec-template.md`
+- `~/.claude/templates/techspec-template.md`
 
 ## Standards Compliance
 
 Ensures alignment with:
 
-- `.claude/rules/clean-architecture.md`
-- `.claude/rules/solid.md`
-- `.claude/rules/typescript-patterns.md`
-- `.claude/rules/api-standards.md`
-- `.claude/rules/database-drizzle.md`
+- `~/.claude/rules/clean-architecture.md`
+- `~/.claude/rules/solid.md`
+- `~/.claude/rules/typescript-patterns.md`
+- `~/.claude/rules/api-standards.md`
+- `~/.claude/rules/database-drizzle.md`
 
 ## Next Step
 

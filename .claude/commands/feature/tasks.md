@@ -237,8 +237,8 @@ Each task must have:
 
 ## Templates Used
 
-- `.claude/templates/task-template.md`
-- `.claude/templates/tasks-summary-template.md`
+- `~/.claude/templates/task-template.md`
+- `~/.claude/templates/tasks-summary-template.md`
 
 ## Implementation Guidelines
 

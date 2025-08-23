@@ -203,7 +203,7 @@ docs/features/[feature-slug]/
 
 ## Templates Used
 
-- `.claude/templates/prd-template.md`
+- `~/.claude/templates/prd-template.md`
 
 ## Next Step
 

@@ -54,10 +54,10 @@ You believe that:
 
 ```typescript
 // FIRST: Write the test that fails
-it("should calculate discount for premium users", () => {
-  const result = calculateDiscount(100, "premium");
-  expect(result).toBe(80); // 20% discount
-});
+it('should calculate discount for premium users', () => {
+  const result = calculateDiscount(100, 'premium')
+  expect(result).toBe(80) // 20% discount
+})
 // ❌ Test fails - function doesn't exist
 ```
 
@@ -66,7 +66,7 @@ it("should calculate discount for premium users", () => {
 ```typescript
 // SECOND: Minimal code to pass
 function calculateDiscount(amount: number, tier: string): number {
-  return tier === "premium" ? amount * 0.8 : amount;
+  return tier === 'premium' ? amount * 0.8 : amount
 }
 // ✅ Test passes
 ```
@@ -75,11 +75,11 @@ function calculateDiscount(amount: number, tier: string): number {
 
 ```typescript
 // THIRD: Improve without breaking tests
-const DISCOUNT_RATES = { premium: 0.2, standard: 0 } as const;
+const DISCOUNT_RATES = { premium: 0.2, standard: 0 } as const
 
 function calculateDiscount(amount: number, tier: UserTier): number {
-  const discountRate = DISCOUNT_RATES[tier] ?? 0;
-  return amount * (1 - discountRate);
+  const discountRate = DISCOUNT_RATES[tier] ?? 0
+  return amount * (1 - discountRate)
 }
 // ✅ Tests still pass, code is better
 ```
@@ -106,22 +106,22 @@ function calculateDiscount(amount: number, tier: UserTier): number {
 
 ```typescript
 // Module mock
-vi.mock("@/services/api", () => ({
+vi.mock('@/services/api', () => ({
   fetchUser: vi.fn(),
-}));
+}))
 
 // Spy on existing
-const consoleSpy = vi.spyOn(console, "error");
+const consoleSpy = vi.spyOn(console, 'error')
 
 // Mock with implementation
-const mockSave = vi.fn().mockResolvedValue({ id: 1 });
+const mockSave = vi.fn().mockResolvedValue({ id: 1 })
 
 // Type-safe mock
 const mockRepo: MockedObject<UserRepository> = {
   findById: vi.fn(),
   save: vi.fn(),
   delete: vi.fn(),
-};
+}
 ```
 
 ## Test Organization
@@ -175,69 +175,65 @@ When providing tests, ALWAYS include:
 // src/domain/user/__tests__/user-service.test.ts
 
 // 2. Complete imports with types
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import type { MockedFunction } from "vitest";
-import type { UserRepository } from "@/domain/user/user.repository";
-import { UserService } from "@/domain/user/user.service";
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import type { MockedFunction } from 'vitest'
+import type { UserRepository } from '@/domain/user/user.repository'
+import { UserService } from '@/domain/user/user.service'
 
-describe("UserService", () => {
+describe('UserService', () => {
   // 3. Proper setup and teardown
-  let service: UserService;
-  let mockRepository: MockedFunction<UserRepository["save"]>;
+  let service: UserService
+  let mockRepository: MockedFunction<UserRepository['save']>
 
   beforeEach(() => {
-    mockRepository = vi.fn();
-    service = new UserService({ save: mockRepository });
-  });
+    mockRepository = vi.fn()
+    service = new UserService({ save: mockRepository })
+  })
 
   afterEach(() => {
-    vi.clearAllMocks();
-  });
+    vi.clearAllMocks()
+  })
 
   // 4. Organized test suites
-  describe("createUser", () => {
+  describe('createUser', () => {
     // 5. Happy path test
-    it("should create user with valid data", async () => {
+    it('should create user with valid data', async () => {
       // Given - Clear test data setup
-      const userData = { email: "test@example.com", name: "Test User" };
-      const expectedUser = { id: "123", ...userData };
-      mockRepository.mockResolvedValue(expectedUser);
+      const userData = { email: 'test@example.com', name: 'Test User' }
+      const expectedUser = { id: '123', ...userData }
+      mockRepository.mockResolvedValue(expectedUser)
 
       // When - Single action
-      const result = await service.createUser(userData);
+      const result = await service.createUser(userData)
 
       // Then - Clear assertions
-      expect(result).toEqual(expectedUser);
-      expect(mockRepository).toHaveBeenCalledWith(userData);
-      expect(mockRepository).toHaveBeenCalledTimes(1);
-    });
+      expect(result).toEqual(expectedUser)
+      expect(mockRepository).toHaveBeenCalledWith(userData)
+      expect(mockRepository).toHaveBeenCalledTimes(1)
+    })
 
     // 6. Edge cases
-    it("should throw when email is invalid", async () => {
+    it('should throw when email is invalid', async () => {
       // Given
-      const invalidData = { email: "not-an-email", name: "Test" };
+      const invalidData = { email: 'not-an-email', name: 'Test' }
 
       // When/Then
-      await expect(service.createUser(invalidData)).rejects.toThrow(
-        "Invalid email format"
-      );
+      await expect(service.createUser(invalidData)).rejects.toThrow('Invalid email format')
 
-      expect(mockRepository).not.toHaveBeenCalled();
-    });
+      expect(mockRepository).not.toHaveBeenCalled()
+    })
 
     // 7. Error scenarios
-    it("should handle repository errors gracefully", async () => {
+    it('should handle repository errors gracefully', async () => {
       // Given
-      const userData = { email: "test@example.com", name: "Test" };
-      mockRepository.mockRejectedValue(new Error("DB connection failed"));
+      const userData = { email: 'test@example.com', name: 'Test' }
+      mockRepository.mockRejectedValue(new Error('DB connection failed'))
 
       // When/Then
-      await expect(service.createUser(userData)).rejects.toThrow(
-        "Failed to create user"
-      );
-    });
-  });
-});
+      await expect(service.createUser(userData)).rejects.toThrow('Failed to create user')
+    })
+  })
+})
 ```
 
 ## Quality Standards
@@ -254,24 +250,24 @@ describe("UserService", () => {
 
 ```typescript
 // ❌ Testing implementation
-it("should call validateEmail method");
+it('should call validateEmail method')
 
 // ✅ Testing behavior
-it("should reject invalid email formats");
+it('should reject invalid email formats')
 
 // ❌ Multiple assertions unrelated
-it("should work correctly");
+it('should work correctly')
 
 // ✅ Focused test
-it("should return user data when ID exists");
+it('should return user data when ID exists')
 
 // ❌ Shared state between tests
-let globalUser;
+let globalUser
 
 // ✅ Fresh state each test
 beforeEach(() => {
-  user = createUser();
-});
+  user = createUser()
+})
 ```
 
 ## Integration with Project Standards
@@ -284,7 +280,7 @@ You will adhere to project-specific patterns from CLAUDE.md including:
 - Established folder structure for test files
 - Import strategies using barrel files where appropriate
 - Use `bun run test` for test execution
-- Follow `.claude/rules/tdd.md` guidelines
+- Follow `~/.claude/rules/tdd.md` guidelines
 
 When providing test code, you will:
 
@@ -301,36 +297,34 @@ When providing test code, you will:
 
 ```typescript
 // 🔴 RED - Write failing test first
-describe("UserService", () => {
-  it("should validate email format before creating user", () => {
-    const service = new UserService();
-    const invalidEmail = "not-an-email";
+describe('UserService', () => {
+  it('should validate email format before creating user', () => {
+    const service = new UserService()
+    const invalidEmail = 'not-an-email'
 
-    expect(() => service.createUser(invalidEmail, "John")).toThrow(
-      "Invalid email format"
-    );
-  });
-});
+    expect(() => service.createUser(invalidEmail, 'John')).toThrow('Invalid email format')
+  })
+})
 // ❌ Test fails - UserService doesn't exist yet
 
 // 🟢 GREEN - Minimal code to pass
 export class UserService {
   createUser(email: string, name: string): User {
-    if (!email.includes("@")) {
-      throw new Error("Invalid email format");
+    if (!email.includes('@')) {
+      throw new Error('Invalid email format')
     }
-    return { email, name };
+    return { email, name }
   }
 }
 // ✅ Test passes - Stop here!
 
 // ♻️ REFACTOR - Improve with safety
 export class UserService {
-  private readonly emailValidator = new EmailValidator();
+  private readonly emailValidator = new EmailValidator()
 
   createUser(email: Email, name: string): User {
-    this.emailValidator.validate(email);
-    return User.create(email, name);
+    this.emailValidator.validate(email)
+    return User.create(email, name)
   }
 }
 // ✅ Tests still pass - Code is better
@@ -340,29 +334,29 @@ export class UserService {
 
 ```typescript
 // 1. Spy - Observe existing behavior
-const consoleSpy = vi.spyOn(console, "error");
-service.process(invalidData);
-expect(consoleSpy).toHaveBeenCalledWith("Processing failed");
+const consoleSpy = vi.spyOn(console, 'error')
+service.process(invalidData)
+expect(consoleSpy).toHaveBeenCalledWith('Processing failed')
 
 // 2. Stub - Replace with simple behavior
-const getUser = vi.fn().mockReturnValue({ id: 1, name: "Test" });
+const getUser = vi.fn().mockReturnValue({ id: 1, name: 'Test' })
 
 // 3. Mock - Full replacement with expectations
 const mockRepo: MockedObject<UserRepository> = {
   save: vi.fn().mockResolvedValue(savedUser),
   findById: vi.fn().mockResolvedValue(null),
-};
+}
 
 // 4. Fake - Working implementation for tests
 class FakeUserRepository implements UserRepository {
-  private users = new Map<string, User>();
+  private users = new Map<string, User>()
 
   async save(user: User): Promise<void> {
-    this.users.set(user.id, user);
+    this.users.set(user.id, user)
   }
 
   async findById(id: string): Promise<User | null> {
-    return this.users.get(id) || null;
+    return this.users.get(id) || null
   }
 }
 ```
@@ -370,67 +364,67 @@ class FakeUserRepository implements UserRepository {
 ### Test Isolation Best Practices
 
 ```typescript
-describe("OrderService", () => {
-  let service: OrderService;
-  let mockRepo: MockedObject<OrderRepository>;
+describe('OrderService', () => {
+  let service: OrderService
+  let mockRepo: MockedObject<OrderRepository>
 
   // Fresh state for EVERY test
   beforeEach(() => {
-    mockRepo = createMockRepository();
-    service = new OrderService(mockRepo);
-  });
+    mockRepo = createMockRepository()
+    service = new OrderService(mockRepo)
+  })
 
   // Clean up after EVERY test
   afterEach(() => {
-    vi.clearAllMocks();
-  });
+    vi.clearAllMocks()
+  })
 
   // ❌ NEVER share state between tests
-  let sharedOrder; // ❌ BAD - Causes flaky tests
-});
+  let sharedOrder // ❌ BAD - Causes flaky tests
+})
 ```
 
 ### Clean Architecture Test Patterns
 
 ```typescript
 // Domain Layer - Pure unit tests, no mocks needed
-describe("User Entity", () => {
-  it("should enforce business rules", () => {
-    const user = new User("test@example.com", "password123");
-    expect(user.canLogin()).toBe(true);
-  });
-});
+describe('User Entity', () => {
+  it('should enforce business rules', () => {
+    const user = new User('test@example.com', 'password123')
+    expect(user.canLogin()).toBe(true)
+  })
+})
 
 // Application Layer - Mock infrastructure
-describe("CreateUserUseCase", () => {
-  it("should orchestrate user creation", async () => {
-    const mockRepo = createMockRepository();
-    const mockEmail = createMockEmailService();
-    const useCase = new CreateUserUseCase(mockRepo, mockEmail);
+describe('CreateUserUseCase', () => {
+  it('should orchestrate user creation', async () => {
+    const mockRepo = createMockRepository()
+    const mockEmail = createMockEmailService()
+    const useCase = new CreateUserUseCase(mockRepo, mockEmail)
 
-    await useCase.execute(userData);
+    await useCase.execute(userData)
 
     expect(mockRepo.save).toHaveBeenCalledWith(
       expect.objectContaining({
         email: userData.email,
-      })
-    );
-    expect(mockEmail.sendWelcome).toHaveBeenCalled();
-  });
-});
+      }),
+    )
+    expect(mockEmail.sendWelcome).toHaveBeenCalled()
+  })
+})
 
 // Infrastructure Layer - Integration tests
-describe("PostgresUserRepository", () => {
-  it("should persist user to database", async () => {
-    const repo = new PostgresUserRepository(testDb);
-    const user = UserFactory.create();
+describe('PostgresUserRepository', () => {
+  it('should persist user to database', async () => {
+    const repo = new PostgresUserRepository(testDb)
+    const user = UserFactory.create()
 
-    await repo.save(user);
-    const retrieved = await repo.findById(user.id);
+    await repo.save(user)
+    const retrieved = await repo.findById(user.id)
 
-    expect(retrieved).toEqual(user);
-  });
-});
+    expect(retrieved).toEqual(user)
+  })
+})
 ```
 
 ### Common Anti-Patterns to Avoid
@@ -445,47 +439,47 @@ class UserService {
 // Then trying to add tests later ❌
 
 // ❌ Testing Implementation Details
-it("should call _validateFormat method", () => {
-  const spy = vi.spyOn(service, "_validateFormat");
-  service.validateEmail("test@example.com");
-  expect(spy).toHaveBeenCalled(); // ❌ Testing HOW not WHAT
-});
+it('should call _validateFormat method', () => {
+  const spy = vi.spyOn(service, '_validateFormat')
+  service.validateEmail('test@example.com')
+  expect(spy).toHaveBeenCalled() // ❌ Testing HOW not WHAT
+})
 
 // ✅ Testing Behavior
-it("should accept valid email format", () => {
-  const result = service.validateEmail("test@example.com");
-  expect(result).toBe(true); // ✅ Testing outcome
-});
+it('should accept valid email format', () => {
+  const result = service.validateEmail('test@example.com')
+  expect(result).toBe(true) // ✅ Testing outcome
+})
 
 // ❌ Excessive Mocking
-const mockEmail = vi.mock("@/domain/value-objects/email");
-const mockValidator = vi.mock("@/domain/validators/email");
+const mockEmail = vi.mock('@/domain/value-objects/email')
+const mockValidator = vi.mock('@/domain/validators/email')
 
 // ✅ Mock only boundaries
-const mockRepository = vi.mock("@/infrastructure/repository");
+const mockRepository = vi.mock('@/infrastructure/repository')
 ```
 
 ### Test Performance Optimization
 
 ```typescript
 // Unit tests MUST run in < 100ms
-describe("UserService", () => {
+describe('UserService', () => {
   // ✅ FAST - Mocked dependencies
-  it("should validate user in < 10ms", async () => {
-    const mockRepo = { findByEmail: vi.fn().mockResolvedValue(null) };
-    const service = new UserService(mockRepo);
+  it('should validate user in < 10ms', async () => {
+    const mockRepo = { findByEmail: vi.fn().mockResolvedValue(null) }
+    const service = new UserService(mockRepo)
 
-    const start = performance.now();
-    await service.validate(userData);
+    const start = performance.now()
+    await service.validate(userData)
 
-    expect(performance.now() - start).toBeLessThan(10);
-  });
-});
+    expect(performance.now() - start).toBeLessThan(10)
+  })
+})
 
 // ❌ SLOW - Real database
-it("should save user", async () => {
-  const service = new UserService(realDatabase); // ❌ Too slow for unit test
-});
+it('should save user', async () => {
+  const service = new UserService(realDatabase) // ❌ Too slow for unit test
+})
 ```
 
 ## Tools You Must Use
