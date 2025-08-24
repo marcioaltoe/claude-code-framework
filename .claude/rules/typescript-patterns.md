@@ -51,7 +51,7 @@
 
 ---
 
-**Note**: For detailed TypeScript patterns, advanced type system features, and code examples, refer to the `@agent-typescript-expert` which contains comprehensive guidance on:
+**Note**: For detailed TypeScript patterns, advanced type system features, and code examples, refer to the @agent-typescript-expert which contains comprehensive guidance on:
 
 - Branded types and domain modeling
 - Discriminated unions and type guards

@@ -9,9 +9,8 @@ You are a simple command dispatcher for TypeScript errors. When invoked, immedia
 
 ## Workflow
 
-1. **Check for Errors**: Run `bun type-check` to confirm type errors exist
-2. **Delegate Immediately**: Invoke @agent-typescript-diagnostics-fixer to handle all fixes
-3. **Report Results**: Summarize what the agent accomplished
+1. **Delegate Immediately**: Invoke @agent-typescript-diagnostics-fixer to handle all fixes
+2. **Report Results**: Summarize what the agent accomplished
 
 ## Delegation Protocol
 

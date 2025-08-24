@@ -29,7 +29,7 @@ function process(data: any) {}
 
 // ✅ Good - Use unknown with type guards
 function process(data: unknown) {
-  if (typeof data === "string") {
+  if (typeof data === 'string') {
     // data is string here
   }
 }
@@ -38,28 +38,28 @@ function process(data: unknown) {
 ### Branded Types for Domain Modeling
 
 ```typescript
-type UserId = string & { __brand: "UserId" };
-type Email = string & { __brand: "Email" };
+type UserId = string & { __brand: 'UserId' }
+type Email = string & { __brand: 'Email' }
 
-const createUserId = (id: string): UserId => id as UserId;
+const createUserId = (id: string): UserId => id as UserId
 const createEmail = (email: string): Email => {
-  if (!email.includes("@")) throw new Error("Invalid email");
-  return email as Email;
-};
+  if (!email.includes('@')) throw new Error('Invalid email')
+  return email as Email
+}
 ```
 
 ### Discriminated Unions
 
 ```typescript
-type Result<T> = { success: true; data: T } | { success: false; error: Error };
+type Result<T> = { success: true; data: T } | { success: false; error: Error }
 
 function handleResult<T>(result: Result<T>) {
   if (result.success) {
     // TypeScript knows result.data exists
-    console.log(result.data);
+    console.log(result.data)
   } else {
     // TypeScript knows result.error exists
-    console.error(result.error);
+    console.error(result.error)
   }
 }
 ```
@@ -68,18 +68,18 @@ function handleResult<T>(result: Result<T>) {
 
 ```typescript
 class QueryBuilder<T = {}> {
-  private query: T;
+  private query: T
 
   select<K extends string>(field: K): QueryBuilder<T & { select: K }> {
-    return this as any;
+    return this as any
   }
 
   where<K extends string>(condition: K): QueryBuilder<T & { where: K }> {
-    return this as any;
+    return this as any
   }
 
   build(): T {
-    return this.query;
+    return this.query
   }
 }
 ```
@@ -87,30 +87,28 @@ class QueryBuilder<T = {}> {
 ### Template Literal Types
 
 ```typescript
-type Route = `/api/${string}`;
-type Method = "GET" | "POST" | "PUT" | "DELETE";
-type Endpoint = `${Method} ${Route}`;
+type Route = `/api/${string}`
+type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
+type Endpoint = `${Method} ${Route}`
 
-const endpoint: Endpoint = "GET /api/users"; // Type-safe
+const endpoint: Endpoint = 'GET /api/users' // Type-safe
 ```
 
 ### Conditional Types
 
 ```typescript
-type IsArray<T> = T extends any[] ? true : false;
-type Flatten<T> = T extends Array<infer U> ? U : T;
-type DeepReadonly<T> = T extends object
-  ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
-  : T;
+type IsArray<T> = T extends any[] ? true : false
+type Flatten<T> = T extends Array<infer U> ? U : T
+type DeepReadonly<T> = T extends object ? { readonly [K in keyof T]: DeepReadonly<T[K]> } : T
 ```
 
 ### Mapped Types
 
 ```typescript
-type Partial<T> = { [K in keyof T]?: T[K] };
-type Required<T> = { [K in keyof T]-?: T[K] };
-type Readonly<T> = { readonly [K in keyof T]: T[K] };
-type Nullable<T> = { [K in keyof T]: T[K] | null };
+type Partial<T> = { [K in keyof T]?: T[K] }
+type Required<T> = { [K in keyof T]-?: T[K] }
+type Readonly<T> = { readonly [K in keyof T]: T[K] }
+type Nullable<T> = { [K in keyof T]: T[K] | null }
 ```
 
 ### Type Guards
@@ -118,15 +116,13 @@ type Nullable<T> = { [K in keyof T]: T[K] | null };
 ```typescript
 // User-defined type guard
 function isUser(obj: unknown): obj is User {
-  return (
-    obj !== null && typeof obj === "object" && "id" in obj && "email" in obj
-  );
+  return obj !== null && typeof obj === 'object' && 'id' in obj && 'email' in obj
 }
 
 // Assertion functions
 function assertDefined<T>(value: T | undefined): asserts value is T {
   if (value === undefined) {
-    throw new Error("Value is undefined");
+    throw new Error('Value is undefined')
   }
 }
 ```
@@ -135,15 +131,15 @@ function assertDefined<T>(value: T | undefined): asserts value is T {
 
 ```typescript
 // Pick and Omit
-type UserPublic = Pick<User, "id" | "name" | "avatar">;
-type UserWithoutPassword = Omit<User, "password">;
+type UserPublic = Pick<User, 'id' | 'name' | 'avatar'>
+type UserWithoutPassword = Omit<User, 'password'>
 
 // Parameters and ReturnType
-type FuncParams = Parameters<typeof someFunction>;
-type FuncReturn = ReturnType<typeof someFunction>;
+type FuncParams = Parameters<typeof someFunction>
+type FuncReturn = ReturnType<typeof someFunction>
 
 // Awaited for Promise types
-type Data = Awaited<ReturnType<typeof fetchData>>;
+type Data = Awaited<ReturnType<typeof fetchData>>
 ```
 
 ### Const Assertions
@@ -151,21 +147,21 @@ type Data = Awaited<ReturnType<typeof fetchData>>;
 ```typescript
 // Literal types with const assertion
 const config = {
-  api: "https://api.example.com",
+  api: 'https://api.example.com',
   timeout: 5000,
   retries: 3,
-} as const;
+} as const
 
-type Config = typeof config;
+type Config = typeof config
 // Config.api is "https://api.example.com", not string
 ```
 
 ### Function Overloads
 
 ```typescript
-function create(type: "user"): User;
-function create(type: "post"): Post;
-function create(type: "comment"): Comment;
+function create(type: 'user'): User
+function create(type: 'post'): Post
+function create(type: 'comment'): Comment
 function create(type: string): User | Post | Comment {
   // Implementation
 }
@@ -180,8 +176,8 @@ function create(type: string): User | Post | Comment {
 // Solution: Check for type narrowing issues
 if (Array.isArray(data) && data.length > 0) {
   // data is never[] here, need proper typing
-  const typed = data as User[];
-  console.log(typed[0].id);
+  const typed = data as User[]
+  console.log(typed[0].id)
 }
 ```
 
@@ -190,8 +186,8 @@ if (Array.isArray(data) && data.length > 0) {
 ```typescript
 // Error: Type 'string | undefined' is not assignable to type 'string'
 // Solution: Handle undefined case
-const value: string | undefined = getValue();
-const required: string = value ?? "default"; // or value!
+const value: string | undefined = getValue()
+const required: string = value ?? 'default' // or value!
 ```
 
 ### Generic Constraint Issues
@@ -200,7 +196,7 @@ const required: string = value ?? "default"; // or value!
 // Error: Type 'T' does not satisfy the constraint
 // Solution: Add proper constraints
 function process<T extends { id: string }>(item: T) {
-  return item.id; // Now TypeScript knows T has id
+  return item.id // Now TypeScript knows T has id
 }
 ```
 
@@ -281,7 +277,7 @@ class UserManager {
 ```typescript
 // ✅ Good - Extensible via interface
 interface PaymentProcessor {
-  process(amount: number): Promise<PaymentResult>;
+  process(amount: number): Promise<PaymentResult>
 }
 
 class StripeProcessor implements PaymentProcessor {
@@ -303,19 +299,19 @@ class PayPalProcessor implements PaymentProcessor {
 ```typescript
 // ✅ Good - Proper substitution
 interface Bird {
-  move(): void;
+  move(): void
 }
 
 class Sparrow implements Bird {
   move(): void {
-    this.fly();
+    this.fly()
   }
   private fly(): void {}
 }
 
 class Penguin implements Bird {
   move(): void {
-    this.swim();
+    this.swim()
   }
   private swim(): void {}
 }
@@ -326,23 +322,23 @@ class Penguin implements Bird {
 ```typescript
 // ✅ Good - Focused interfaces
 interface Readable {
-  read(): string;
+  read(): string
 }
 
 interface Writable {
-  write(data: string): void;
+  write(data: string): void
 }
 
 class TextFile implements Readable, Writable {
   read(): string {
-    return "";
+    return ''
   }
   write(data: string): void {}
 }
 
 class ReadOnlyFile implements Readable {
   read(): string {
-    return "";
+    return ''
   }
 }
 ```
@@ -352,20 +348,20 @@ class ReadOnlyFile implements Readable {
 ```typescript
 // ✅ Good - Depends on abstraction
 interface Logger {
-  log(message: string): void;
+  log(message: string): void
 }
 
 class UserService {
   constructor(private logger: Logger) {}
 
   createUser(userData: UserData): User {
-    this.logger.log("User created");
-    return user;
+    this.logger.log('User created')
+    return user
   }
 }
 
 // Can inject any logger implementation
-const service = new UserService(new ConsoleLogger());
+const service = new UserService(new ConsoleLogger())
 ```
 
 ## Tools You Must Use
@@ -385,7 +381,7 @@ When solving TypeScript challenges:
 
 ## Integration with Other Agents
 
-- **tdd-test-engineer**: Ensure type-safe test implementations
+- **tdd-engineer**: Ensure type-safe test implementations
 
   - Provide typed mock factories
   - Type-safe test utilities

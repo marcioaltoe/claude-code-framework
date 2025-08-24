@@ -95,8 +95,8 @@ When reviewing code, ensure:
 - **zen.secaudit**: For security vulnerability assessment
 - **perplexity MCP**: For researching best practices and recent solutions
 - **context7 MCP**: For framework-specific documentation and patterns
-- **mcp\_\_serena**: For comprehensive code navigation and impact analysis through semantic understanding
-- **mcp**sequential-thinking**sequentialthinking**: For systematic evaluation of complex technical decisions with alternatives
+- **mcp__serena**: For comprehensive code navigation and impact analysis through semantic understanding
+- **mcp__sequential-thinking__sequentialthinking**: For systematic evaluation of complex technical decisions with alternatives
 
 ## Research Protocol
 
@@ -111,7 +111,7 @@ When reviewing technical decisions:
 
 ## Integration with Other Agents
 
-- **tdd-test-engineer**: Ensure code is testable and well-tested
+- **tdd-engineer**: Ensure code is testable and well-tested
 
   - Review test coverage and quality
   - Validate testing strategy alignment

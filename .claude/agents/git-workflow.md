@@ -285,7 +285,7 @@ When helping with git operations:
 
 ## Integration with Other Agents
 
-- **@agent-tdd-test-engineer**: Run tests before commits
+- **@agent-tdd-engineer**: Run tests before commits
 
   - Ensure all tests pass
   - Verify coverage requirements

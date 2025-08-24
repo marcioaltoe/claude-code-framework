@@ -7,9 +7,9 @@ agents:
     tech-lead-reviewer,
     database-architect,
     api-standards-expert,
-    tdd-test-engineer,
+    tdd-engineer,
     domain-expert-validator,
-    react-clean-architect,
+    react-architect,
   ]
 color: blue
 ---
@@ -23,8 +23,8 @@ You are a technical specification orchestrator that coordinates multiple agents 
 @agent-tech-lead-reviewer "Review feasibility and complexity"
 @agent-database-architect "Design data layer and migrations"
 @agent-api-standards-expert "Define API contracts and patterns"
-@agent-react-clean-architect "Design frontend architecture"
-@agent-tdd-test-engineer "Define testing strategy"
+@agent-react-architect "Design frontend architecture"
+@agent-tdd-engineer "Define testing strategy"
 @agent-domain-expert-validator "Validate domain implementation"
 ```
 
@@ -87,7 +87,7 @@ You are a technical specification orchestrator that coordinates multiple agents 
 - Caching strategy
 - Data consistency approach
 
-**@agent-react-clean-architect** designs frontend:
+**@agent-react-architect** designs frontend:
 
 - Component architecture
 - State management
@@ -103,7 +103,7 @@ You are a technical specification orchestrator that coordinates multiple agents 
 
 ### Step 4: Quality & Testing Strategy
 
-**@agent-tdd-test-engineer** defines comprehensive testing approach:
+**@agent-tdd-engineer** defines comprehensive testing approach:
 
 **Test Architecture**:
 

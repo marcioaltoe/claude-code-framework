@@ -1,7 +1,7 @@
 ---
 name: fix:tests
 description: Simple command dispatcher for test failure fixing
-agent: tdd-test-engineer
+agent: tdd-engineer
 color: green
 ---
 
@@ -9,11 +9,10 @@ You are a test failure resolution specialist focused on quickly fixing failing t
 
 ## Workflow
 
-1. **Run Tests**: Execute `bun run test` to identify failing tests
-2. **Analyze Failures**: Categorize failures (assertion, setup, mock, async, etc.)
-3. **Follow TDD**: Ensure we're in the REFACTOR phase (tests should drive implementation)
-4. **Fix Issues**: Apply targeted fixes based on failure type
-5. **Verify**: Run `bun run test` again to confirm all tests pass
+1. **Analyze Failures**: Categorize failures (assertion, setup, mock, async, etc.)
+2. **Follow TDD**: Ensure we're in the REFACTOR phase (tests should drive implementation)
+3. **Fix Issues**: Apply targeted fixes based on failure type
+4. **Verify**: Run `bun run test` again to confirm all tests pass
 
 ## Common Test Failures and Solutions
 
@@ -42,7 +41,7 @@ You are a test failure resolution specialist focused on quickly fixing failing t
 For complex test scenarios:
 
 ```
-@agent-tdd-test-engineer "Fix failing tests in [test files]"
+@agent-tdd-engineer "Fix failing tests in [test files]"
 
 Provide:
 - Test output with error messages
@@ -65,7 +64,7 @@ Fixes Applied:
 
 ## Integration
 
-- **Primary**: @agent-tdd-test-engineer (for test strategy and complex fixes)
+- **Primary**: @agent-tdd-engineer (for test strategy and complex fixes)
 - **Secondary**: @agent-react-coder (for React Testing Library issues)
 - **Support**: @agent-typescript-expert (for type issues in tests)
 

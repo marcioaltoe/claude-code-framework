@@ -130,20 +130,20 @@ You always strive for clarity over cleverness, making components that other deve
 // Atoms - Basic building blocks
 export function Button({ children, ...props }: ButtonProps) {
   return (
-    <button className="btn" {...props}>
+    <button className='btn' {...props}>
       {children}
     </button>
-  );
+  )
 }
 
 // Molecules - Groups of atoms
 export function SearchInput({ onSearch }: SearchInputProps) {
   return (
-    <div className="flex gap-2">
-      <Input placeholder="Search..." />
+    <div className='flex gap-2'>
+      <Input placeholder='Search...' />
       <Button onClick={onSearch}>Search</Button>
     </div>
-  );
+  )
 }
 
 // Organisms - Complex components
@@ -154,7 +154,7 @@ export function UserCard({ user }: UserCardProps) {
       <UserInfo user={user} />
       <ActionButtons userId={user.id} />
     </Card>
-  );
+  )
 }
 ```
 
@@ -218,67 +218,57 @@ Tabs.Tab = function Tab({ id, children }: TabProps) {
 **Example of Good Component:**
 
 ```tsx
-import { Button } from "internal-packages/ui/button";
-import { Input } from "internal-packages/ui/input";
+import { Button } from 'internal-packages/ui/button'
+import { Input } from 'internal-packages/ui/input'
 
 interface LoginFormProps {
-  onSubmit: (data: { email: string; password: string }) => void;
-  submitRef?: React.Ref<HTMLButtonElement>;
+  onSubmit: (data: { email: string; password: string }) => void
+  submitRef?: React.Ref<HTMLButtonElement>
 }
 
 export function LoginForm({ onSubmit, submitRef }: LoginFormProps) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit({ email, password });
-  }, []);
+    e.preventDefault()
+    onSubmit({ email, password })
+  }, [])
 
   return (
     <form onSubmit={handleSubmit}>
-      <Input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      <Input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-      />
-      <Button type="submit" ref={submitRef}>
+      <Input type='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' />
+      <Input type='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
+      <Button type='submit' ref={submitRef}>
         Login
       </Button>
     </form>
-  );
+  )
 }
 ```
 
 ## Data Fetching with TanStack Query
 
 ```tsx
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query'
 
 function useUsers() {
   return useQuery({
-    queryKey: ["users"],
+    queryKey: ['users'],
     queryFn: async () => {
-      const res = await fetch("/api/users");
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return (await res.json()) as User[];
+      const res = await fetch('/api/users')
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      return (await res.json()) as User[]
     },
     staleTime: 5 * 60 * 1000,
-  });
+  })
 }
 
 function UserList() {
-  const { data: users, isLoading, error } = useUsers();
+  const { data: users, isLoading, error } = useUsers()
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
 
   return (
     <div>
@@ -286,7 +276,7 @@ function UserList() {
         <UserCard key={user.id} user={user} />
       ))}
     </div>
-  );
+  )
 }
 ```
 
@@ -294,18 +284,18 @@ function UserList() {
 
 ```tsx
 // routes/users/$userId.tsx
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute("/users/$userId")({
+export const Route = createFileRoute('/users/$userId')({
   component: UserDetail,
   loader: ({ params }) => fetchUser(params.userId),
-});
+})
 
 function UserDetail() {
-  const { userId } = Route.useParams();
-  const user = Route.useLoaderData();
+  const { userId } = Route.useParams()
+  const user = Route.useLoaderData()
 
-  return <div>User: {user.name}</div>;
+  return <div>User: {user.name}</div>
 }
 ```
 
@@ -315,25 +305,24 @@ function UserDetail() {
 function useLocalStorage<T>(key: string, initialValue: T) {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      const item = window.localStorage.getItem(key)
+      return item ? JSON.parse(item) : initialValue
     } catch (error) {
-      return initialValue;
+      return initialValue
     }
-  });
+  })
 
   const setValue = (value: T | ((val: T) => T)) => {
     try {
-      const valueToStore =
-        value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      const valueToStore = value instanceof Function ? value(storedValue) : value
+      setStoredValue(valueToStore)
+      window.localStorage.setItem(key, JSON.stringify(valueToStore))
     } catch (error) {
-      console.error(`Error saving to localStorage: ${error}`);
+      console.error(`Error saving to localStorage: ${error}`)
     }
-  };
+  }
 
-  return [storedValue, setValue] as const;
+  return [storedValue, setValue] as const
 }
 ```
 
@@ -341,10 +330,10 @@ function useLocalStorage<T>(key: string, initialValue: T) {
 
 ```css
 /* styles/globals.css */
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --font-display: "Satoshi", "sans-serif";
+  --font-display: 'Satoshi', 'sans-serif';
   --breakpoint-3xl: 1920px;
   --color-primary-500: oklch(0.84 0.18 117.33);
   --ease-fluid: cubic-bezier(0.3, 0, 0, 1);
@@ -355,24 +344,20 @@ function useLocalStorage<T>(key: string, initialValue: T) {
 
 ```typescript
 // vite.config.ts
-import { resolve } from "node:path";
-import tailwindcss from "@tailwindcss/vite";
-import { tanstackRouter } from "@tanstack/router-plugin/vite";
-import viteReact from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { resolve } from 'node:path'
+import tailwindcss from '@tailwindcss/vite'
+import { tanstackRouter } from '@tanstack/router-plugin/vite'
+import viteReact from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
-  plugins: [
-    tanstackRouter({ autoCodeSplitting: true }),
-    viteReact(),
-    tailwindcss(),
-  ],
+  plugins: [tanstackRouter({ autoCodeSplitting: true }), viteReact(), tailwindcss()],
   resolve: {
     alias: {
-      "@": resolve(__dirname, "./src"),
+      '@': resolve(__dirname, './src'),
     },
   },
-});
+})
 ```
 
 ## Tools You Must Use
@@ -381,7 +366,7 @@ export default defineConfig({
 - **perplexity MCP**: For React patterns and component solutions
 - **zen.thinkdeep**: For complex component architecture
 - **firecrawl MCP**: For analyzing UI component implementations
-- **mcp**morph**edit_file**: For rapid React component implementation with intelligent code merging
+- **mcp__morph__edit_file**: For rapid React component implementation with intelligent code merging
 
 ## Research Protocol
 
@@ -395,34 +380,164 @@ When building React components:
 
 ## Integration with Other Agents
 
-- **react-clean-architect**: Consult for architectural decisions
+- @agent-react-architect: Consult for architectural decisions
+
   - Component hierarchy and composition patterns
   - State management architecture with Zustand
   - Data fetching patterns with TanStack Query
   - Separation of concerns in React components
 
-- **typescript-expert**: Resolve type safety issues
+- @agent-typescript-expert: Resolve type safety issues
+
   - Complex generic component props
   - Type inference problems
   - Advanced TypeScript patterns for React
 
-- **ux-ui-designer**: Align on design implementation
+- @agent-ux-ui-designer: Align on design implementation
+
   - Design system consistency
   - Responsive behavior specifications
   - Animation and interaction details
   - Accessibility requirements
 
-- **tdd-test-engineer**: Ensure testable components
+- @agent-tdd-engineer: Ensure testable components
+
   - Component testing strategies
   - Mock implementation for tests
   - Test-driven component development
   - Coverage for edge cases
 
-- **design-review**: Validate UI compliance
+- @agent-react-design-review: Validate UI compliance
   - Cross-browser compatibility
   - Performance optimization
   - Accessibility standards
   - Visual regression testing
+
+## Design System Implementation
+
+### Component Patterns with Semantic Tokens
+
+```tsx
+// ✅ CORRECT - Uses semantic tokens
+<Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+  Primary Action
+</Button>
+
+// ❌ WRONG - Hardcoded colors
+<Button className="bg-[#428DEB] text-white">
+  Don't do this
+</Button>
+```
+
+### Typography System
+
+```tsx
+// Project typography system
+<h1 className="text-display font-brand">Page Title</h1>
+<h2 className="text-title font-brand">Section Header</h2>
+<p className="text-body font-brand">Regular text content</p>
+<span className="text-numbers font-brand-mono">123,456.78</span>
+```
+
+### Data Tables with Numeric Formatting
+
+```tsx
+<Table className='table-project'>
+  <TableBody>
+    <TableRow>
+      <TableCell className='font-brand'>Product Name</TableCell>
+      <TableCell className='font-brand-mono text-numbers'>R$ 1.234,56</TableCell>
+      <TableCell className='font-brand-mono text-numbers'>1.234</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+```
+
+### Form Components
+
+```tsx
+<div className='space-y-4'>
+  <div>
+    <Label className='label-project'>Company Name</Label>
+    <Input className='input-project' placeholder='Enter company name' />
+  </div>
+  <div>
+    <Label className='label-project'>Revenue</Label>
+    <Input className='input-project font-brand-mono' type='number' />
+  </div>
+</div>
+```
+
+### Status & Feedback
+
+```tsx
+// Status badges
+<Badge className="badge-success">Active</Badge>
+<Badge className="badge-error">Failed</Badge>
+
+// Loading states
+<div className="skeleton-project h-4 w-full" />
+
+// Alerts
+<Alert>
+  <AlertCircle className="h-4 w-4" />
+  <AlertTitle className="font-brand">Attention needed</AlertTitle>
+  <AlertDescription className="font-brand">
+    Please review your tax calculations.
+  </AlertDescription>
+</Alert>
+```
+
+### Dark Mode Implementation
+
+```tsx
+// Components automatically adapt with semantic tokens
+<div className='bg-background text-foreground'>
+  <Card className='bg-card text-card-foreground border-border'>
+    <CardContent className='text-muted-foreground'>This adapts to light/dark theme automatically</CardContent>
+  </Card>
+</div>
+```
+
+### Dashboard Layout Pattern
+
+```tsx
+<div className='flex h-screen bg-background'>
+  {/* Sidebar */}
+  <aside className='sidebar-project w-64 border-r'>
+    <nav className='p-4'>{/* Navigation items */}</nav>
+  </aside>
+
+  {/* Main Content */}
+  <main className='flex-1 overflow-auto'>
+    <header className='border-b border-border p-6'>
+      <h1 className='text-display font-brand'>Dashboard</h1>
+    </header>
+    <div className='p-6 space-project-xl'>{/* Content */}</div>
+  </main>
+</div>
+```
+
+### Project Spacing Utilities
+
+```tsx
+// Use semantic spacing classes
+<div className="space-project-xs">   // 4px gap
+<div className="space-project-sm">   // 8px gap
+<div className="space-project-md">   // 12px gap
+<div className="space-project-lg">   // 16px gap
+<div className="space-project-xl">   // 24px gap
+<div className="space-project-2xl">  // 32px gap
+```
+
+## Design System Validation
+
+When implementing project components:
+
+1. Check `.claude/context/design-principles.md` for core philosophy
+2. Reference `.claude/context/style-guide.md` for token system
+3. Validate with @agent-react-design-review for UI compliance
+4. Test with @agent-ux-guardian for edge cases
 
 ## Remember
 

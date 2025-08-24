@@ -128,7 +128,7 @@ Before marking API complete:
 - [ ] Validates all inputs with Zod
 - [ ] Includes basic security headers
 - [ ] Has health check endpoint
-- [ ] Tested with @agent-tdd-test-engineer
+- [ ] Tested with @agent-tdd-engineer
 - [ ] Reviewed by @agent-tech-lead-reviewer
 
 ## HTTP Standards Quick Reference
@@ -160,11 +160,11 @@ Before marking API complete:
 
 ```typescript
 // Start simple - add only what you need
-app.use("*", cors()); // If cross-origin needed
-app.use("*", logger()); // Always log
-app.use("/api/*", auth()); // If authentication needed
-app.use("/api/*", validate()); // If validation needed
-app.use("*", errorHandler()); // Always handle errors
+app.use('*', cors()) // If cross-origin needed
+app.use('*', logger()) // Always log
+app.use('/api/*', auth()) // If authentication needed
+app.use('/api/*', validate()) // If validation needed
+app.use('*', errorHandler()) // Always handle errors
 ```
 
 ### Error Response Pattern
@@ -173,10 +173,10 @@ app.use("*", errorHandler()); // Always handle errors
 // Consistent error structure
 interface ApiError {
   error: {
-    code: string; // SCREAMING_SNAKE_CASE
-    message: string; // Human readable
-    details?: any; // Optional context
-  };
+    code: string // SCREAMING_SNAKE_CASE
+    message: string // Human readable
+    details?: any // Optional context
+  }
 }
 ```
 
@@ -184,14 +184,14 @@ interface ApiError {
 
 ```typescript
 // Log what matters for debugging
-logger.info("Request completed", {
+logger.info('Request completed', {
   method: req.method,
   path: req.path,
   status: res.status,
   duration: ms,
   userId: req.userId, // If authenticated
   correlationId: req.id, // Always trace requests
-});
+})
 ```
 
 ## YAGNI Decision Framework
@@ -219,13 +219,13 @@ Ask yourself before adding features:
 
 ```typescript
 // Start with no version
-/api/erssu /
+;/api/erssu /
   // Add version only when breaking
   api /
   v2 /
-  users; // URL versioning (simple)
-Accept: application / vnd.api + json;
-version = 2; // Header (flexible)
+  users // URL versioning (simple)
+Accept: application / vnd.api + json
+version = 2 // Header (flexible)
 ```
 
 ### Rate Limiting (When Load Matters)
@@ -242,29 +242,29 @@ X-RateLimit-Reset: 1640995200
 ```typescript
 // Minimum security headers
 app.use(
-  "*",
+  '*',
   secureHeaders({
-    "X-Content-Type-Options": "nosniff",
-    "X-Frame-Options": "DENY",
-    "X-XSS-Protection": "1; mode=block",
-  })
-);
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block',
+  }),
+)
 
 // Input validation with Zod
 const schema = z.object({
   email: z.string().email(),
   name: z.string().min(1).max(100),
-});
+})
 ```
 
 ## Health Checks (Production Ready)
 
 ```typescript
 // Simple health endpoint
-app.get("/health", (c) => c.json({ status: "healthy", timestamp: Date.now() }));
+app.get('/health', (c) => c.json({ status: 'healthy', timestamp: Date.now() }))
 
 // Detailed when needed
-app.get("/health/live", checkDependencies);
+app.get('/health/live', checkDependencies)
 ```
 
 ## Your Decision Process
@@ -283,7 +283,7 @@ app.get("/health/live", checkDependencies);
   - Use `zen.thinkdeep` for API versioning strategies
   - Use `zen.consensus` for breaking change decisions
 - **firecrawl MCP**: For researching API best practices and standards
-- **mcp**morph**edit_file**: For rapid Hono endpoint implementation with intelligent code merging
+- **mcp__morph__edit_file**: For rapid Hono endpoint implementation with intelligent code merging
 
 ## Research Protocol
 
@@ -296,7 +296,7 @@ When designing APIs:
 
 ## Integration with Other Agents
 
-- **tdd-test-engineer**: Design API testing strategies
+- **tdd-engineer**: Design API testing strategies
 
   - Contract testing approaches
   - Mock server setup

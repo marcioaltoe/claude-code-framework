@@ -100,7 +100,7 @@ When validating domain logic:
   - Confirm business rule accuracy
   - Identify missing domain constraints
 
-- **tdd-test-engineer**: Ensure domain rules are testable
+- **tdd-engineer**: Ensure domain rules are testable
 
   - Create property-based tests for invariants
   - Define edge cases in domain logic

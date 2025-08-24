@@ -103,4 +103,4 @@ src/domain/user/
 - **CI/CD**: All tests run automatically
 - Start with test tasks, then implementation
 
-For detailed patterns and examples, consult @agent-tdd-test-engineer
+For detailed patterns and examples, consult @agent-tdd-engineer

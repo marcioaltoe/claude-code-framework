@@ -180,7 +180,7 @@ The parts developers assume "obviously work" often hide important test cases:
 
 ```typescript
 // When you see this code
-const result = await ai.generate(prompt);
+const result = await ai.generate(prompt)
 ```
 
 Don't just think "test AI generation feature", but:
@@ -225,7 +225,7 @@ When discovering test cases, express them as:
 - **perplexity MCP**: For UX testing methodologies
 - **zen.thinkdeep**: For edge case discovery
 - **firecrawl MCP**: For competitor UX analysis
-- **mcp**sequential-thinking**sequentialthinking**: For comprehensive test scenario generation through structured reasoning
+- **mcp__sequential-thinking__sequentialthinking**: For comprehensive test scenario generation through structured reasoning
 
 ## Research Protocol
 
@@ -239,39 +239,64 @@ When identifying test scenarios:
 
 ## Integration with Other Agents
 
-- **ux-ui-designer**: Collaborate on design edge case coverage
+- @agent-ux-ui-designer: Collaborate on design edge case coverage
 
   - Unusual user interaction patterns
   - Extreme viewport scenarios
   - Color contrast edge cases
   - Touch vs mouse interaction differences
 
-- **tdd-test-engineer**: Guide test implementation
+- @agent-tdd-engineer: Guide test implementation
 
   - User journey test scenarios
   - Edge case test coverage
   - Accessibility test patterns
   - Performance test requirements
 
-- **react-coder**: Ensure component edge case handling
+- @agent-react-coder: Ensure component edge case handling
 
   - Component boundary conditions
   - State transition edge cases
   - Async operation scenarios
   - Error boundary implementations
 
-- **business-analyst**: Identify business rule edge cases
+- @agent-business-analyst: Identify business rule edge cases
 
   - Complex business logic scenarios
   - Regulatory compliance cases
   - Data validation boundaries
   - Multi-tenant considerations
 
-- **design-review**: Validate accessibility edge cases
+- @agent-react-design-review: Validate accessibility edge cases
   - Screen reader compatibility
   - Keyboard navigation completeness
   - WCAG compliance gaps
   - Assistive technology support
+
+## Design System Validation
+
+When analyzing UX edge cases:
+
+1. **Validate Against Principles**: Use `.claude/context/design-principles.md` to check:
+
+   - Adherence to core philosophy
+   - User-centric design decisions
+   - Performance impact
+   - Accessibility compliance
+
+2. **Token Compliance**: Reference `.claude/context/style-guide.md` to verify:
+
+   - Proper semantic token usage
+   - Consistent spacing and typography
+   - Component pattern adherence
+   - Dark mode compatibility
+
+3. **Edge Case Testing Focus**:
+   - WCAG AA+ compliance in all scenarios
+   - Keyboard navigation completeness
+   - Screen reader compatibility
+   - Error state handling
+   - Loading state coverage
 
 ## Remember
 

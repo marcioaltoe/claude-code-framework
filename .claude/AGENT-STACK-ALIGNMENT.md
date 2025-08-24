@@ -44,28 +44,28 @@ This standardization ensures:
 
 #### Software Architect
 
-- **Agent**: `@agent-software-architect`
+- **Agent**: @agent-software-architect
 - **Stack Focus**: Clean Architecture patterns for Node.js/Hono
 - **Tools**: context7 (Hono docs), zen.thinkdeep (architecture decisions)
 - **Responsibilities**: Layer separation, domain modeling, service boundaries
 
 #### API Designer
 
-- **Agent**: `@agent-api-standards-expert`
+- **Agent**: @agent-api-standards-expert
 - **Stack Focus**: Hono framework, HTTP standards, Winston logging
 - **Tools**: context7 (Hono patterns), perplexity (REST best practices)
 - **Responsibilities**: RESTful endpoints, middleware, structured logging
 
 #### Database Architect
 
-- **Agent**: `@agent-database-architect`
+- **Agent**: @agent-database-architect
 - **Stack Focus**: PostgreSQL, Drizzle ORM, migrations
 - **Tools**: context7 (Drizzle docs), zen.thinkdeep (schema design)
 - **Responsibilities**: Schema design, indexing, query optimization
 
 #### Domain Expert Validator
 
-- **Agent**: `@agent-domain-expert-validator`
+- **Agent**: @agent-domain-expert-validator
 - **Stack Focus**: Business logic validation in Clean Architecture
 - **Tools**: perplexity (domain standards), zen.consensus (rule conflicts)
 - **Responsibilities**: Domain model accuracy, business rule implementation
@@ -74,28 +74,28 @@ This standardization ensures:
 
 #### React Clean Architect
 
-- **Agent**: `@agent-react-clean-architect`
+- **Agent**: @agent-react-architect
 - **Stack Focus**: React 19 + Zustand + TanStack architecture
 - **Tools**: context7 (React 19, Zustand, TanStack docs)
 - **Responsibilities**: Frontend Clean Architecture, state management strategy
 
 #### React Coder
 
-- **Agent**: `@agent-react-coder`
+- **Agent**: @agent-react-coder
 - **Stack Focus**: React 19 components, TanStack, ShadcnUI
 - **Tools**: context7 (React 19, ShadcnUI), firecrawl (component examples)
 - **Responsibilities**: Component implementation, hooks, performance
 
 #### UX/UI Designer
 
-- **Agent**: `@agent-ux-ui-designer`
+- **Agent**: @agent-ux-ui-designer
 - **Stack Focus**: Tailwind v4, ShadcnUI components
 - **Tools**: context7 (ShadcnUI), firecrawl (design patterns)
 - **Responsibilities**: Design systems, accessibility, user flows
 
 #### Design Review
 
-- **Agent**: `@agent-design-review`
+- **Agent**: @agent-react-design-review
 - **Stack Focus**: S-Tier SaaS standards, WCAG compliance
 - **Tools**: playwright (automated testing), firecrawl (competitor analysis)
 - **Responsibilities**: Design compliance, accessibility testing
@@ -104,21 +104,21 @@ This standardization ensures:
 
 #### TDD Test Engineer
 
-- **Agent**: `@agent-tdd-test-engineer`
+- **Agent**: @agent-tdd-engineer
 - **Stack Focus**: Vitest, React Testing Library, Bun test runner
 - **Tools**: context7 (Vitest, RTL docs), perplexity (TDD patterns)
 - **Responsibilities**: Unit tests, integration tests, test coverage
 
 #### UX Guardian
 
-- **Agent**: `@agent-ux-guardian`
+- **Agent**: @agent-ux-guardian
 - **Stack Focus**: User journey testing, edge cases
 - **Tools**: playwright (automated flows), zen.thinkdeep (edge discovery)
 - **Responsibilities**: User scenario testing, edge case identification
 
 #### Tech Lead Reviewer
 
-- **Agent**: `@agent-tech-lead-reviewer`
+- **Agent**: @agent-tech-lead-reviewer
 - **Stack Focus**: Full stack review (Hono + React + TypeScript)
 - **Tools**: perplexity (best practices), zen.consensus (trade-offs)
 - **Responsibilities**: Code review, architectural decisions, risk assessment
@@ -127,14 +127,14 @@ This standardization ensures:
 
 #### Biome Lint Fixer
 
-- **Agent**: `@agent-biome-lint-fixer`
+- **Agent**: @agent-biome-lint-fixer
 - **Stack Focus**: Biome linting rules, ESLint patterns, code quality
 - **Tools**: context7 (Biome docs), perplexity (rule patterns), zen.thinkdeep (fix strategies)
 - **Responsibilities**: Automated linting fixes, rule compliance, code quality enforcement
 
 #### TypeScript Diagnostics Fixer
 
-- **Agent**: `@agent-typescript-diagnostics-fixer`
+- **Agent**: @agent-typescript-diagnostics-fixer
 - **Stack Focus**: TypeScript type system, error resolution, type safety
 - **Tools**: context7 (TypeScript docs), perplexity (error solutions), zen.thinkdeep (type patterns)
 - **Responsibilities**: Automated type error fixes, type safety maintenance, diagnostic resolution
@@ -143,28 +143,28 @@ This standardization ensures:
 
 #### TypeScript Expert
 
-- **Agent**: `@agent-typescript-expert`
+- **Agent**: @agent-typescript-expert
 - **Stack Focus**: TypeScript for both backend (Hono) and frontend (React)
 - **Tools**: context7 (TypeScript docs), zen.thinkdeep (type design)
 - **Responsibilities**: Type safety, advanced patterns, type system design
 
 #### Business Analyst
 
-- **Agent**: `@agent-business-analyst`
+- **Agent**: @agent-business-analyst
 - **Stack Focus**: Requirements for Clean Architecture implementation
 - **Tools**: perplexity (industry standards), zen.planner (user stories)
 - **Responsibilities**: Requirements gathering, use case documentation
 
 #### Product Manager PRD
 
-- **Agent**: `@agent-product-manager-prd`
+- **Agent**: @agent-product-manager-prd
 - **Stack Focus**: Product requirements documentation, feature planning
 - **Tools**: perplexity (market research), zen.consensus (stakeholder alignment)
 - **Responsibilities**: PRD creation, success metrics, feature prioritization
 
 #### Git Workflow
 
-- **Agent**: `@agent-git-workflow`
+- **Agent**: @agent-git-workflow
 - **Stack Focus**: Conventional commits, feature branches
 - **Tools**: perplexity (git best practices)
 - **Responsibilities**: Version control, commit standards, PR workflows
@@ -173,14 +173,14 @@ This standardization ensures:
 
 #### Task Analyzer
 
-- **Agent**: `@agent-task-analyzer`
+- **Agent**: @agent-task-analyzer
 - **Stack Focus**: Pre-implementation analysis for token optimization
 - **Tools**: Serena (symbol mapping), zen.thinkdeep (complexity analysis), zen.consensus (trade-offs)
 - **Responsibilities**: File mapping, dependency analysis, risk assessment, execution strategy
 
 #### Task Implementation Orchestrator
 
-- **Agent**: `@agent-task-implementation-orchestrator`
+- **Agent**: @agent-task-implementation-orchestrator
 - **Stack Focus**: Task execution coordination across all layers
 - **Tools**: Task (agent delegation), TodoWrite (progress tracking), zen.consensus (approach resolution)
 - **Responsibilities**: Analysis verification, agent coordination, quality assurance, progress tracking
@@ -224,14 +224,14 @@ This detailed structure ensures:
 1. @agent-business-analyst → Requirements (with detailed acceptance criteria)
 2. @agent-ux-ui-designer → Design (with accessibility standards)
 3. @agent-software-architect → System design (with Clean Architecture boundaries)
-4. @agent-react-clean-architect → Frontend architecture (with Zustand state design)
+4. @agent-react-architect → Frontend architecture (with Zustand state design)
 5. @agent-api-standards-expert → API contracts (with Hono patterns)
 6. @agent-database-architect → Schema design (with Drizzle ORM models)
-7. @agent-tdd-test-engineer → Test specs (RED phase)
+7. @agent-tdd-engineer → Test specs (RED phase)
 8. @agent-react-coder → Implementation (GREEN phase)
 9. @agent-typescript-expert → Type refinement (type safety validation)
 10. @agent-ux-guardian → Edge case testing (user journey validation)
-11. @agent-design-review → UI compliance (WCAG and S-Tier standards)
+11. @agent-react-design-review → UI compliance (WCAG and S-Tier standards)
 12. @agent-tech-lead-reviewer → Final review (architecture and quality)
 ```
 
@@ -240,7 +240,7 @@ This detailed structure ensures:
 ```
 1. @agent-tech-lead-reviewer → Impact analysis
 2. @agent-typescript-expert → Type investigation
-3. @agent-tdd-test-engineer → Reproduction test
+3. @agent-tdd-engineer → Reproduction test
 4. @agent-react-coder OR @agent-api-standards-expert → Fix implementation
 5. @agent-ux-guardian → Regression testing
 ```
@@ -250,16 +250,16 @@ This detailed structure ensures:
 ```
 1. @agent-biome-lint-fixer → Lint error resolution (/fix:lint)
 2. @agent-typescript-diagnostics-fixer → Type error fixes (/fix:types)
-3. @agent-tdd-test-engineer → Test failure fixes (/fix:tests)
+3. @agent-tdd-engineer → Test failure fixes (/fix:tests)
 ```
 
 ### Refactoring Flow
 
 ```
 1. @agent-software-architect → Refactoring strategy
-2. @agent-react-clean-architect → Frontend restructuring
+2. @agent-react-architect → Frontend restructuring
 3. @agent-database-architect → Data layer optimization
-4. @agent-tdd-test-engineer → Test coverage
+4. @agent-tdd-engineer → Test coverage
 5. @agent-tech-lead-reviewer → Quality assurance
 ```
 

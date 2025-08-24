@@ -153,61 +153,53 @@ ALTER TABLE users ADD CONSTRAINT users_email_unique UNIQUE(email);
 ### Schema Definition
 
 ```typescript
-import {
-  pgTable,
-  text,
-  timestamp,
-  varchar,
-  decimal,
-  index,
-  unique,
-} from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
-import { ulid } from "ulid";
+import { pgTable, text, timestamp, varchar, decimal, index, unique } from 'drizzle-orm/pg-core'
+import { relations } from 'drizzle-orm'
+import { ulid } from 'ulid'
 
 // Always use ULID for IDs
 export const users = pgTable(
-  "users",
+  'users',
   {
-    id: text("id")
+    id: text('id')
       .primaryKey()
       .$defaultFn(() => ulid()),
-    email: varchar("email", { length: 255 }).notNull().unique(),
-    passwordHash: text("password_hash").notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull(),
-    deletedAt: timestamp("deleted_at"), // Soft deletes
+    email: varchar('email', { length: 255 }).notNull().unique(),
+    passwordHash: text('password_hash').notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+    deletedAt: timestamp('deleted_at'), // Soft deletes
   },
   (table) => ({
-    emailIdx: index("idx_users_email").on(table.email),
-  })
-);
+    emailIdx: index('idx_users_email').on(table.email),
+  }),
+)
 
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   orders: many(orders),
   sessions: many(sessions),
-}));
+}))
 
 export const orders = pgTable(
-  "orders",
+  'orders',
   {
-    id: text("id")
+    id: text('id')
       .primaryKey()
       .$defaultFn(() => ulid()),
-    userId: text("user_id")
+    userId: text('user_id')
       .notNull()
       .references(() => users.id),
-    totalAmount: decimal("total_amount", { precision: 10, scale: 2 }).notNull(),
-    status: varchar("status", { length: 50 }).notNull().default("pending"),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+    totalAmount: decimal('total_amount', { precision: 10, scale: 2 }).notNull(),
+    status: varchar('status', { length: 50 }).notNull().default('pending'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
   },
   (table) => ({
-    userIdIdx: index("idx_orders_user_id").on(table.userId),
-    statusIdx: index("idx_orders_status").on(table.status),
-  })
-);
+    userIdIdx: index('idx_orders_user_id').on(table.userId),
+    statusIdx: index('idx_orders_status').on(table.status),
+  }),
+)
 ```
 
 ### Repository Implementation
@@ -215,10 +207,10 @@ export const orders = pgTable(
 ```typescript
 // Domain port (interface)
 export interface UserRepository {
-  save(user: User): Promise<void>;
-  findById(id: UserId): Promise<User | null>;
-  findByEmail(email: Email): Promise<User | null>;
-  delete(id: UserId): Promise<void>;
+  save(user: User): Promise<void>
+  findById(id: UserId): Promise<User | null>
+  findByEmail(email: Email): Promise<User | null>
+  delete(id: UserId): Promise<void>
 }
 
 // Infrastructure implementation
@@ -226,7 +218,7 @@ export class DrizzleUserRepository implements UserRepository {
   constructor(private readonly db: PostgresJsDatabase) {}
 
   async save(user: User): Promise<void> {
-    const data = this.toPersistence(user);
+    const data = this.toPersistence(user)
     await this.db
       .insert(users)
       .values(data)
@@ -237,7 +229,7 @@ export class DrizzleUserRepository implements UserRepository {
           passwordHash: data.passwordHash,
           updatedAt: new Date(),
         },
-      });
+      })
   }
 
   async findById(id: UserId): Promise<User | null> {
@@ -247,12 +239,12 @@ export class DrizzleUserRepository implements UserRepository {
       .where(
         and(
           eq(users.id, id.value),
-          isNull(users.deletedAt) // Soft delete check
-        )
+          isNull(users.deletedAt), // Soft delete check
+        ),
       )
-      .limit(1);
+      .limit(1)
 
-    return result[0] ? this.toDomain(result[0]) : null;
+    return result[0] ? this.toDomain(result[0]) : null
   }
 
   async findByEmail(email: Email): Promise<User | null> {
@@ -260,17 +252,14 @@ export class DrizzleUserRepository implements UserRepository {
       .select()
       .from(users)
       .where(and(eq(users.email, email.value), isNull(users.deletedAt)))
-      .limit(1);
+      .limit(1)
 
-    return result[0] ? this.toDomain(result[0]) : null;
+    return result[0] ? this.toDomain(result[0]) : null
   }
 
   async delete(id: UserId): Promise<void> {
     // Soft delete
-    await this.db
-      .update(users)
-      .set({ deletedAt: new Date() })
-      .where(eq(users.id, id.value));
+    await this.db.update(users).set({ deletedAt: new Date() }).where(eq(users.id, id.value))
   }
 
   private toDomain(raw: typeof users.$inferSelect): User {
@@ -280,7 +269,7 @@ export class DrizzleUserRepository implements UserRepository {
       passwordHash: raw.passwordHash,
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
-    });
+    })
   }
 
   private toPersistence(user: User): typeof users.$inferInsert {
@@ -290,7 +279,7 @@ export class DrizzleUserRepository implements UserRepository {
       passwordHash: user.passwordHash,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
-    };
+    }
   }
 }
 ```
@@ -335,15 +324,9 @@ const ordersWithUsers = await db
   })
   .from(orders)
   .innerJoin(users, eq(orders.userId, users.id))
-  .where(
-    and(
-      gte(orders.createdAt, startDate),
-      lte(orders.createdAt, endDate),
-      isNull(users.deletedAt)
-    )
-  )
+  .where(and(gte(orders.createdAt, startDate), lte(orders.createdAt, endDate), isNull(users.deletedAt)))
   .orderBy(desc(orders.createdAt))
-  .limit(20);
+  .limit(20)
 
 // Aggregations
 const userStats = await db
@@ -354,14 +337,14 @@ const userStats = await db
   })
   .from(orders)
   .groupBy(orders.userId)
-  .having(gt(count(orders.id), 5));
+  .having(gt(count(orders.id), 5))
 
 // Transactions
 await db.transaction(async (tx) => {
-  await tx.insert(users).values(userData);
-  await tx.insert(profiles).values(profileData);
-  await tx.insert(settings).values(settingsData);
-});
+  await tx.insert(users).values(userData)
+  await tx.insert(profiles).values(profileData)
+  await tx.insert(settings).values(settingsData)
+})
 ```
 
 ## Indexing Strategies
@@ -454,18 +437,20 @@ When designing database solutions:
 ## Integration with Other Agents
 
 - **software-architect**: Repository pattern design
+
   - Clean Architecture boundaries
   - Data access abstractions
   - Domain model mapping
   - Transaction boundaries
 
 - **tech-lead-reviewer**: Code review for data access
+
   - Query optimization review
   - Index strategy validation
   - Migration impact analysis
   - Performance benchmarking
 
-- **tdd-test-engineer**: Testing repository implementations
+- **tdd-engineer**: Testing repository implementations
   - Repository test strategies
   - Database fixture management
   - Integration test design

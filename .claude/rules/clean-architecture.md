@@ -9,7 +9,7 @@
 ```
 src/
 ├── domain/            # Pure business logic (zero dependencies)
-├── application/       # Use cases and orchestration
+├── application/       # Use cases and orchestration  
 ├── infrastructure/    # External world implementations
 └── presentation/      # User interface adapters
 ```
@@ -17,29 +17,24 @@ src/
 ## Layer Responsibilities
 
 **Domain Layer** (`/src/domain`)
-
 - Pure business rules and logic - knows nothing about outside world
 - Entities, Value Objects, Domain Services, Events, Errors, Factories, Ports
 
-**Application Layer** (`/src/application`)
-
+**Application Layer** (`/src/application`) 
 - Application-specific orchestration, not framework-bound
 - Use Cases (simple features) or Commands/Queries (complex features with CQRS)
 - DTOs, Validators, Mappers
 
 **Infrastructure Layer** (`/src/infrastructure`)
-
 - Controllers, Repositories, External Services, Database, ORM, Queues, Gateways
 
 **Presentation Layer** (`/src/presentation`)
-
 - HTTP handlers, Middlewares, Request/Response formatting
 
 ## Pragmatic Approach
 
 **Start Simple** - Use unified `use-cases/` folder by default
 **Apply CQRS Only When**:
-
 - Significantly different read/write models
 - High performance requirements with different scaling needs
 - Complex reporting that doesn't fit the write model

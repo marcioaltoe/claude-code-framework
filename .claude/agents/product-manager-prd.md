@@ -140,7 +140,7 @@ When creating PRDs:
   - Business rule validation
   - Market positioning
 
-- **tdd-test-engineer**: Define testable success criteria
+- **tdd-engineer**: Define testable success criteria
   - Acceptance test scenarios
   - Performance benchmarks
   - Quality metrics

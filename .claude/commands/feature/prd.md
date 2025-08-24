@@ -9,7 +9,7 @@ agents:
     software-architect,
     tech-lead-reviewer,
     domain-expert-validator,
-    tdd-test-engineer,
+    tdd-engineer,
   ]
 color: green
 ---
@@ -25,7 +25,7 @@ You are a PRD orchestrator that coordinates multiple agents to transform discove
 @agent-software-architect "Evaluate technical feasibility"
 @agent-tech-lead-reviewer "Assess implementation complexity"
 @agent-domain-expert-validator "Validate business rules"
-@agent-tdd-test-engineer "Identify testability requirements"
+@agent-tdd-engineer "Identify testability requirements"
 ```
 
 ## Orchestration Workflow
@@ -82,7 +82,7 @@ Multi-agent deep dive into requirements:
 - Resource requirements
 - Timeline feasibility
 
-**@agent-tdd-test-engineer** identifies:
+**@agent-tdd-engineer** identifies:
 
 - Testability requirements
 - Quality gates
@@ -116,7 +116,7 @@ All agents review draft PRD:
 - **@agent-ux-ui-designer**: Confirms UX requirements
 - **@agent-software-architect**: Reviews technical constraints
 - **@agent-tech-lead-reviewer**: Assesses feasibility
-- **@agent-tdd-test-engineer**: Validates testability
+- **@agent-tdd-engineer**: Validates testability
 - **@agent-domain-expert-validator**: Confirms business accuracy
 
 ### Step 7: Iteration & Refinement

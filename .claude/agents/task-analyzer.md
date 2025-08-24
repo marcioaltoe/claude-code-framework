@@ -120,7 +120,7 @@ docs/features/[feature-slug]/
   - Query optimization needs
   - Index impact assessment
 
-- **@agent-tdd-test-engineer**: Collaborate for test planning
+- **@agent-tdd-engineer**: Collaborate for test planning
   - Test scenario identification
   - Coverage gap analysis
   - Test complexity estimation
@@ -134,6 +134,7 @@ Each analysis file (`T[XXX]-[name]-analysis.md`) should contain:
 # Task Analysis: T[XXX] - [Name]
 
 ## Metadata
+
 - Task ID: T[XXX]
 - Feature: [feature-slug]
 - Analyzed: [timestamp]
@@ -149,12 +150,14 @@ Each analysis file (`T[XXX]-[name]-analysis.md`) should contain:
 ## File Impact Map
 
 ### Primary Files (Direct Changes Required)
+
 - path/to/file1.ts
   - Functions: functionA(), functionB()
   - Interfaces: IExample
   - Estimated tokens: 200-300
 
 ### Secondary Files (Indirect Updates)
+
 - path/to/file2.ts
   - Imports affected: 3
   - Test updates needed: Yes
@@ -179,24 +182,28 @@ Each analysis file (`T[XXX]-[name]-analysis.md`) should contain:
 ## Optimized Execution Strategy
 
 ### Phase 1: Simple edits
+
 - **Recommended Model**: Fast models (via zen MCPs)
 - **Tasks**:
   - [List of simple file edits]
 - **Estimated tokens**: X
 
 ### Phase 2: Complex logic
+
 - **Recommended Model**: Reasoning models (Opus or equivalent)
 - **Tasks**:
   - [List of complex implementations]
 - **Estimated tokens**: Y
 
 ### Phase 3: Testing & Validation
+
 - **Recommended Model**: Balanced models
 - **Tasks**:
   - [Test implementations]
 - **Estimated tokens**: Z
 
 ### Parallel Opportunities
+
 - Tasks that can be executed simultaneously
 - Independent file modifications
 

@@ -55,5 +55,5 @@ src/
 For implementation details, consult:
 
 - @agent-react-coder for component development
-- @agent-react-clean-architect for architecture patterns
+- @agent-react-architect for architecture patterns
 - @agent-ux-ui-designer for UI/UX decisions

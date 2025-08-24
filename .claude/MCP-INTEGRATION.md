@@ -20,7 +20,7 @@ This document outlines the strategic integration of Model Context Protocol (MCP)
 **Assigned Agents:**
 
 - **@agent-software-architect** - System-wide architecture understanding
-- **@agent-react-clean-architect** - React component hierarchy navigation
+- **@agent-react-architect** - React component hierarchy navigation
 - **@agent-tech-lead-reviewer** - Comprehensive code reviews
 - **@agent-database-architect** - Repository pattern understanding
 
@@ -39,7 +39,7 @@ This document outlines the strategic integration of Model Context Protocol (MCP)
 
 - **@agent-react-coder** - React component implementation
 - **@agent-api-standards-expert** - Hono endpoint creation
-- **@agent-tdd-test-engineer** - Test suite creation
+- **@agent-tdd-engineer** - Test suite creation
 - **@agent-database-architect** - Migration file updates
 
 ### 3. Sequential-Thinking MCP - Complex Reasoning
@@ -239,16 +239,16 @@ This standardization improves:
 
 ### Enhanced MCP Distribution
 
-| MCP Tool                | Primary Agents                                                         | Secondary Agents             |
-| ----------------------- | ---------------------------------------------------------------------- | ---------------------------- |
-| **context7**            | React Coder, API Expert, Database Architect, Biome Lint, TypeScript Diag | All development agents       |
+| MCP Tool                | Primary Agents                                                                   | Secondary Agents             |
+| ----------------------- | -------------------------------------------------------------------------------- | ---------------------------- |
+| **context7**            | React Coder, API Expert, Database Architect, Biome Lint, TypeScript Diag         | All development agents       |
 | **perplexity**          | Business Analyst, Domain Validator, Product Manager, Biome Lint, TypeScript Diag | All research-heavy agents    |
-| **Serena**              | Software Architect, Tech Lead, React Clean Architect                  | All code navigation agents   |
-| **Morph**               | React Coder, API Expert, TDD Engineer, Biome Lint, TypeScript Diag    | All code-writing agents      |
-| **Sequential-thinking** | Business Analyst, Software Architect, UX Guardian                     | All complex reasoning agents |
-| **Playwright**          | Design Review, UX Guardian                                            | Testing agents               |
-| **Firecrawl**           | Product Manager, UX Designer                                          | Research agents              |
-| **Zen tools**           | Tech Lead, Software Architect, Domain Validator, Biome Lint, TypeScript Diag | Decision-making agents       |
+| **Serena**              | Software Architect, Tech Lead, React Clean Architect                             | All code navigation agents   |
+| **Morph**               | React Coder, API Expert, TDD Engineer, Biome Lint, TypeScript Diag               | All code-writing agents      |
+| **Sequential-thinking** | Business Analyst, Software Architect, UX Guardian                                | All complex reasoning agents |
+| **Playwright**          | Design Review, UX Guardian                                                       | Testing agents               |
+| **Firecrawl**           | Product Manager, UX Designer                                                     | Research agents              |
+| **Zen tools**           | Tech Lead, Software Architect, Domain Validator, Biome Lint, TypeScript Diag     | Decision-making agents       |
 
 ## Implementation Phases
 
@@ -278,6 +278,7 @@ This standardization improves:
 ### Command Types After Standardization
 
 All commands now use YAML headers with:
+
 - `name`: Command identifier
 - `description`: Purpose statement
 - `model`: Recommended model (sonnet/opus)
@@ -285,14 +286,16 @@ All commands now use YAML headers with:
 - `color`: Visual identifier
 
 1. **Simple Dispatchers** - Single agent delegation
-   - `/fix:lint` → `@agent-biome-lint-fixer`
-   - `/fix:types` → `@agent-typescript-diagnostics-fixer`
-   - `/fix:tests` → `@agent-tdd-test-engineer`
-   - `/analyze` → `@agent-task-analyzer`
-   - `/implement` → `@agent-task-implementation-orchestrator`
+
+   - `/fix:lint` → @agent-biome-lint-fixer
+   - `/fix:types` → @agent-typescript-diagnostics-fixer
+   - `/fix:tests` → @agent-tdd-engineer
+   - `/analyze` → @agent-task-analyzer
+   - `/implement` → @agent-task-implementation-orchestrator
 
 2. **Orchestrators** - Multi-agent coordination
-   - `/design:review` → `@agent-git-workflow` + `@agent-design-review`
+
+   - `/design:review` → @agent-git-workflow + @agent-react-design-review
    - `/feature:discovery` → 4 agents (business-analyst leads)
    - `/feature:prd` → 7 agents (product-manager-prd leads)
    - `/feature:techspec` → 7 agents (software-architect leads)
@@ -300,7 +303,7 @@ All commands now use YAML headers with:
 
 3. **Workflow Commands** - Complete lifecycle management
    - `/feature:workflow` → Orchestrates all feature phases sequentially
-   - Git commands (`/git:*`) → All delegate to `@agent-git-workflow`
+   - Git commands (`/git:*`) → All delegate to @agent-git-workflow
 
 This standardization ensures commands follow KISS principle while agents handle complexity.
 

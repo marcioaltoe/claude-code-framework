@@ -84,35 +84,35 @@ Before marking complete, you verify:
 
 ```typescript
 // TS2304: Cannot find name 'User'
-import { User } from "./types"; // Add missing import
+import { User } from './types' // Add missing import
 
 // TS2307: Cannot find module
-import { User } from "@/types"; // Fix path alias
+import { User } from '@/types' // Fix path alias
 ```
 
 ### Property Safety
 
 ```typescript
 // TS2339: Property does not exist
-user?.profile?.name; // Add optional chaining
+user?.profile?.name // Add optional chaining
 
 // TS2532: Object possibly undefined
 if (user) {
-  user.name;
+  user.name
 } // Add null check
-user!.name; // Or non-null assertion (standard level)
+user!.name // Or non-null assertion (standard level)
 ```
 
 ### Type Narrowing
 
 ```typescript
 // TS2571: Object is of type 'unknown'
-if (typeof value === "string") {
-  value.length; // Type guard narrows to string
+if (typeof value === 'string') {
+  value.length // Type guard narrows to string
 }
 
 // TS2345: Argument type mismatch
-processUser(data as User); // Type assertion (standard level)
+processUser(data as User) // Type assertion (standard level)
 ```
 
 ## Tools You Must Use
@@ -149,7 +149,7 @@ When encountering complex type errors:
   - Clean architecture interfaces
   - Domain model typing
 
-- **react-clean-architect**: React-specific type issues
+- **react-architect**: React-specific type issues
 
   - Component prop types
   - Hook dependency types

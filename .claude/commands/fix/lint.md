@@ -9,9 +9,8 @@ You are a simple command dispatcher for linting errors. When invoked, immediatel
 
 ## Workflow
 
-1. **Check for Errors**: Run `bun lint` to confirm linting violations exist
-2. **Delegate Immediately**: Invoke @agent-biome-lint-fixer to handle all fixes
-3. **Report Results**: Summarize what the agent accomplished
+1. **Delegate Immediately**: Invoke @agent-biome-lint-fixer to handle all fixes
+2. **Report Results**: Summarize what the agent accomplished
 
 ## Delegation Protocol
 

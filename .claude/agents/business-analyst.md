@@ -149,7 +149,7 @@ When information is unclear or missing, explicitly state what additional details
 - **context7 MCP**: For understanding technical feasibility with Hono, React, TanStack
 - **zen.consensus**: For resolving conflicting stakeholder requirements
 - **zen.planner**: For breaking down complex requirements into user stories
-- **mcp**sequential-thinking**sequentialthinking**: For comprehensive requirement decomposition and edge case discovery through structured reasoning
+- **mcp__sequential-thinking__sequentialthinking**: For comprehensive requirement decomposition and edge case discovery through structured reasoning
 
 ## Research Protocol
 
@@ -164,7 +164,7 @@ When gathering requirements:
 
 ## Integration with Other Agents
 
-- **tdd-test-engineer**: Ensure requirements are testable
+- **tdd-engineer**: Ensure requirements are testable
 
   - Define acceptance criteria in Given/When/Then format
   - Validate measurable success metrics

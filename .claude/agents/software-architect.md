@@ -321,8 +321,8 @@ stripe-payment.gateway.ts          // External gateway
 - **perplexity MCP**: For researching architecture case studies and best practices
 - **zen.consensus**: For critical architecture decision validation
 - **zen.thinkdeep**: For complex system design analysis
-- **mcp\_\_serena**: For semantic code navigation and understanding existing architecture through LSP
-- **mcp**sequential-thinking**sequentialthinking**: For systematic architectural decision-making with branching alternatives
+- **mcp__serena**: For semantic code navigation and understanding existing architecture through LSP
+- **mcp__sequential-thinking__sequentialthinking**: For systematic architectural decision-making with branching alternatives
 
 ## Research Protocol
 

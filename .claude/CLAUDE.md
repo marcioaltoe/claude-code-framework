@@ -117,15 +117,16 @@ barrel files.
 
 ## IMPORTANT Rules
 
-- YOU MUST write tests BEFORE implementation
-- YOU MUST run `bun run craft` after creating/moving files
-- YOU MUST use thinking mode for complex problems
-- YOU MUST verify with subagents for critical decisions
-- NEVER use `any` type - use `unknown` with type guards
-- NEVER commit without running tests and type-check
-- NEVER commit directly to `main` or `dev` branches
-- ALWAYS create feature branches from `dev`
-- ALWAYS open PRs to `dev` branch (not `main`)
+- **YOU MUST** write tests BEFORE implementation
+- **YOU MUST** run `bun run craft` after creating/moving files
+- **YOU MUST** use thinking mode for complex problems
+- **YOU MUST** verify with subagents for critical decisions
+- **NEVER** use `any` type - use `unknown` with type guards
+- **NEVER** commit without running tests and type-check
+- **NEVER** commit directly to `main` or `dev` branches
+- **NEVER** commit automatically
+- **ALWAYS** create feature branches from `dev`
+- **ALWAYS** open PRs to `dev` branch (not `main`)
 
 ## Available Agents
 
@@ -139,16 +140,16 @@ Use @agent-[name] for specialized help. All agents now follow standardized docum
 
 - @agent-api-standards-expert - API design, HTTP standards, Hono patterns
 - @agent-database-architect - Database design, Drizzle ORM, migrations
-- @agent-react-clean-architect - React Clean Architecture patterns
+- @agent-react-architect - React Clean Architecture patterns
 - @agent-react-coder - React 19 component development
 - @agent-software-architect - System design, Clean Architecture
 - @agent-typescript-expert - Type errors, advanced TypeScript patterns
 
 ### Quality & Testing Agents
 
-- @agent-tdd-test-engineer - TDD with Vitest, React Testing Library
+- @agent-tdd-engineer - TDD with Vitest, React Testing Library
 - @agent-tech-lead-reviewer - Code review, architecture decisions
-- @agent-design-review - UI/UX compliance, Playwright testing
+- @agent-react-design-review - UI/UX compliance, Playwright testing
 - @agent-ux-guardian - Edge case discovery, user journey testing
 - @agent-biome-lint-fixer - Automated Biome linting fixes, code quality
 - @agent-typescript-diagnostics-fixer - Automated TypeScript error resolution
@@ -177,7 +178,7 @@ Commands are in `~/.claude/commands/`:
 
 - `/fix:lint` - Automatic Biome error fixing with @agent-biome-lint-fixer
 - `/fix:types` - TypeScript error resolution with @agent-typescript-diagnostics-fixer
-- `/fix:tests` - Test failure fixing following TDD with @agent-tdd-test-engineer
+- `/fix:tests` - Test failure fixing following TDD with @agent-tdd-engineer
 
 ### Git Workflow
 
@@ -213,6 +214,6 @@ Core rules are in `~/.claude/rules/`:
 
 Context files are in `~/.claude/context/`:
 
-- `~/.claude/context/design-principles.md` - S-Tier SaaS design standards
+- `~/.claude/context/design-principles.md` - Design Principles
 
 Detailed knowledge is in agents - use them for specifics!

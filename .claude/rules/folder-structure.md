@@ -5,41 +5,41 @@
 ```
 src/
 ├── domain/                        # Core business logic (zero dependencies)
-│   ├── entities/
-│   ├── value-objects/
-│   ├── services/
-│   ├── ports/
-│   └── errors/
+│   ├── entities/                  
+│   ├── value-objects/             
+│   ├── services/                  
+│   ├── ports/                     
+│   └── errors/                    
 │
 ├── application/                   # Use cases and orchestration
-│   ├── use-cases/
-│   ├── dtos/
-│   ├── mappers/
-│   └── validators/
+│   ├── use-cases/                 
+│   ├── dtos/                      
+│   ├── mappers/                   
+│   └── validators/                
 │
 ├── infrastructure/                # External implementations
-│   ├── database/
-│   │   ├── repositories/
-│   │   ├── migrations/
-│   │   └── schemas/
-│   ├── external/
-│   └── services/
+│   ├── database/                  
+│   │   ├── repositories/          
+│   │   ├── migrations/            
+│   │   └── schemas/               
+│   ├── external/                  
+│   └── services/                  
 │
 ├── presentation/                  # User interfaces
-│   └── api/
-│       ├── controllers/
-│       ├── middlewares/
-│       └── routes/
+│   └── api/                       
+│       ├── controllers/           
+│       ├── middlewares/           
+│       └── routes/                
 │
 ├── config/                        # Configuration
 └── main.ts                        # Application entry
 
 tests/                             # Only shared test resources
-├── setup/
-├── mocks/
-├── helpers/
-├── integration/
-└── e2e/
+├── setup/                         
+├── mocks/                         
+├── helpers/                       
+├── integration/                   
+└── e2e/                          
 ```
 
 ## Key Principles

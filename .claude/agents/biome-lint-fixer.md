@@ -132,7 +132,7 @@ When encountering unfamiliar rules:
   - Layering constraint issues
   - Complexity threshold breaches
 
-- **tdd-test-engineer**: Test-affecting fixes
+- **tdd-engineer**: Test-affecting fixes
 
   - Mock/spy lint violations
   - Test-specific rule conflicts

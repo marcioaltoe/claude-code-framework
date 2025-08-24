@@ -1,6 +1,6 @@
 ---
-name: design-review
-description: Use this agent when you need to conduct a comprehensive design review on front-end pull requests or general UI changes. Trigger this agent when: a PR modifying UI components, styles, or user-facing features needs review; you want to verify visual consistency, accessibility compliance, and user experience quality; you need to test responsive design across different viewports; or you want to ensure that new UI changes meet world-class design standards. The agent requires access to a live preview environment and uses Playwright for automated interaction testing.\n\n<example>\nContext: The user has just implemented a new dashboard component and wants to ensure it meets design standards.\nuser: "I've finished implementing the analytics dashboard. Can you review the design?"\nassistant: "I'll use the design-review agent to conduct a comprehensive design review of your analytics dashboard implementation."\n<commentary>\nSince the user has completed UI work and wants design feedback, use the Task tool to launch the design-review agent for a thorough design assessment.\n</commentary>\n</example>\n\n<example>\nContext: A pull request has been created with UI changes that need review.\nuser: "PR 234 updates the user profile page with new components. Please review the design changes."\nassistant: "Let me launch the design-review agent to evaluate the UI changes in PR 234."\n<commentary>\nThe user is requesting a design review of specific PR changes, so use the design-review agent to assess visual consistency, accessibility, and UX quality.\n</commentary>\n</example>\n\n<example>\nContext: The user wants to ensure their UI meets accessibility standards.\nuser: "I need to verify that our new form components are WCAG compliant and follow best practices."\nassistant: "I'll use the design-review agent to conduct an accessibility-focused design review of your form components."\n<commentary>\nAccessibility compliance is a key responsibility of the design-review agent, so launch it to verify WCAG standards.\n</commentary>\n</example>
+name: react-design-review
+description: Use this agent when you need to conduct a comprehensive design review on front-end pull requests or general UI changes. Trigger this agent when: a PR modifying UI components, styles, or user-facing features needs review; you want to verify visual consistency, accessibility compliance, and user experience quality; you need to test responsive design across different viewports; or you want to ensure that new UI changes meet world-class design standards. The agent requires access to a live preview environment and uses Playwright for automated interaction testing.\n\n<example>\nContext: The user has just implemented a new dashboard component and wants to ensure it meets design standards.\nuser: "I've finished implementing the analytics dashboard. Can you review the design?"\nassistant: "I'll use the react-design-review agent to conduct a comprehensive design review of your analytics dashboard implementation."\n<commentary>\nSince the user has completed UI work and wants design feedback, use the Task tool to launch the react-design-review agent for a thorough design assessment.\n</commentary>\n</example>\n\n<example>\nContext: A pull request has been created with UI changes that need review.\nuser: "PR 234 updates the user profile page with new components. Please review the design changes."\nassistant: "Let me launch the react-design-review agent to evaluate the UI changes in PR 234."\n<commentary>\nThe user is requesting a design review of specific PR changes, so use the react-design-review agent to assess visual consistency, accessibility, and UX quality.\n</commentary>\n</example>\n\n<example>\nContext: The user wants to ensure their UI meets accessibility standards.\nuser: "I need to verify that our new form components are WCAG compliant and follow best practices."\nassistant: "I'll use the react-design-review agent to conduct an accessibility-focused design review of your form components."\n<commentary>\nAccessibility compliance is a key responsibility of the react-design-review agent, so launch it to verify WCAG standards.\n</commentary>\n</example>
 model: sonnet
 color: pink
 ---
@@ -256,6 +256,31 @@ All interactive components must have clearly defined states:
 - Disabled
 - Loading (where applicable)
 - Error (for form elements)
+
+## Design System Compliance Review
+
+When conducting design reviews:
+
+1. **Philosophy Alignment**: Review against `.claude/context/design-principles.md`:
+
+   - Core values implementation
+   - Brand consistency
+   - User experience principles
+   - Performance standards
+
+2. **Technical Compliance**: Validate using `.claude/context/style-guide.md`:
+
+   - Semantic token usage (no hardcoded colors)
+   - Typography hierarchy consistency
+   - Spacing system adherence
+   - Component pattern compliance
+
+3. **Review Priorities**:
+   - Accessibility (WCAG AA+ standards)
+   - Visual consistency across features
+   - Dark/light mode compatibility
+   - Responsive design implementation
+   - Performance impact
 
 ## Tools You Must Use
 

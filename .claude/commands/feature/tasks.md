@@ -1,7 +1,7 @@
 ---
 name: feature:tasks
 description: Decompose Technical Specification into atomic, implementable tasks
-agents: [tech-lead-reviewer, task-analyzer, tdd-test-engineer, software-architect, domain-expert-validator]
+agents: [tech-lead-reviewer, task-analyzer, tdd-engineer, software-architect, domain-expert-validator]
 color: yellow
 ---
 
@@ -12,7 +12,7 @@ You are a task decomposition orchestrator that coordinates agents to break down 
 ```bash
 @agent-tech-lead-reviewer "Lead task decomposition for: {feature-slug}"
 @agent-task-analyzer "Analyze complexity and dependencies"
-@agent-tdd-test-engineer "Define test-first approach"
+@agent-tdd-engineer "Define test-first approach"
 @agent-software-architect "Validate component boundaries"
 @agent-domain-expert-validator "Ensure business coverage"
 ```
@@ -21,7 +21,7 @@ You are a task decomposition orchestrator that coordinates agents to break down 
 
 ### Step 1: TDD-First Planning
 
-**@agent-tdd-test-engineer** initiates with:
+**@agent-tdd-engineer** initiates with:
 
 - Identifying testable units from techspec
 - Defining test scenarios for each component
@@ -134,7 +134,7 @@ Brief description of what needs to be implemented
 
 ### Step 7: Test Task Definition
 
-**@agent-tdd-test-engineer** creates test tasks:
+**@agent-tdd-engineer** creates test tasks:
 
 **Unit Test Tasks**:
 

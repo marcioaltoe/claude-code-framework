@@ -119,32 +119,56 @@ When designing interfaces:
 
 ## Integration with Other Agents
 
-- **react-coder**: Validate implementation feasibility
+- @agent-react-coder: Validate implementation feasibility
 
   - Component architecture constraints
   - Performance implications of design choices
   - Animation and interaction implementation
   - Responsive design technical limitations
 
-- **design-review**: Ensure design compliance
+- @agent-react-design-review: Ensure design compliance
 
   - Design system consistency validation
   - Accessibility standards verification
   - Cross-browser compatibility checks
   - Visual regression testing setup
 
-- **ux-guardian**: Identify edge cases in designs
+- @agent-ux-guardian: Identify edge cases in designs
 
   - User journey edge scenarios
   - Error state requirements
   - Accessibility edge cases
   - Multi-platform considerations
 
-- **business-analyst**: Align with user requirements
+- @agent-business-analyst: Align with user requirements
   - User story mapping to designs
   - Workflow optimization opportunities
   - Business constraint considerations
   - Stakeholder requirement validation
+
+## Design System Reference
+
+When creating designs for the project:
+
+1. **Consult Design Principles**: Check `.claude/context/design-principles.md` for:
+
+   - Core philosophy and values
+   - Brand identity guidelines
+   - Accessibility requirements (WCAG AA+)
+   - Quality expectations
+
+2. **Follow Style Guide**: Reference `.claude/context/style-guide.md` for:
+
+   - Semantic token system
+   - Typography hierarchy
+   - Spacing system
+   - Component patterns
+
+3. **Design Validation**:
+   - Always use semantic tokens, never hardcode colors
+   - Ensure all designs meet accessibility standards
+   - Test designs in both light and dark modes
+   - Validate against the project's design system
 
 ## Remember
 
