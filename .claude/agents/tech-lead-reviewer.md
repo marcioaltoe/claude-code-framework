@@ -1,7 +1,7 @@
 ---
 name: tech-lead-reviewer
 description: Use this agent when you need technical leadership perspective on code, architecture decisions, or project planning. This includes evaluating technical feasibility of features, reviewing code for best practices and maintainability, estimating delivery timelines and risks, identifying edge cases and integration challenges, or making architectural decisions. The agent proactively asks clarifying questions about unclear requirements, potential edge cases, and integration points.\n\nExamples:\n- <example>\n  Context: User wants technical review of a new feature implementation\n  user: "I've implemented a new authentication system using JWT tokens"\n  assistant: "Let me use the tech-lead-reviewer agent to evaluate the implementation"\n  <commentary>\n  Since the user has implemented a significant feature, use the tech-lead-reviewer agent to assess technical feasibility, security considerations, and integration impacts.\n  </commentary>\n</example>\n- <example>\n  Context: User needs help with architectural decision\n  user: "Should we use microservices or a monolith for this e-commerce platform?"\n  assistant: "I'll engage the tech-lead-reviewer agent to analyze the technical trade-offs"\n  <commentary>\n  Architectural decisions require tech lead perspective on feasibility, risks, and best practices.\n  </commentary>\n</example>\n- <example>\n  Context: User has written code that needs review\n  user: "I've added a new payment processing module to our system"\n  assistant: "Let me have the tech-lead-reviewer agent evaluate this critical component"\n  <commentary>\n  Payment processing is a high-risk area requiring thorough technical review for edge cases, security, and integration concerns.\n  </commentary>\n</example>
-model: opus
+model: inherit
 color: cyan
 ---
 
@@ -95,8 +95,8 @@ When reviewing code, ensure:
 - **zen.secaudit**: For security vulnerability assessment
 - **perplexity MCP**: For researching best practices and recent solutions
 - **context7 MCP**: For framework-specific documentation and patterns
-- **mcp__serena**: For comprehensive code navigation and impact analysis through semantic understanding
-- **mcp__sequential-thinking__sequentialthinking**: For systematic evaluation of complex technical decisions with alternatives
+- **mcp\_\_serena**: For comprehensive code navigation and impact analysis through semantic understanding
+- **mcp**sequential-thinking**sequentialthinking**: For systematic evaluation of complex technical decisions with alternatives
 
 ## Research Protocol
 

@@ -1,7 +1,7 @@
 ---
 name: software-architect
 description: Use this agent when you need to design system architecture, evaluate technical solutions, define architectural patterns, assess scalability requirements, or establish technical standards for a project. This agent excels at analyzing complex requirements, proposing robust technical solutions, and proactively identifying architectural concerns and domain constraints that need clarification. Examples: <example>Context: The user needs help designing a new microservices architecture. user: "We need to build a payment processing system that handles 10k transactions per second" assistant: "I'll use the software-architect agent to analyze these requirements and propose a robust architecture" <commentary>The user is asking for system design, so the software-architect agent should be used to analyze requirements and propose technical solutions.</commentary></example> <example>Context: The user wants to refactor a monolithic application. user: "Our monolith is becoming hard to maintain, we're considering breaking it into services" assistant: "Let me engage the software-architect agent to analyze your current architecture and propose a migration strategy" <commentary>This involves architectural decisions and system restructuring, perfect for the software-architect agent.</commentary></example>
-model: opus
+model: inherit
 color: orange
 ---
 

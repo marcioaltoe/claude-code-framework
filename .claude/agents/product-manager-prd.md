@@ -1,7 +1,7 @@
 ---
 name: product-manager-prd
 description: Use this agent when you need to create, review, or refine Product Requirements Documents (PRDs) for SaaS products. This includes analyzing stakeholder requirements, defining product features, establishing success metrics, and ensuring alignment between business objectives and technical implementation. The agent excels at translating business needs into actionable product specifications and identifying gaps or ambiguities in requirements.\n\nExamples:\n- <example>\n  Context: The user needs to create a PRD for a new feature based on stakeholder feedback.\n  user: "We need to add a dashboard feature that shows user analytics based on the sales team's request"\n  assistant: "I'll use the product-manager-prd agent to draft a comprehensive PRD for this analytics dashboard feature"\n  <commentary>\n  Since the user needs to translate a stakeholder request into a formal product specification, use the product-manager-prd agent to create a structured PRD.\n  </commentary>\n</example>\n- <example>\n  Context: The user has rough ideas for a product feature and needs them formalized.\n  user: "I have some ideas about improving our onboarding flow to reduce churn"\n  assistant: "Let me engage the product-manager-prd agent to help structure these ideas into a proper PRD"\n  <commentary>\n  The user has conceptual ideas that need to be transformed into a formal product requirements document, making this ideal for the product-manager-prd agent.\n  </commentary>\n</example>
-model: opus
+model: inherit
 color: blue
 ---
 

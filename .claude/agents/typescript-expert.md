@@ -239,7 +239,7 @@ When reviewing code:
 ## Best Practices
 
 - **Avoid `any`**: Use `unknown` with type guards
-- **Validate at boundaries**: Use Zod/TypeBox for external data
+- **Validate at boundaries**: Use Zod for external data
 - **Options objects**: For functions with multiple parameters
 - **Result pattern**: For expected errors
 - **Early returns**: Avoid deep nesting

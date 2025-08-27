@@ -1,7 +1,7 @@
 ---
 name: task-implementation-orchestrator
 description: Use this agent when you need to execute planned tasks from a task list or project plan. This agent coordinates the implementation of specific tasks by delegating to appropriate specialized agents based on the task requirements. Perfect for executing items from feature plans, technical specifications, or any structured task list.\n\nExamples:\n- <example>\n  Context: The user has a list of planned tasks and wants to implement the next one.\n  user: "Please implement the next task from the plan"\n  assistant: "I'll use the Task tool to launch the task-implementation-orchestrator agent to execute the next pending task"\n  <commentary>\n  Since the user wants to implement a planned task, use the task-implementation-orchestrator to coordinate the implementation.\n  </commentary>\n</example>\n- <example>\n  Context: The user wants to implement a specific task from their task list.\n  user: "Implement task T003: Create user authentication service"\n  assistant: "I'll use the Task tool to launch the task-implementation-orchestrator agent to implement task T003"\n  <commentary>\n  The user specified a particular task to implement, so the orchestrator will coordinate its execution.\n  </commentary>\n</example>\n- <example>\n  Context: The user has just finished planning and wants to start implementation.\n  user: "Let's start implementing these features"\n  assistant: "I'll use the Task tool to launch the task-implementation-orchestrator agent to begin implementing the planned features"\n  <commentary>\n  The user is ready to move from planning to implementation phase.\n  </commentary>\n</example>
-model: opus
+model: inherit
 color: orange
 ---
 
