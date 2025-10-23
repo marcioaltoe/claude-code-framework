@@ -130,30 +130,118 @@ import { UserIdentity } from "../../domain/aggregate/user-identity.aggregate";
 - Implement proper session management
 - Log security events
 
+# SuperClaude
+
+## Core Framework
+
+<!-- @BUSINESS_PANEL_EXAMPLES.md -->
+<!-- @BUSINESS_SYMBOLS.md -->
+
+@FLAGS.md
+@PRINCIPLES.md
+@RULES.md
+
+## Behavioral Modes
+
+@MODE_Brainstorming.md
+
+<!-- @MODE_Business_Panel.md -->
+
+@MODE_Introspection.md
+@MODE_Orchestration.md
+@MODE_Task_Management.md
+@MODE_Token_Efficiency.md
 
 ## MCP Server Usage Rules
 
 **MANDATORY - ALWAYS FOLLOW:**
 
-### Documentation Lookup
+### Code Editing Operations
 
-- **ALWAYS** use **Context7 MCP** for:
+- **ALWAYS** use **Morphllm MCP** for:
+  - Multi-file edit operations requiring consistent patterns
+  - Framework updates, style guide enforcement, code cleanup
+  - Bulk text replacements across multiple files
+  - Pattern-based transformations (30-50% efficiency gains)
+
+### File Search & Navigation
+
+- **ALWAYS** use **Serena MCP** for:
+  - Symbol operations: rename, extract, move functions/classes
+  - Project-wide code navigation and exploration
+  - Large codebase analysis (>50 files, complex architecture)
+  - Session persistence: `/sc:load`, `/sc:save`, project memory
+  - Shell operations via `execute_shell_command` (preferred over native Bash for routine operations to reduce context usage)
+
+### Documentation Lookup (Primary)
+
+- **ALWAYS** use **Ref MCP** for:
   - Comprehensive documentation search across multiple sources
   - Private documentation or internal resources
   - Library documentation and framework patterns
   - Import statements, API usage, configuration guidance
   - Version-specific implementation requirements
-  - Need curated, version-specific framework patterns
-  - Framework compliance verification (React, Vue, Angular, Next.js, etc.)
 
 ### Web Research & Documentation (UPDATED PRIORITY)
 
-- **ALWAYS** use **Perplexity MCP** for:
+- **ALWAYS** use **EXA Search MCP** for (PRIMARY):
 
   - Technical research & documentation (hundreds of QPS)
   - Code patterns, benchmarks, and technical solutions
   - Real-time semantic search with superior accuracy
   - Developer-focused research and API documentation
+
+- **Use Perplexity MCP** for (FALLBACK):
   - Complex reasoning validation (30 QPS limit)
   - Conversational synthesis when EXA insufficient
   - Latest trends and emerging technologies
+
+### Multi-Tool Orchestration & Analysis
+
+- **ALWAYS** use **Zen MCP** for:
+  - Complex workflow orchestration and multi-model analysis
+  - Multi-step workflow coordination with pipeline customization
+  - Architecture decision-making requiring consensus building
+  - Quality assurance pipelines with collaborative validation
+  - Agent composition and specialization for complex tasks
+  - Deep analysis requiring structured thinking (`thinkdeep`)
+  - Multi-perspective consensus building (`consensus`)
+  - Code review workflows (`codereview`, `challenge`)
+
+### Framework Documentation (Fallback/Enhancement)
+
+- **Use Context7 MCP** when:
+  - Ref doesn't have sufficient official documentation
+  - Need curated, version-specific framework patterns
+  - Framework compliance verification (React, Vue, Angular, Next.js, etc.)
+  - Official documentation enhancement for incomplete Ref results
+
+### MCP Selection Priority (UPDATED)
+
+1. **Morphllm** → All code editing and pattern transformations
+2. **Serena** → All file search, navigation, and semantic operations
+3. **EXA Search** → Technical research & documentation (PRIMARY - hundreds QPS)
+4. **Ref** → Documentation and comprehensive search
+5. **Zen** → Complex workflows, orchestration, and multi-model analysis
+6. **Perplexity** → Complex reasoning validation (FALLBACK - 30 QPS)
+7. **Context7** → Framework docs enhancement when needed
+
+**Research Strategy:**
+
+- **EXA Search**: Primary for technical research, documentation, patterns, benchmarks
+- **Perplexity**: Fallback for complex reasoning validation and conversational synthesis
+
+**Anti-Patterns to Avoid:**
+
+- ❌ Using Perplexity when EXA's semantic search available
+- ❌ Basic search when EXA's technical research capabilities available
+
+**CRITICAL**: Never use native tools for operations that have dedicated MCP servers. Always leverage MCP capabilities for maximum efficiency and accuracy.
+
+## MCP Documentation
+
+@MCP_Context7.md
+@MCP_Morphllm.md
+@MCP_Playwright.md
+@MCP_Sequential.md
+@MCP_Serena.md

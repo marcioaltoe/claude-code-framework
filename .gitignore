@@ -1,1 +1,16 @@
+# Mac OS X specific files
 .DS_Store
+
+# claude specific logs and work files
+**/.claude/cache
+**/.claude/debug
+**/.claude/history.jsonl
+**/.claude/hooks/ccnotify.db
+**/.claude/hooks/logs/**
+**/.claude/ide
+**/.claude/local
+**/.claude/projects
+**/.claude/session-env
+**/.claude/shell-snapshots
+**/.claude/statsig
+**/.claude/todos
